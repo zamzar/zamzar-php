@@ -1,0 +1,37 @@
+{
+    "name": "zamzar/zamzar-php",
+    "type": "library",
+    "minimum-stability": "stable",
+    "description": "Zamzar PHP Library",
+    "keywords": [
+        "zamzar",
+        "file conversion",
+        "api"
+    ],
+    "homepage": "https://www.zamzar.com/",
+    "license": "MIT",
+    "authors": [
+        {
+          "name": "Zamzar",
+          "homepage": "https://github.com/zamzar/zamzar-php"
+        }
+    ],
+    "require": {
+        "php": ">=7.2.5",
+        "ext-json": "*",
+        "guzzlehttp/guzzle": "^7.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    },
+    "autoload": {
+        "psr-4": {
+          "Zamzar\\": "lib/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+          "Zamzar\\": "tests/"
+        }
+    }
+}

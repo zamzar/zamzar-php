@@ -1,0 +1,87 @@
+<!-- HEADER UPTO AND INCLUDING THE <BODY> -->
+<?php require '../../partials/page-header.php' ?>
+
+<!-- MAKE AN API CALL SO WE CAN GET THE RESPONSE HEADERS -->
+<?php
+    if(array_key_exists('after', $_GET)) {
+        if(!is_null($_GET['after'])) {
+            $jobs = $_zamzar->jobs->all([
+                'after' => $_GET['after'],
+                'limit' => $_GET['limit']
+            ]);        
+        }
+    } elseif (array_key_exists('before', $_GET)) {
+        if (!is_null($_GET['before'])) {
+            $jobs = $_zamzar->jobs->all([
+                'before' => $_GET['before'],
+                'limit' => $_GET['limit']
+            ]);        
+        }
+    } else {
+        $jobs = $_zamzar->jobs->all(['limit' => 15]);
+    }
+    if(property_exists($jobs->paging, "last")) {
+        $_nextPage = "alljobs.php?after=" . $jobs->paging->last . '&limit=' . $jobs->paging->limit;
+    }
+    if(property_exists($jobs->paging, "first")) {
+        $_previousPage = "alljobs.php?before=" . $jobs->paging->first . '&limit=' . $jobs->paging->limit;
+    }
+?>
+
+<!-- NAVBAR (OUTPUTS INFORMATION FROM THE RESPONSE HEADERS) -->
+<?php require '../../partials/navbar.php' ?>
+
+<!-- CONTENT HEADER -->
+<?php require '../../partials/content-header.php' ?>
+    
+<!-- THIS PAGE'S CONTENT -->
+<div class="block">
+    <h1>Jobs</h1>
+    <div class="box">
+        <p>
+            <table class="table is-striped is-narrow is-hoverable is-fullwidth is-size-6">
+                <thead>
+                    <th>JobId</th>
+                    <th>Status</th>
+                    <th>Environment</th>
+                    <th>Created At</th>
+                    <th>Finished At</th>
+                    <!-- <th>Source File</th>
+                    <th>Target File(s)</th> -->
+                </thead>
+                <tbody>
+                    <!-- <?php foreach($jobs->data as $job) { ?> -->
+                    <tr>
+                        <td><a href="job.php?id=<?= $job->getId(); ?>"><?php echo $job->getId(); ?></a></td>
+                        <td><?php echo ucwords($job->getStatus()); ?></td>
+                        <td><?php echo $job->getSandbox() == true ? 'Sandbox' : 'Production'; ?></td>
+                        <td><?php echo $job->getCreatedAt(); ?></td>
+                        <td><?php echo $job->getFinishedAt() ?? "N/A"; ?></td>
+                        <!-- <?php   if($job->getStatus() == $job::STATUS_SUCCESSFUL) { ?>
+                            <td><?php echo $job->getSourceFile()->getId(); ?></td>
+                        <?php } else { ?>
+                        <td>N/A</td> -->
+                    <!-- <?php }?> -->
+    
+                    </tr>
+                    <!-- <?php } ?> -->
+            </tbody>                                
+            </table>
+        </p>
+    </div>
+</div>
+
+<!-- PAGING BUTTONS -->
+<?php require '../../partials/paging-buttons.php' ?>
+    
+<p class="has-background-light p-3 is-size-6 has-text-weight-semibold has-text-info">
+    <span class="tag is-small is-info is-outlined mr-3"><i class="fas fa-info"></i></span>Jobs represent the process of converting a file to another format. The SDK can be used to submit a new job, download converted files, delete converted files and check the status of existing jobs.
+    A new job can be started using a local file or a file on a remote server. Once a job has completed, it can be downloaded or exported to a remote server.
+</p>
+
+
+<!-- CONTENT FOOTER -->
+<?php require '../../partials/content-footer.php' ?>
+
+<!-- PAGE FOOTER (CLOSE THE BODY AND HTML TAGS) -->
+<?php require '../../partials/page-footer.php' ?>

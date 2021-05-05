@@ -1,0 +1,91 @@
+<!-- HEADER UPTO AND INCLUDING THE <BODY> -->
+<?php require 'partials/page-header.php' ?>
+
+<!-- MAKE AN API CALL SO WE CAN GET THE RESPONSE HEADERS -->
+<?php $_zamzar->testConnection(); ?>
+
+<!-- NAVBAR (OUTPUTS INFORMATION FROM THE RESPONSE HEADERS) -->
+<?php require 'partials/navbar.php' ?>
+
+<!-- CONTENT HEADER -->
+<?php require 'partials/content-header.php' ?>
+
+<!-- THIS PAGE'S CONTENT -->
+<div class="tile is-ancestor">
+    <div class="tile is-parent">
+      <article class="tile is-child box">
+        <p class="title">Welcome</p>
+        <p class="subtitle"></p>
+        <div class="content">
+            <p>
+                This is an example sample which uses all of the features of the Zamzar SDK.
+            </p>
+        </div>
+      </article>
+    </div>
+    <div class="tile is-parent">
+      <article class="tile is-child box">
+        <p class="title">Config</p>
+        <p class="subtitle"></p>
+        <div class="content">
+            <p>
+                By default this app will use the Sandbox Environment. To use Production, update the <code>Config.php</code> file and set the environment to 'production'.
+            </p>
+        </div>
+    </p>
+      </article>
+    </div>
+    <div class="tile is-parent">
+      <article class="tile is-child box">
+        <p class="title">Code Snippets</p>
+        <p class="subtitle"></p>
+        <div class="content">
+          <p>
+            Click <span class="icon"><i class="fas fa-code"></i></span> to see code samples related to the page you are viewing.
+          </p>
+        </div>
+      </article>
+    </div>
+</div>
+
+<div class="tile is-ancestor">
+    <div class="tile is-parent">
+        <article class="tile is-child box">
+        <p class="title">API Docs</p>
+        <p class="subtitle"></p>
+        <div class="content">
+            <p>
+                Visit the <a href="https://developers.zamzar.com/docs" target="_blank">Developer Docs</a> on Zamzar where you can find code samples for the most popular languages.
+            </p>
+        </div>
+        </article>
+    </div>
+    <div class="tile is-parent">
+        <article class="tile is-child box">
+        <p class="title">SDK Docs</p>
+        <p class="subtitle"></p>
+        <div class="content">
+            <p>
+                Visit our <a href="https://github.com/zamzar/zamzar-php" target="_blank">Github Repo</a> where you can find the library and full documentsation.
+            </p>
+        </div>
+        </article>
+    </div>
+    <div class="tile is-parent">
+        <article class="tile is-child box">
+        <p class="title">Built With</p>
+        <p class="subtitle"></p>
+        <div class="content">
+            <p>
+            This demo uses PHP, Javascript, the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API" target="_blank">Fetch API</a>, <a href="https://fontawesome.com/" target="_blank">Font Awesome Icons</a> and <a href="https://bulma.io/" target="_blank">Bulma.io</a> for the styling.
+            </p>
+        </div>
+        </article>
+    </div>
+</div>
+
+<!-- CONTENT FOOTER -->
+<?php require 'partials/content-footer.php' ?>
+
+<!-- PAGE FOOTER (CLOSE THE BODY AND HTML TAGS) -->
+<?php require 'partials/page-footer.php' ?>

@@ -1,0 +1,143 @@
+<!-- HEADER UPTO AND INCLUDING THE <BODY> -->
+<?php require '../../partials/page-header.php' ?>
+
+<!-- MAKE AN API CALL SO WE CAN GET THE RESPONSE HEADERS -->
+<?php $__jobid = $_GET['id']; ?>
+<?php $job = $_zamzar->jobs->get($__jobid); ?>
+
+<!-- NAVBAR (OUTPUTS INFORMATION FROM THE RESPONSE HEADERS) -->
+<?php require '../../partials/navbar.php' ?>
+
+<!-- CONTENT HEADER -->
+<?php require '../../partials/content-header.php' ?>
+
+<!-- THIS PAGE'S CONTENT -->
+<div class="block">
+    <h1>Job ID <?= $__jobid ?></h1>
+    <div class="box">
+        <p>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>Job Id</td>
+                        <td><?= $job->getId(); ?></td>
+                    </tr>
+                    <tr>
+                        <td>Api Key</td>
+                        <td><?= $job->getKey(); ?></td>
+                    </tr>
+                    <tr>
+                        <td>Endpoint</td>
+                        <td><a href="<?= $job->getEndpoint(); ?>" target="_blank"><?= $job->getEndpoint(); ?></a></td>
+                    </tr>
+                    <tr>
+                        <td>Status</td>
+                        <td><?= ucwords($job->getStatus()); ?></td>
+                    </tr>
+                    <?php if($job->hasFailure()) { ?>
+                    <tr>
+                        <td>Failure Code</td>
+                        <?php   
+                            $failure = $job->getFailure();
+                            $failureText = $failure->getCode() . ' - ' . $failure->getMessage();
+                        ?>
+                        <td><?= $failureText; ?></td>
+                    </tr>
+                    <?php } ?>
+                    <tr>
+                        <td>Sandbox</td>
+                        <td><?= (integer) $job->getSandbox(); ?></td>
+                    </tr>
+                    <tr>
+                        <td>Created At</td>
+                        <td><?= date( "d M Y H:i:s", strtotime($job->getCreatedAt())); ?></td>
+                    </tr>
+                    <tr>
+                        <td>Finished At</td>
+                        <?php if($job->hasCompleted()) { ?>
+                            <td><?= date( "d M Y H:i:s", strtotime($job->getFinishedAt())); ?></td>
+                        <?php } else { ?>
+                            <td>NA</td>
+                        <?php } ?>
+                    </tr>
+                    <?php if($job->hasImport()) { ?>
+                    <tr>
+                        <td>Import</td>
+                        <td>
+                            <?= '<a href="../imports/import.php?id=' . $job->getImport()->getId() . '">' . $job->getImport()->getUrl() . '</a>'; ?>
+                        </td>
+                    </tr>
+                    <?php } ?>
+                    <tr>
+                        <td>Source File</td>
+                        <td>
+                            <?php   if ($job->hasSourceFile()) {
+                                        echo '<a href="../files/file.php?id=' . $job->getSourceFile()->getId() . '">' . $job->getSourceFile()->getName() . '</a>';
+                                    } else {
+                                        echo 'NA';
+                                    }
+                            ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Target File(s)</td>
+                        <td>
+                            <?php
+                                if($job->isStatusSuccessful()) {
+                                    foreach($job->getTargetFiles() as $file) {
+                                            echo nl2br('<a href="../files/file.php?id=' . $file->getId() . '"> ' . $file->getName() . '</a>' . "\n");
+                                        }
+                                } else {
+                                    echo 'NA';
+                                }
+                            ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Target Format</td>
+                        <td><?= $job->getTargetFormat() ?></td>
+                    </tr>
+                    <tr>
+                        <td>Credit Cost</td>
+                        <td><?= $job->getCreditCost() ?></td>
+                    </tr>
+                    <?php if($job->getExportUrl() !== '') { ?>
+                        <tr>
+                        <td>Export Url</td>
+                        <td><?= $job->getExportUrl() ?></td>
+                    </tr>
+                    <?php } ?>
+                    <?php if($job->hasExports()) { ?>
+                    <tr>
+                        <td>Exports</td>
+                        <td>
+                            <?php foreach($job->getExports() as $export) 
+                                echo $export->getId();
+                                echo ' / ' . $export->getUrl();
+                                echo ' / ' . $export->getStatus();
+                                echo ' / ' . (string) $export->getFailure();
+                                echo '<br/>';
+                            ?>
+                        </td>
+                    </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </p>
+    </div>
+</div>
+
+<h3>Actions</h3>
+
+<button class="button is-light" onclick='cancelJob(<?= $__jobid ?>)'>
+    <span>Cancel Job</span>
+    <span class="icon is-small">
+        <i class="fas fa-trash"></i>
+    </span>
+</button>
+
+<!-- CONTENT FOOTER -->
+<?php require '../../partials/content-footer.php' ?>
+
+<!-- PAGE FOOTER (CLOSE THE BODY AND HTML TAGS) -->
+<?php require '../../partials/page-footer.php' ?>

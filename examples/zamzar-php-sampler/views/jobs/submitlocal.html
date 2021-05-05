@@ -1,0 +1,117 @@
+<!-- HEADER UPTO AND INCLUDING THE <BODY> -->
+<?php require '../../partials/page-header.php' ?>
+
+<!-- MAKE AN API CALL SO WE CAN GET THE RESPONSE HEADERS -->
+<?php $_zamzar->testConnection(); ?> 
+
+<!-- NAVBAR (OUTPUTS INFORMATION FROM THE RESPONSE HEADERS) -->
+<?php require '../../partials/navbar.php' ?>
+
+<!-- CONTENT HEADER -->
+<?php require '../../partials/content-header.php' ?>
+
+<!-- CONTEXT BUTTONS -->
+
+<!-- THIS PAGE'S CONTENT -->
+<div class="block">
+    <h1>Convert a Local File</h1>
+    <div class="box">
+      
+      <form method="post" enctype="multipart/form-data">
+
+        <div class="field">
+            <label class="label">Source File</label>
+            <div class="file has-name is-fullwidth">
+                <label class="file-label">
+                    <input class="file-input" type="file" name="files[]" id="fileupload" multiple>
+                  <span class="file-cta">
+                    <span class="file-icon">
+                      <i class="fas fa-upload"></i>
+                    </span>
+                    <span class="file-label" id="filelabel">
+                      Choose a file…
+                    </span>
+                  </span>
+                  <span class="file-name" id="filename">
+                    ...
+                  </span>
+                </label>
+              </div>
+        </div>
+  
+        <br/>
+
+        <div class="field">
+          <label class="label">Target Format</label>
+          <div class="select">
+            <select id="targetformats">
+              <option>...</option>
+            </select>
+          </div>
+        </div>
+
+        <br/>
+
+        <div class="field">
+          <label class="label">Source Format (Optional, specify the format if the filename does not have an extension)</label>
+          <div class="control">
+            <input class="input" id="sourceformat">
+          </div>
+        </div>
+
+        <br/>
+
+        <div class="field">
+          <label class="label">Export URL (Optional, specify if the file should be exported to a remote server after conversion)</label>
+          <div class="control">
+            <input class="input" id="exporturl">
+          </div>
+        </div>
+
+        <br/>
+
+        <h5 class="subtitle">
+          Options
+        </h5>
+        <div class="field">
+          <label class="checkbox">
+            <input type="checkbox" id="optionwait">
+            Wait for the conversion job to complete
+          </label>
+        </div>
+
+        <div class="field">
+          <label class="checkbox">
+            <input type="checkbox" id="optiondownload">
+            Download converted files
+          </label>
+        </div>
+  
+        <div class="field">
+          <label class="checkbox">
+            <input type="checkbox" id="optiondelete">
+            Delete all files on Zamzar's servers for this job (source and target files)
+          </label>
+        </div>
+
+        <br/>
+
+
+      </form> 
+
+      <div class="field is-grouped">
+        <div class="control">
+            <button id="submit" class="button is-light" name="submit" onclick="convertFileLocal();">Submit</button>
+        </div>
+      </div>
+
+    </div>
+    <br/>
+
+</div>
+
+<!-- CONTENT FOOTER -->
+<?php require '../../partials/content-footer.php' ?>
+
+<!-- PAGE FOOTER (CLOSE THE BODY AND HTML TAGS) -->
+<?php require '../../partials/page-footer.php' ?>

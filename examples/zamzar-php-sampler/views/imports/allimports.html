@@ -1,0 +1,79 @@
+<!-- HEADER UPTO AND INCLUDING THE <BODY> -->
+<?php require '../../partials/page-header.php' ?>
+
+<!-- MAKE AN API CALL SO WE CAN GET THE RESPONSE HEADERS -->
+<?php
+    if(array_key_exists('after', $_GET)) {
+        if(!is_null($_GET['after'])) {
+            $imports = $_zamzar->imports->all([
+                'after' => $_GET['after'],
+                'limit' => $_GET['limit']
+            ]);        
+        }
+    } elseif (array_key_exists('before', $_GET)) {
+        if (!is_null($_GET['before'])) {
+            $imports = $_zamzar->imports->all([
+                'before' => $_GET['before'],
+                'limit' => $_GET['limit']
+            ]);        
+        }
+    } else {
+        $imports = $_zamzar->imports->all(['limit' => 15]);
+    }
+    if(property_exists($imports->paging, "last")) {
+        $_nextPage = "allimports.php?after=" . $imports->paging->last . '&limit=' . $imports->paging->limit;
+    }
+    if(property_exists($imports->paging, "first")) {
+        $_previousPage = "allimports.php?before=" . $imports->paging->first . '&limit=' . $imports->paging->limit;
+    }
+?>
+
+<!-- NAVBAR (OUTPUTS INFORMATION FROM THE RESPONSE HEADERS) -->
+<?php require '../../partials/navbar.php' ?>
+
+<!-- CONTENT HEADER -->
+<?php require '../../partials/content-header.php' ?>
+    
+<!-- THIS PAGE'S CONTENT -->
+<div class="block">
+    <h1>Imports</h1>
+    <div class="box">
+        <p>
+            <table class="table is-striped is-narrow is-hoverable is-fullwidth is-size-6">
+                <thead>
+                    <th>ImportId</th>
+                    <th>Url</th>
+                    <th>Status</th>
+                    <!-- <th>Failure</th> -->
+                    <!-- <th>File</th> -->
+                    <th>Created At</th>
+                    <th>Finished At</th>
+                </thead>
+                <tbody>
+                    <?php foreach($imports->data as $import) { ?>
+                    <tr>
+                        <td><a href="import.php?id=<?= $import->getId(); ?>"><?php echo $import->getId(); ?></a></td>
+                        <td><?php echo substr($import->getUrl(), 20); ?></td>
+                        <td><?= ucwords($import->getStatus()) ?></td>
+                        <!-- <td><span class="<?php echo $import->getStatus() == 'successful' ? 'has-text-success' : 'has-text-danger'; ?>"><?= $import->getStatus() ?></span></td> -->
+                        <!-- <td><?php echo (string) $import->getFailure() ?? 'NA'; ?></td> -->
+                        <!-- <td><?php echo (string) $import->getFile() ?? 'NA'; ?></td> -->
+                        <td><?= date( "d M Y H:i:s", strtotime($import->getCreatedAt())); ?></td>
+                        <td><?= date( "d M Y H:i:s", strtotime($import->getFinishedAt())); ?></td>
+                    </tr>
+                    <?php } ?>
+                </tbody>                                
+            </table>
+
+        </p
+    </div>
+</div>
+
+<!-- PAGING BUTTONS -->
+<?php require '../../partials/paging-buttons.php' ?>
+
+<!-- CONTENT FOOTER -->
+<?php require '../../partials/content-footer.php' ?>
+
+<!-- PAGE FOOTER (CLOSE THE BODY AND HTML TAGS) -->
+<?php require '../../partials/page-footer.php' ?>

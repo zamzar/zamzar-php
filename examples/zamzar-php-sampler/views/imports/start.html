@@ -1,0 +1,46 @@
+<!-- HEADER UPTO AND INCLUDING THE <BODY> -->
+<?php require '../../partials/page-header.php' ?>
+
+<!-- MAKE AN API CALL SO WE CAN GET THE RESPONSE HEADERS -->
+<?php $_zamzar->testConnection(); ?> 
+
+<!-- NAVBAR (OUTPUTS INFORMATION FROM THE RESPONSE HEADERS) -->
+<?php require '../../partials/navbar.php' ?>
+
+<!-- CONTENT HEADER -->
+<?php require '../../partials/content-header.php' ?>
+
+<!-- CONTEXT BUTTONS -->
+
+<!-- THIS PAGE'S CONTENT -->
+<div class="block">
+    <h1>Start an Import</h1>
+    <div class="box">    
+      <form method="post" enctype="multipart/form-data">
+        <div class="field">
+          <label class="label">Specify the URL starting with HTTP(S) (S)FTP or S3</label>
+          <div class="control">
+            <input class="input" id="importurl">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Optionally provide a filename to override any filename in the url</label>
+          <div class="control">
+            <input class="input" id="imporfilename">
+          </div>
+        </div>
+      </form>
+      <br/>
+      <div class="field">
+        <div class="control">
+          <button class="button is-light" name="submit" onclick="importFile();">Start Import</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- CONTENT FOOTER -->
+<?php require '../../partials/content-footer.php' ?>
+
+<!-- PAGE FOOTER (CLOSE THE BODY AND HTML TAGS) -->
+<?php require '../../partials/page-footer.php' ?>

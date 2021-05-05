@@ -1,0 +1,18 @@
+# Ignore build files
+build/*
+
+# Mac OS X files
+.DS_Store
+
+# Ignore the /vendor/ directory
+/vendor/
+
+# Ignore the composer.lock file as the vendor directory isn't being submitted
+composer.lock
+
+# Ignore test files
+/tests/tinker/
+/tests/TestConfig.php
+
+# vscode
+/.vscode/

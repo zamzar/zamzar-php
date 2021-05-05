@@ -1,0 +1,76 @@
+<!-- HEADER UPTO AND INCLUDING THE <BODY> -->
+<?php require '../../partials/page-header.php' ?>
+
+<!-- MAKE AN API CALL SO WE CAN GET THE RESPONSE HEADERS -->
+<?php
+    if(array_key_exists('after', $_GET)) {
+        if(!is_null($_GET['after'])) {
+            $formats = $_zamzar->formats->all([
+                'after' => $_GET['after'],
+                'limit' => $_GET['limit']
+            ]);        
+        }
+    } elseif (array_key_exists('before', $_GET)) {
+        if (!is_null($_GET['before'])) {
+            $formats = $_zamzar->formats->all([
+                'before' => $_GET['before'],
+                'limit' => $_GET['limit']
+            ]);        
+        }
+    } else {
+        $formats = $_zamzar->formats->all(['limit' => 15]);
+    }
+    if(property_exists($formats->paging, "last")) {
+        $_nextPage = "allformats.php?after=" . $formats->paging->last . '&limit=' . $formats->paging->limit;
+    }
+    if(property_exists($formats->paging, "first")) {
+        $_previousPage = "allformats.php?before=" . $formats->paging->first . '&limit=' . $formats->paging->limit;
+    }
+?>
+
+<!-- NAVBAR (OUTPUTS INFORMATION FROM THE RESPONSE HEADERS) -->
+<?php require '../../partials/navbar.php' ?>
+
+<!-- CONTENT HEADER -->
+<?php require '../../partials/content-header.php' ?>
+    
+<!-- THIS PAGE'S CONTENT -->
+<div class="block">
+    <h1>Formats</h1>
+    <div class="box">
+        <p>
+            <table class="table is-striped is-narrow is-hoverable is-fullwidth is-size-6">
+                <thead>
+                    <th>Name</th>
+                    <!-- <th>Credit Cost</th> -->
+                    <th>Valid Conversion Targets</th>
+                </thead>
+                <tbody>
+                    <?php foreach($formats->data as $format) { ?>
+                    <tr>
+                        <td><?php echo '<a href="format.php?format=' . $format->getName() . '">' . $format->getName() . '</a>'; ?></td>
+                        <!-- <td>0</td> -->
+                        <td>
+                        <?php
+                            $targets = '';
+                            foreach($format->getTargets() as $targetFormat) {
+                                echo '<a href="format.php?format=' . $targetFormat->getName() . '">' . $targetFormat->getName() . '</a>, ';
+                            }
+                        ?>
+                        </td>
+                    </tr>
+                    <?php } ?>
+            </tbody>                                
+            </table>
+        </p>
+    </div>
+</div>
+
+<!-- PAGING BUTTONS -->
+<?php require '../../partials/paging-buttons.php' ?>
+
+<!-- CONTENT FOOTER -->
+<?php require '../../partials/content-footer.php' ?>
+
+<!-- PAGE FOOTER (CLOSE THE BODY AND HTML TAGS) -->
+<?php require '../../partials/page-footer.php' ?>
