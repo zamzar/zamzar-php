@@ -50,7 +50,7 @@ $zamzar = new \Zamzar\ZamzarClient([
 
 The library does minimal logging of errors and information. Use either the supplied default logger or a psr-3 compatible logger.
 
-```
+```php
 // Default Zamzar Logger (output to the PHP error log)
 $logger = new \Zamzar\Util\DefaultLogger;
 $zamzar->setLogger($logger);
@@ -171,7 +171,6 @@ $job = $file->convert([
 ]);
 ```
 
-Refer to the [jobs](#jobs) section for examples of the Job related objects used to convert files.
 
 ### Retrieving a file
 
@@ -798,16 +797,16 @@ if($proceed) {
             // try downloading and deleting the files
             try {
             
-            $job = $job->downloadTargetFiles([
-                'download_path' => 'path/to/folder'
-            ]);
+                $job = $job->downloadTargetFiles([
+                    'download_path' => 'path/to/folder'
+                ]);
 
-            echo 'deleting files' . "\n\n";
-            $job = $job->deleteAllFiles();
+                echo 'deleting files' . "\n\n";
+                $job = $job->deleteAllFiles();
 
-            } catch (Exception $e) {
-            	echo $e->getMessage();
-            }
+                } catch (Exception $e) {
+                    echo $e->getMessage();
+                }
 
         } else {
             echo 'job has failed' . "\n\n";
@@ -865,4 +864,4 @@ https://api.zamzar.com/v1/jobs/18906127
 
 ## Additional Information
 
-Refer back to the [main guide](guide.md) and review the object model for more information on each object type.
+Refer back to the [readme](readme.md) for additional information.

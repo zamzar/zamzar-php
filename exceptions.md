@@ -38,7 +38,7 @@ Returns an array of API [Error](error.md) objects representing Zamzar API Errors
     echo $apiError->getMessage() . "\n";
     if($apiError->hasContext()) {
         foreach($apiError->getContext() as $context) {
-        echo $context . "\n";
+            echo $context . "\n";
         }
     }
 }

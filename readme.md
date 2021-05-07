@@ -1,13 +1,32 @@
 # Zamzar PHP
 
+[![@zamzar on Twitter](https://img.shields.io/badge/twitter-zamzar-blue)](https://twitter.com/zamzar)
+[![Total Downloads](https://img.shields.io/packagist/dt/zamzar/zamzar-php.svg?style=flat)](https://packagist.org/packages/zamzar/zamzar-php)
+[![Apache 2 License](https://img.shields.io/packagist/l/zamzar/zamzar-php.svg?style=flat)](https://github.com/zamzar/zamzar-php/blob/main/LICENSE)
+
 The Zamzar PHP library provides convenient access to the Zamzar API from
 applications written in the PHP language. It includes a pre-defined set of classes which make it easy to submit files for conversion, retrieve converted files and utilise all of the features that the API offers.
 
+Jump to:
+
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Dependencies](#dependencies)
+- [Documentation](#documentation)
+- [Initialise the Zamzar Client](#initialise-the-zamzar-client)
+- [Test the Connection](#test-the-connection)
+- [Typical Usage](#typical-usage)
+- [Configure a Logger](#configure-a-logger)
+- [Contributing](#contributing)
+- [Resources](#resources)
+- [SDK Sampler](#sdk-sampler)
+
 ## Requirements
 
-PHP 7.2.5 and later.
+- Before you begin, signup for a Zamzar API Account or retrieve your existing API Key from the [Zamzar Developers Homepage](https://developers.zamzar.com/user)
+- PHP 7.2.5 and later.
 
-## Composer
+## Installation
 
 You can install the bindings via [Composer](http://getcomposer.org/). Run the following command:
 
@@ -20,8 +39,6 @@ To use the bindings, use Composer's [autoload](https://getcomposer.org/doc/01-ba
 ```php
 require_once('vendor/autoload.php');
 ```
-
-## Manual Installation
 
 If you do not wish to use Composer, you can download the [latest release](https://github.com/zamzar/zamzar-php/releases). Then, to use the bindings, include the `init.php` file.
 
@@ -44,7 +61,7 @@ If you use Composer, these dependencies should be handled automatically. If you 
 See the [SDK Guide](/docs/guide.md) for all of the features offered by the PHP SDK. The basics are covered below.
 
 
-## Initialising the Zamzar Client
+## Initialise the Zamzar Client
 
 To initialise the client, declare a new ZamzarClient which accepts a string or config array:
 
@@ -81,24 +98,6 @@ To confirm your credentials are correct, test the connection to the API which wi
 
 echo $zamzar->testConnection();
 
-```
-
-## Configuring a Logger
-
-The library does minimal logging of errors and information. Use either the supplied default logger or a psr-3 compatible logger.
-
-```
-// Default Zamzar Logger (output to the PHP error log)
-$logger = new \Zamzar\Util\DefaultLogger;
-$zamzar->setLogger($logger);
-
-// PSR-3 Compatible Logger
-$zamzar->setLogger($psr3logger);
-
-// Using Monolog
-$logger = new Logger('Zamzar');
-$logger->pushHandler(new StreamHandler(__DIR__.'/app.log', Logger::DEBUG));
-$zamzar->setLogger($logger);
 ```
 
 ## Typical Usage
@@ -145,18 +144,48 @@ $job = $zamzar
         ->deleteAllFiles();
 ```
 
+## Configure a Logger
+
+The library does minimal logging of errors and information. Use either the supplied default logger or a psr-3 compatible logger.
+
+```php
+// Default Zamzar Logger (output to the PHP error log)
+$logger = new \Zamzar\Util\DefaultLogger;
+$zamzar->setLogger($logger);
+
+// PSR-3 Compatible Logger
+$zamzar->setLogger($psr3logger);
+
+// Using Monolog
+$logger = new Logger('Zamzar');
+$logger->pushHandler(new StreamHandler(__DIR__.'/app.log', Logger::DEBUG));
+$zamzar->setLogger($logger);
+```
+
+## Contributing
+
+We would greatly value feedback and contributions from our community. 
+
+To run tests:
+
+- Ensure dependencies are installed using <code>composer install</code>
+
+- Rename the <code>testconfigtemplate.php</code> file in the <code>tests</code> folder to <code>testconfig.php</code>
+
+- Specify your API Key within the <code>testconfig.php</code> file
+
+- Run <code>./vendor/bin/phpunit tests</code>
+
 ## Resources
 
-[SDK Guide](docs/guide.md) - A complete guide on all the features of the SDK. 
+[Code Samples](samples.md) - Copy/Paste from examples which demonstrate all key areas of functionality.
 
-[Code Samples](docs/samples.md) - Copy/Paste from examples which demonstrate all key areas of functionality.
-
-[SDK Sampler App](examples/zamzar-php-sdk-sampler) - Runs against the producion or sandbox environment and provides code snippets for you to use in your own codebase. You will require your API Key to use the app.
+[Exceptions Handling](exceptions.md) - Learn more about API Error Codes.
 
 [Developer Docs](https://developers.zamzar.com/docs) - For more information about API operations, parameters, and responses. Use this if you need additional context on all areas of functionality.
 
 ## SDK Sampler
 
-We've provided a simple app which demonstrates all features of the SDK, including code snippets to help you get started. [View the SDK Sampler](examples/zamzar-php-sdk-sampler/).
+We've provided a simple app which demonstrates all features of the SDK, including code snippets to help you get started. [View the SDK Sampler](examples/zamzar-php-sampler/readme.md).
 
 <img width="1379" alt="sampler-screenshot" src="https://user-images.githubusercontent.com/79094268/111761890-4f31c380-8898-11eb-99cc-55c381759020.png">
