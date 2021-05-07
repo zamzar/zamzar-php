@@ -2,7 +2,6 @@
 
 return array(
     'document-root' => $_SERVER['DOCUMENT_ROOT'],
-    'init-php' => $_SERVER['DOCUMENT_ROOT'] . '/init.php',
     'autoload' => $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php',
     'project-folder' => '',
     'api-key' => '',
