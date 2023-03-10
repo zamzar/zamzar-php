@@ -77,14 +77,14 @@ To specify whether the client using the Production or Test API, use a Config arr
 
 // Use the Production API
 $zamzar = new \Zamzar\ZamzarClient([
-    'apikey' => 'apiKey',
+    'api_key' => 'apiKey',
     'environment' => 'production'
 ]);
 
 
 // Use the Sandbox API
 $zamzar = new \Zamzar\ZamzarClient([
-    'apikey' => 'apiKey',
+    'api_key' => 'apiKey',
     'environment' => 'sandbox'
 ]);
 
