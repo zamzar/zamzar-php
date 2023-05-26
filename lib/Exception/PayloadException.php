@@ -7,5 +7,4 @@ namespace Zamzar\Exception;
  */
 class PayloadException extends ApiErrorException
 {
-
 }

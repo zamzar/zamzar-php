@@ -7,5 +7,4 @@ namespace Zamzar\Exception;
  */
 class InvalidArgumentException extends \InvalidArgumentException
 {
-	
 }

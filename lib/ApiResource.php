@@ -1,19 +1,19 @@
 <?php
 
 namespace Zamzar;
-use \Zamzar\Util\Core;
-use \Zamzar\Util\Logger;
+
+use Zamzar\Util\Core;
+use Zamzar\Util\Logger;
 
 /**
  * ApiResource Class
- * 
+ *
  * The core functions and values all classes use and expose
  */
- class ApiResource
- {
-
-    /** 
-     * Properties 
+class ApiResource
+{
+    /**
+     * Properties
      */
 
     // config is protected because it is accessed directly from subclasses
@@ -41,21 +41,19 @@ use \Zamzar\Util\Logger;
      */
     protected function apiInit($config, $objectId = '')
     {
-
         // Check/Set Config Array
-		$this->setConfig($config);
+        $this->setConfig($config);
 
         // Set Endpoint for this object
-		$this->setEndPoint($objectId);
+        $this->setEndPoint($objectId);
 
         // Log this class and object id
         $class = str_replace("Zamzar\\", "", static::class);
-        if($objectId == '') {
+        if ($objectId == '') {
             Logger::log($this->config, 'CreateObj=>' . $class . get_parent_class());
         } else {
             Logger::log($this->config, 'CreateObj=>' . $class . '=>' . $objectId);
         }
-
     }
 
     /**
@@ -64,7 +62,6 @@ use \Zamzar\Util\Logger;
      */
     protected function apiRequest($endpoint, $method = 'GET', $params = [], $getFileContent = false, $filename = '')
     {
-
         // Initialise requestor
         $apiRequestor = new \Zamzar\ApiRequestor($this->getConfig());
 
@@ -79,13 +76,12 @@ use \Zamzar\Util\Logger;
 
         // Return the response
         return $this->lastResponse;
-
     }
 
     /**
-     * Initialise the config array given a string or an arrray 
+     * Initialise the config array given a string or an array
      */
-    protected function setConfig($config) 
+    protected function setConfig($config)
     {
         $this->config = core::setConfig($config);
     }
@@ -93,14 +89,15 @@ use \Zamzar\Util\Logger;
     /**
      * Return the config array
      */
-    public function getConfig() {
+    public function getConfig()
+    {
         return $this->config;
     }
 
     /**
      * Set an endpoint for this object
      */
-    private function setEndPoint($objectId='') 
+    private function setEndPoint($objectId = '')
     {
         $this->endpoint = $this->config['api_base'] . '/' . $this->config['api_version'] . '/';
         $this->endpoint = $this->endpoint . core::getEndPointFromClassName(static::class);
@@ -111,7 +108,7 @@ use \Zamzar\Util\Logger;
 
     /**
      * Set a new endpoint, used when an endpoint might deviate from the standard pattern
-     * E.g. ../jobs/successful is unique in that it should probably be a query parameter 
+     * E.g. ../jobs/successful is unique in that it should probably be a query parameter
      */
     protected function setNewEndPoint($newEndpoint)
     {
@@ -122,9 +119,9 @@ use \Zamzar\Util\Logger;
      * Get the endpoint for this object
      * Public to assist with any debugging of issues
      */
-    public function getEndPoint($addFileContentEndpoint = false) 
+    public function getEndPoint($addFileContentEndpoint = false)
     {
-        if($addFileContentEndpoint) {
+        if ($addFileContentEndpoint) {
             return $this->endpoint . '/' . core::FILE_CONTENT_ENDPOINT;
         } else {
             return $this->endpoint;
@@ -134,7 +131,8 @@ use \Zamzar\Util\Logger;
     /**
      * Get the last response (body, headers, status)
      */
-    public function getLastResponse() {
+    public function getLastResponse()
+    {
         return $this->lastResponse;
     }
 
@@ -171,5 +169,4 @@ use \Zamzar\Util\Logger;
     {
         $this->data[] = $item;
     }
-
 }

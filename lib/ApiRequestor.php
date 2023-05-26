@@ -1,22 +1,21 @@
 <?php
 
-Namespace Zamzar;
+namespace Zamzar;
 
-use \Zamzar\Exception;
-use \Zamzar\HttpClient\GuzzleClient;
-use \Zamzar\Util\Logger;
+use Zamzar\Exception;
+use Zamzar\HttpClient\GuzzleClient;
+use Zamzar\Util\Logger;
 
 /**
  * ApiRequestor Class
- * 
+ *
  * Acts as a wrapper around all api requests which are submitted via the GuzzleClient
  * All requests are checked before being submitted
  * All responses are interrogated to determine if any exceptions should be thrown
  * Returns the response to the caller
  */
-class ApiRequestor 
+class ApiRequestor
 {
-
     /** Properties */
     private $config;
     private $endpoint;
@@ -38,8 +37,8 @@ class ApiRequestor
     /**
      * Submit the request
      */
-    public function request($endpoint, $method = 'GET', $params = [], $getFileContent = false, $filename = '') {
-        
+    public function request($endpoint, $method = 'GET', $params = [], $getFileContent = false, $filename = '')
+    {
         // Capture some log information in the ZamzarClient
         Logger::log($this->config, '(' . $method . ') ' . $endpoint . ' params=' . json_encode($params));
 
@@ -56,51 +55,43 @@ class ApiRequestor
 
         // Make the request via Guzzle Client - an ApiResponse object will be returned
         $this->apiResponse = GuzzleClient::request($this->config, $this->endpoint, $this->method, $this->params, $this->hasLocalFile, $getFileContent);
-        
+
         // Check the response
         $this->checkResponse();
 
         // Return the response
         return $this->apiResponse;
-
     }
 
     /**
      * Validate Request
      */
-    private function checkRequest() {
-
-        switch($this->method) {
-
+    private function checkRequest()
+    {
+        switch ($this->method) {
             case "GET":
-
                 // Download a file
                 if ($this->getFileContent) {
-
                     // Check a local path or filename has been supplied
-                    if(empty($this->params) || !array_key_exists('download_path', $this->params)) {
+                    if (empty($this->params) || !array_key_exists('download_path', $this->params)) {
                         $msg = "To download a file(s), specify a path within the params, in the form ['download_path' => 'local/file/path']";
                         throw new \Zamzar\Exception\InvalidArgumentException($msg);
-                    } 
+                    }
 
                     // If a local path, ensure it's correctly formatted and append the name of the file
-                    if(is_dir($this->params["download_path"])) {
-                        $this->params['local_filename'] = rtrim($this->params['download_path'], '/') . '/' . $this->filename; 
+                    if (is_dir($this->params["download_path"])) {
+                        $this->params['local_filename'] = rtrim($this->params['download_path'], '/') . '/' . $this->filename;
                     } else {
                         $msg = "The path specified does not exist. Specify a valid path within the params in the form ['download_path' => 'valid/local/file/path']";
                         throw new \Zamzar\Exception\InvalidArgumentException($msg);
                     }
-
                 }
                 break;
-
             case "POST":
-
                 // Send a file
-                if(strpos($this->endpoint, '/files')) {
-
+                if (strpos($this->endpoint, '/files')) {
                     // Throw an error if the name isn't specified
-                    if(!array_key_exists("name", $this->params)) {
+                    if (!array_key_exists("name", $this->params)) {
                         throw new \Zamzar\Exception\InvalidArgumentException("name must be specified and be a local file.");
                     }
 
@@ -108,14 +99,12 @@ class ApiRequestor
                     if (!$this->sourceFileIsValid($this->params["name"])) {
                         throw new \Zamzar\Exception\InvalidArgumentException("name must be a local file which exists.");
                     }
-                    
                 }
 
                 // Initiate an Import
-                if(strpos($this->endpoint, '/imports')) {
-
+                if (strpos($this->endpoint, '/imports')) {
                     // Throw an error if the import url is not specified
-                    if(!array_key_exists("url", $this->params)) {
+                    if (!array_key_exists("url", $this->params)) {
                         throw new \Zamzar\Exception\InvalidArgumentException("url is not specified.");
                     }
 
@@ -123,14 +112,12 @@ class ApiRequestor
                     if (!$this->importUrlIsValid($this->params["url"])) {
                         throw new \Zamzar\Exception\InvalidArgumentException("url is incorrectly specified or unsupported - must begin with http(s), (s)ftp or s3");
                     }
-
                 }
 
                 // Submit a Job
-                if(strpos($this->endpoint, '/jobs')) {
-
+                if (strpos($this->endpoint, '/jobs')) {
                     // Is a source file specified
-                    if(!array_key_exists("source_file", $this->params)) {
+                    if (!array_key_exists("source_file", $this->params)) {
                         throw new \Zamzar\Exception\InvalidArgumentException("source_file must be specified and be either a local file (which exists) or a supported type of remote file.");
                     }
 
@@ -140,48 +127,45 @@ class ApiRequestor
                     }
 
                     // Is a target format specified
-                    if(!array_key_exists("target_format", $this->params)) {
+                    if (!array_key_exists("target_format", $this->params)) {
                         throw new \Zamzar\Exception\InvalidArgumentException("target_format must be a valid conversion format for this type of file.");
                     }
-                    
+
                     // Is the export url valid if specified
-                    if(array_key_exists("export_url", $this->params)) {
+                    if (array_key_exists("export_url", $this->params)) {
                         if (!$this->exportUrlIsValid($this->params["export_url"])) {
                             throw new \Zamzar\Exception\InvalidArgumentException("export_url is incorrectly specified or unsupported, must begin with (s)ftp or s3");
                         }
                     }
 
                     // Does the local file path exist if specified
-                    if(array_key_exists("download_path", $this->params)) {
-                        if(!is_dir($this->params['download_path'])) {
+                    if (array_key_exists("download_path", $this->params)) {
+                        if (!is_dir($this->params['download_path'])) {
                             $msg = 'The download_path is not valid';
                             throw new \Zamzar\Exception\InvalidArgumentException($msg);
                         }
                     }
 
                     // Has the deletion option been correctly specified
-                    if(array_key_exists("delete_files", $this->params)) {
+                    if (array_key_exists("delete_files", $this->params)) {
                         $delete_files = $this->params["delete_files"];
-                        if(!($delete_files == 'all' || $delete_files == 'source' || $delete_files == 'target')) {
+                        if (!($delete_files == 'all' || $delete_files == 'source' || $delete_files == 'target')) {
                             $msg = "delete_files should be set to 'all', 'source' or 'target'";
                             throw new \Zamzar\Exception\InvalidArgumentException($msg);
                         }
                     }
-                         
                 }
-
         }
-
     }
 
     /**
      * Check if supplied file is local and exists
      */
-    private function isLocalFile($sourceFile) 
+    private function isLocalFile($sourceFile)
     {
         $isLocalFile = false;
         if (!is_integer($sourceFile) && !strpos($sourceFile, "//")) {
-            if(file_exists($sourceFile)) {
+            if (file_exists($sourceFile)) {
                 $isLocalFile = true;
             }
         }
@@ -194,38 +178,40 @@ class ApiRequestor
     /**
      * Validate Source File
      */
-    private function sourceFileIsValid($sourceFile) 
+    private function sourceFileIsValid($sourceFile)
     {
         $valid = false;
-        if($this->isLocalFile($sourceFile)) {
+        if ($this->isLocalFile($sourceFile)) {
             $valid = true;
         } else if (is_integer($sourceFile) || preg_match('/^(http|https|ftp|sftp|s3):\/\//i', $sourceFile) === 1) {
             $valid = true;
         }
         return $valid;
     }
-    
+
     /**
      * Validate Export URL
      */
-    private function exportUrlIsValid($exportUrl) {
+    private function exportUrlIsValid($exportUrl)
+    {
         return preg_match('/^(ftp|sftp|s3):\/\//i', $exportUrl) === 1 ? true : false;
     }
 
     /**
      * Validate Import URL
      */
-    private function importUrlIsValid($importUrl) {
+    private function importUrlIsValid($importUrl)
+    {
         return preg_match('/^(http|https|ftp|sftp|s3):\/\//i', $importUrl) === 1 ? true : false;
     }
 
     /**
      * Check a response code and generate an api exception if appropriate
      */
-    private function checkResponse() {
-
+    private function checkResponse()
+    {
         // Return if the response code is <= 400
-        if($this->apiResponse->getCode() < 400) {
+        if ($this->apiResponse->getCode() < 400) {
             return;
         }
 
@@ -236,10 +222,10 @@ class ApiRequestor
 
         // Check for null in the response level down in case there's been an unknown issue or timeout
         $errors = [];
-        if(!is_null($this->apiResponse)) {
-            if(!is_null($this->apiResponse->getBody())) {
-                if(!is_null($this->apiResponse->getBody()->errors)) {
-                    if(property_exists($this->apiResponse->getBody(), "errors")) {
+        if (!is_null($this->apiResponse)) {
+            if (!is_null($this->apiResponse->getBody())) {
+                if (!is_null($this->apiResponse->getBody()->errors)) {
+                    if (property_exists($this->apiResponse->getBody(), "errors")) {
                         $errors = $this->apiResponse->getBody()->errors;
                     }
                 }
@@ -247,7 +233,7 @@ class ApiRequestor
         }
 
         // Check the response codes
-        $msg = ''; 
+        $msg = '';
         switch ($this->apiResponse->getCode()) {
             case 200:
                 // $msg = "Ok"... documented for completeness
@@ -301,12 +287,9 @@ class ApiRequestor
                 $msg = "The Api is unavailable. Please wait and try again later.";
                 throw new \Zamzar\Exception\UnknownApiErrorException($config, $endpoint, $errors, $msg, $responseCode);
                 break;
-
         }
 
         // if we get to here and an exception has not been thrown, then throw an unknown error exception
         throw new \Zamzar\Exception\UnknownApiErrorException($config, $endpoint, $errors, $msg, $responseCode);
-
     }
-
 }

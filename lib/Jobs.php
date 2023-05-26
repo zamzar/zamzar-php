@@ -1,13 +1,12 @@
 <?php
 
-Namespace Zamzar;
+namespace Zamzar;
 
 /**
  * Jobs Object
  */
 class Jobs extends ApiResource
 {
-
     /** Valid API Operations for this Class */
     use \Zamzar\ApiOperations\Paging;
     use \Zamzar\ApiOperations\All;
@@ -15,11 +14,10 @@ class Jobs extends ApiResource
     use \Zamzar\ApiOperations\Submit;
 
     /**
-	 * Inialises a new instance of the Jobs object
-	 */
-	public function __construct($config) 
+     * Inialises a new instance of the Jobs object
+     */
+    public function __construct($config)
     {
         $this->apiInit($config);
     }
-
 }

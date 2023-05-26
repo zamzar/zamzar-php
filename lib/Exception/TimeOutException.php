@@ -7,5 +7,4 @@ namespace Zamzar\Exception;
  */
 class TimeOutException extends \Exception
 {
-	
 }
