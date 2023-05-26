@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Zamzar;
 
@@ -6,7 +8,6 @@ use PHPUnit\Framework\TestCase;
 
 final class ImportsTest extends TestCase
 {
-
     use TestConfig;
 
     public function testImportsAreListable(): void
@@ -60,5 +61,4 @@ final class ImportsTest extends TestCase
         $statusAfter = $import->getStatus();
         $this->assertNotEquals($statusBefore, $statusAfter);
     }
-
 }

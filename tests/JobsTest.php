@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Zamzar;
 
@@ -6,7 +8,6 @@ use PHPUnit\Framework\TestCase;
 
 final class JobsTest extends TestCase
 {
-
     use TestConfig;
 
     private $sourceFilePath = "tests/files/source/";
@@ -39,7 +40,7 @@ final class JobsTest extends TestCase
         //get a job
         $jobs = $zamzar->jobs->all(['limit' => 1]);
         $jobid = $jobs->data[0]->getId();
-        
+
         //retrieve the job via the 'get' method
         $job = $zamzar->jobs->get($jobid);
         $this->assertGreaterThan(0, $job->getId());
@@ -54,7 +55,7 @@ final class JobsTest extends TestCase
             'target_format' => $this->validTargetFormat
         ]);
         $this->assertEquals($job->getStatus(), 'initialising');
-        
+
         //wait for completion so that the next function can use the converted file
         $job->waitForCompletion(['timeout' => 30]);
     }
@@ -62,11 +63,11 @@ final class JobsTest extends TestCase
     public function testJobCanBeSubmittedForZamzarFile(): void
     {
         $zamzar = new \Zamzar\ZamzarClient($this->apiKey);
-        
+
         //get a file which should be a pdf based on the previous function
         $files = $zamzar->files->all(['limit' => 1]);
         $fileid = $files->data[0]->getId();
-        
+
         //submit a job using the file id
         $job = $zamzar->jobs->submit([
             'source_file' => $fileid,
@@ -90,40 +91,39 @@ final class JobsTest extends TestCase
         $zamzar = new \Zamzar\ZamzarClient($this->apiKey);
         $this->expectException(\Zamzar\Exception\TimeOutException::class);
         $job = $zamzar->jobs->submit([
-                'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
-                'target_format' => 'pdf'
-                ])->waitForCompletion([
-                    'timeout' => 0
-                    ]);
+            'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
+            'target_format' => 'pdf'
+        ])->waitForCompletion([
+            'timeout' => 0
+        ]);
     }
 
     public function testFilesCanBeDownloadedAndDeleted()
     {
-        
+
         //submit a job and wait for completion
         $zamzar = new \Zamzar\ZamzarClient($this->apiKey);
         $job = $zamzar->jobs->submit([
             'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
             'target_format' => 'pdf'
-            ])->waitForCompletion([
-                'timeout' => 60
-                ]);
-        
+        ])->waitForCompletion([
+            'timeout' => 60
+        ]);
+
         //download the target file
         $job->downloadTargetFiles([
             'download_path' => $this->targetFilePath
         ]);
-        
+
         //confirm the file has been downloaded
         $this->assertEquals(file_exists($this->targetFilePath . 'zamzar-logo.pdf'), true);
-        
+
         //download and delete all files which repeats the download via a different function
         $job = $job->downloadAndDeleteAllFiles(['download_path' => $this->targetFilePath]);
-        
+
         //assert that the files cannot be downloaded again
         $this->expectException(\Zamzar\Exception\InvalidResourceException::class);
         $job = $job->downloadAndDeleteAllFiles(['download_path' => $this->targetFilePath]);
-
     }
 
     public function testJobCanBeCancelledandStatusRefreshed()
@@ -133,11 +133,11 @@ final class JobsTest extends TestCase
         $job = $zamzar->jobs->submit([
             'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
             'target_format' => 'pdf'
-            ]);
+        ]);
         $job = $job->cancel();
         $this->assertEquals($job->getStatus(), 'cancelled');
     }
- 
+
     public function testSubmitDownloadDelete()
     {
 
@@ -149,15 +149,13 @@ final class JobsTest extends TestCase
             'download_path' => $this->targetFilePath,
             'timeout' => 120,
             'delete_files' => 'all'
-            ]);
-        
+        ]);
+
         //confirm the file has been downloaded
         $this->assertEquals(file_exists($this->targetFilePath . 'test.doc'), true);
-        
+
         //assert that the files cannot be downloaded again
         $this->expectException(\Zamzar\Exception\InvalidResourceException::class);
         $job = $job->downloadAndDeleteAllFiles(['download_path' => $this->targetFilePath]);
-
     }
-
 }
