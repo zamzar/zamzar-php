@@ -12,8 +12,7 @@ require_once($config['autoload']);
 $sourceFormat = $_GET['sourceformat'];
 
 // only proceed if we have a file id
-if(!is_null($sourceFormat)) {
-
+if (!is_null($sourceFormat)) {
     // register a new zamzar client
     $zamzar = new \Zamzar\ZamzarClient($config['api-key']);
 
@@ -21,7 +20,5 @@ if(!is_null($sourceFormat)) {
     $validFormats = $zamzar->formats->get($sourceFormat);
 
     // output the formats
-    echo json_encode($zamzar->getLastResponse()->getBody()->targets); 
-    
+    echo json_encode($zamzar->getLastResponse()->getBody()->targets);
 }
-

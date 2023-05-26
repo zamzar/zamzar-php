@@ -1,19 +1,17 @@
 <?php
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
     $config = include('../config.php');
 
     // autoload
     require_once($config['autoload']);
 
     $apiKey = $config['api-key'];
-    
+
     // register zamzarclient
     $zamzar = new \Zamzar\ZamzarClient($apiKey);
     $data = [];
     if (isset($_FILES['files'])) {
-  
         $errors = [];
         $path = $_SERVER['DOCUMENT_ROOT'] . '/files/uploads/';
         $all_files = count($_FILES['files']['tmp_name']);
@@ -29,7 +27,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $file = $path . $file_name;
 
             if (empty($errors)) {
-                
                 // move file into uploads folder
                 move_uploaded_file($file_tmp, $file);
 
@@ -38,9 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'name' => $file
                 ]);
                 $data = ["id" => $newFile->getId()];
-            
             }
-
         }
 
         //print_r($response);

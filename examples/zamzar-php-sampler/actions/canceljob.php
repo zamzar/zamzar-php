@@ -12,8 +12,7 @@ require_once($config['autoload']);
 $jobid = $_GET['jobid'];
 
 // only proceed if we have a file id
-if(!is_null($jobid)) {
-
+if (!is_null($jobid)) {
     // register a new zamzar client
     $zamzar = new \Zamzar\ZamzarClient($config['api-key']);
 
@@ -30,7 +29,5 @@ if(!is_null($jobid)) {
 
     // return status
     $data = ["status" => $status];
-    echo json_encode($data);    
-    
+    echo json_encode($data);
 }
-

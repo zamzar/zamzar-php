@@ -13,8 +13,7 @@ $url = $_GET['url'];
 $filename = $_GET['filename'] ?? '';
 
 // only proceed if we have a file id
-if(!is_null($url)) {
-
+if (!is_null($url)) {
     // register a new zamzar client
     $zamzar = new \Zamzar\ZamzarClient($config['api-key']);
 
@@ -24,7 +23,7 @@ if(!is_null($url)) {
     $params = [
         'url' => $url,
     ];
-    if($filename !== ''){
+    if ($filename !== '') {
         $params['filename'] = $filename;
     }
     try {
@@ -36,6 +35,4 @@ if(!is_null($url)) {
 
     // return status
     echo json_encode($data);
-    
 }
-
