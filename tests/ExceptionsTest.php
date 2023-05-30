@@ -14,6 +14,7 @@ final class ExceptionsTest extends TestCase
     {
         $this->expectException(\Zamzar\Exception\AuthenticationException::class);
         $zamzar = new \Zamzar\ZamzarClient('invalid');
+        $zamzar->testConnection();
     }
 
     public function testInvalidArgumentException(): void
