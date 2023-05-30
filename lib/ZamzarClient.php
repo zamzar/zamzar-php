@@ -41,15 +41,9 @@ class ZamzarClient extends ApiResource
      */
     public function __construct($config)
     {
-        if (is_string($config)) {
-            $config = [
-                'api_key' => $config,
-            ];
-        }
-
-        $config['client'] = $this;
-
         parent::__construct($config);
+
+        $this->config['client'] = $this;
     }
 
     /**
