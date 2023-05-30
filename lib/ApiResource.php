@@ -39,15 +39,12 @@ class ApiResource
      * Should be called from an object's constructor
      * $config will contain an apikey or a config array and optionally an objectid (a job id, a file id, a format name etc)
      */
-    protected function apiInit($config, $objectId = '')
+    public function __construct($config, $objectId = '')
     {
-        // Check/Set Config Array
         $this->setConfig($config);
 
-        // Set Endpoint for this object
         $this->setEndPoint($objectId);
 
-        // Log this class and object id
         $class = str_replace("Zamzar\\", "", static::class);
         if ($objectId == '') {
             Logger::log($this->config, 'CreateObj=>' . $class . get_parent_class());

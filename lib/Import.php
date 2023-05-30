@@ -31,7 +31,7 @@ class Import extends ApiResource
      */
     public function __construct($config, $data)
     {
-        $this->apiInit($config, $data->id);
+        parent::__construct($config, $data->id);
         $this->setValues($data);
     }
 

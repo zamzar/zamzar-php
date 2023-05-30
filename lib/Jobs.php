@@ -12,12 +12,4 @@ class Jobs extends ApiResource
     use \Zamzar\ApiOperations\All;
     use \Zamzar\ApiOperations\Get;
     use \Zamzar\ApiOperations\Submit;
-
-    /**
-     * Inialises a new instance of the Jobs object
-     */
-    public function __construct($config)
-    {
-        $this->apiInit($config);
-    }
 }

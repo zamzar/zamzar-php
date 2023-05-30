@@ -49,7 +49,7 @@ class ZamzarClient extends ApiResource
 
         $config['client'] = $this;
 
-        $this->apiInit($config);
+        parent::__construct($config);
     }
 
     /**

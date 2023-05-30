@@ -13,12 +13,4 @@ class Files extends ApiResource
     use \Zamzar\ApiOperations\All;
     use \Zamzar\ApiOperations\Get;
     use \Zamzar\ApiOperations\Upload;
-
-    /**
-     * Inialises a new instance of the Files object
-     */
-    public function __construct($config)
-    {
-        $this->apiInit($config);
-    }
 }
