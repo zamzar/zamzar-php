@@ -68,8 +68,9 @@ class ApiResource
         // Make the request and save the last response
         $this->lastResponse = $apiRequestor->request($endpoint, $method, $params, $getFileContent, $filename);
 
-        // Store the last response in the ZamzarClient (use $this->config instead of $this->getConfig() because we are passing values by reference)
-        core::zamzarClientSetLastResponse($this->config, $this->lastResponse);
+        if (isset($this->config['client'])) {
+            ($this->config['client'])->setLastResponse($this->lastResponse);
+        }
 
         // Store the paging information
         $this->paging = $this->lastResponse->getPaging();
@@ -134,6 +135,16 @@ class ApiResource
     public function getLastResponse()
     {
         return $this->lastResponse;
+    }
+
+    public function hasLastResponse()
+    {
+        return !is_null($this->getLastResponse());
+    }
+
+    protected function setLastResponse($response)
+    {
+        $this->lastResponse = $response;
     }
 
     /**
