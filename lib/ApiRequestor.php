@@ -40,7 +40,7 @@ class ApiRequestor
     public function request($endpoint, $method = 'GET', $params = [], $getFileContent = false, $filename = '')
     {
         // Capture some log information in the ZamzarClient
-        Logger::log($this->config, '(' . $method . ') ' . $endpoint . ' params=' . json_encode($params));
+        Logger::getLogger()->info('(' . $method . ') ' . $endpoint . ' params=' . json_encode($params));
 
         // Store local values
         $this->endpoint = $endpoint;

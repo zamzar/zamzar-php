@@ -47,39 +47,6 @@ class Core
         'Zamzar\Job' => self::JOBS_ENDPOINT,
     ];
 
-
-    /**
-     * The Last Response from any call to the API is stored in the ZamzarClient object
-     * A config array is passed into this function from which a reference to the lastresponse variable is obtained
-     * Only update if it's already set, i.e. if per object instantiation is done, the lastresponse won't be available (because the ZamzarClient is not instantiated if using per-object instantiation)
-     */
-
-    /**
-     * Sets the Logger Object
-     * Note that this is done by reference and stored within ZamzarClient if instantiated
-     */
-    public static function zamzarClientSetLogger(&$config, $logger)
-    {
-        if (array_key_exists("zamzar_client_logger", $config)) {
-            // Get the reference to the logger
-            $zamzarClientLogger = &$config["zamzar_client_logger"];
-            // Set the reference to the supplied logger
-            $zamzarClientLogger = $logger;
-        }
-    }
-
-    /**
-     * Gets the Logger from the supplied Config Array
-     * Note that this done by reference to the the ZamzarClient if instantiated
-     */
-    public static function zamzarClientGetLogger(&$config)
-    {
-        if (array_key_exists("zamzar_client_logger", $config)) {
-            $logger = &$config["zamzar_client_logger"];
-            return $logger;
-        }
-    }
-
     /**
      * Get the Default Config Array
      */
@@ -134,8 +101,8 @@ class Core
 
         // Log the environment, this should happen only once on the initialisation of the ZamzarClient
         if ($environment != '') {
-            Logger::log($config, "Zamzar Client Initialised");
-            Logger::log($config, "Environment=" . ucwords($environment) . ';ApiKey=' . $config['api_key']);
+            Logger::getLogger()->info('Zamzar Client Initialised');
+            Logger::getLogger()->info('Environment=' . ucwords($environment) . ';ApiKey=' . $config['api_key']);
         }
 
         // Store config array

@@ -47,9 +47,9 @@ class ApiResource
 
         $class = str_replace("Zamzar\\", "", static::class);
         if ($objectId == '') {
-            Logger::log($this->config, 'CreateObj=>' . $class . get_parent_class());
+            Logger::getLogger()->info('CreateObj=>' . $class . get_parent_class());
         } else {
-            Logger::log($this->config, 'CreateObj=>' . $class . '=>' . $objectId);
+            Logger::getLogger()->info('CreateObj=>' . $class . '=>' . $objectId);
         }
     }
 

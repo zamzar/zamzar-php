@@ -25,8 +25,7 @@ class ApiErrorException extends \Exception
         // Expected when extending \Exception
         parent::__construct($message, $code, $previous);
 
-        // Log the message
-        Logger::log($config, static::class . '. ' . $message, E_ERROR);
+        Logger::getLogger()->error(static::class . '. ' . $message);
 
         // Store the raw array of errors
         if (is_array($errors)) {
