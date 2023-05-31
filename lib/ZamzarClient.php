@@ -46,6 +46,7 @@ class ZamzarClient extends ApiResource
     }
 
     /**
+     * @deprecated Use \Zamzar\Zamzar::setLogger() instead.
      * @param Util\LoggerInterface $logger the logger to which the library
      *   will produce messages
      */
@@ -55,6 +56,7 @@ class ZamzarClient extends ApiResource
     }
 
     /**
+     * @deprecated Use \Zamzar\Zamzar::getLogger() instead.
      * @return Util\LoggerInterface the logger to which the library will
      *   produce messages
      */
