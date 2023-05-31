@@ -13,7 +13,7 @@ namespace Zamzar\Util;
  * The context array can contain arbitrary data, the only assumption that
  * can be made by implementors is that if an Exception instance is given
  * to produce a stack trace, it MUST be in a key named "exception".
- * 
+ *
  * /////This library does not make use of Context/////
  *
  * See https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md
@@ -21,7 +21,6 @@ namespace Zamzar\Util;
  */
 interface LoggerInterface
 {
-
     /**
      * Runtime errors that do not require immediate action but should typically
      * be logged and monitored.
@@ -42,5 +41,4 @@ interface LoggerInterface
      * @return void
      */
     public function info($message, array $context = array());
-
 }

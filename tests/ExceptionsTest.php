@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Zamzar;
 
@@ -6,13 +8,13 @@ use PHPUnit\Framework\TestCase;
 
 final class ExceptionsTest extends TestCase
 {
-
     use TestConfig;
 
-    public function AuthenticationException(): void
+    public function testAuthenticationException(): void
     {
         $this->expectException(\Zamzar\Exception\AuthenticationException::class);
         $zamzar = new \Zamzar\ZamzarClient('invalid');
+        $zamzar->testConnection();
     }
 
     public function testInvalidArgumentException(): void
@@ -51,7 +53,6 @@ final class ExceptionsTest extends TestCase
         ])->waitForCompletion([
             'timeout' => 0
         ]);
-
     }
 
     // public function testPayloadException(): void
@@ -81,11 +82,10 @@ final class ExceptionsTest extends TestCase
     //                  echo $e->getMessage();
     //              } catch (\Zamzar\Exception\ApiErrorException $e) {
     //                  echo $e->getMessage();
-    //          }  
+    //          }
     //          $x += 1;
     //      } while (
     //          $x < $max
     //      );
     // }
-
 }

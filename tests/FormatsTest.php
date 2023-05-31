@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Zamzar;
 
@@ -6,7 +8,6 @@ use PHPUnit\Framework\TestCase;
 
 final class FormatsTest extends TestCase
 {
-
     use TestConfig;
 
     public function testFormatsAreListable(): void
@@ -38,5 +39,4 @@ final class FormatsTest extends TestCase
         $format = $zamzar->formats->get($format);
         $this->assertGreaterThan(0, count($format->getTargets()));
     }
-
 }

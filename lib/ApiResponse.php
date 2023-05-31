@@ -2,17 +2,16 @@
 
 namespace Zamzar;
 
-use \Util\Logger;
+use Util\Logger;
 
 /**
  * ApiResponse Class
- * 
+ *
  * Stores Body, Code and Headers from HTTP requests
  * Helper functions are provided to help split the data & paging arrays which can be received in the body
  */
 class ApiResponse
 {
-
     /** Properties */
     private $body;
     private $code;
@@ -25,28 +24,30 @@ class ApiResponse
         $this->headers = $headers;
     }
 
-    public function getBody() 
+    public function getBody()
     {
         return $this->body;
     }
 
-    public function getBodyRaw() {
+    public function getBodyRaw()
+    {
         return json_encode($this->body);
     }
 
-    public function getCode() 
+    public function getCode()
     {
         return $this->code;
     }
 
-    public function getHeaders() {
+    public function getHeaders()
+    {
         return $this->headers;
     }
 
-    public function getData() 
+    public function getData()
     {
-        if(is_object($this->body)) {
-            if(property_exists($this->body, "data")) {
+        if (is_object($this->body)) {
+            if (property_exists($this->body, "data")) {
                 return $this->body->data;
             } else {
                 return null;
@@ -54,10 +55,10 @@ class ApiResponse
         }
     }
 
-    public function getPaging() 
+    public function getPaging()
     {
-        if(is_object($this->body)) {
-            if(property_exists($this->body, "paging")) {
+        if (is_object($this->body)) {
+            if (property_exists($this->body, "paging")) {
                 return $this->body->paging;
             } else {
                 return null;
@@ -66,22 +67,20 @@ class ApiResponse
     }
 
     public function getProductionCreditsRemaining()
-	{
-        if(array_key_exists("Zamzar-Credits-Remaining", $this->getHeaders())) {
+    {
+        if (array_key_exists("Zamzar-Credits-Remaining", $this->getHeaders())) {
             return $this->headers['Zamzar-Credits-Remaining'][0];
         } else {
             return -1;
         }
-	}
+    }
 
-	public function getTestCreditsRemaining()
-	{
-        if(array_key_exists("Zamzar-Test-Credits-Remaining", $this->getHeaders())) {
+    public function getTestCreditsRemaining()
+    {
+        if (array_key_exists("Zamzar-Test-Credits-Remaining", $this->getHeaders())) {
             return $this->headers['Zamzar-Test-Credits-Remaining'][0];
-        }
-        else {
+        } else {
             return -1;
         }
-	}
-
+    }
 }

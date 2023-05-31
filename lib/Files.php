@@ -1,6 +1,6 @@
 <?php
 
-Namespace Zamzar;
+namespace Zamzar;
 
 /**
  * Files Object
@@ -8,7 +8,6 @@ Namespace Zamzar;
 
 class Files extends ApiResource
 {
-
     /** Valid API Operations for this Class */
     use \Zamzar\ApiOperations\Paging;
     use \Zamzar\ApiOperations\All;
@@ -16,11 +15,10 @@ class Files extends ApiResource
     use \Zamzar\ApiOperations\Upload;
 
     /**
-	  * Inialises a new instance of the Files object
-	  */
-    public function __construct($config) 
+     * Inialises a new instance of the Files object
+     */
+    public function __construct($config)
     {
-      $this->apiInit($config);
+        $this->apiInit($config);
     }
-    
 }

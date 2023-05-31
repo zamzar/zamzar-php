@@ -7,5 +7,4 @@ namespace Zamzar\Exception;
  */
 class RateLimitException extends ApiErrorException
 {
-
 }

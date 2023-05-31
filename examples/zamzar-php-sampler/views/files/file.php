@@ -1,4 +1,5 @@
 <?php
+
 $config = include('../../config.php');
 
 // autoload

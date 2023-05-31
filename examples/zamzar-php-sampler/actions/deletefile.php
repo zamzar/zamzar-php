@@ -12,8 +12,7 @@ require_once($config['autoload']);
 $fileid = $_GET['fileid'];
 
 // only proceed if we have a file id
-if(!is_null($fileid)) {
-
+if (!is_null($fileid)) {
     // register a new zamzar client
     $zamzar = new \Zamzar\ZamzarClient($config['api-key']);
 
@@ -31,6 +30,4 @@ if(!is_null($fileid)) {
     // return status
     $data = ["status" => $status];
     echo json_encode($data);
-    
 }
-

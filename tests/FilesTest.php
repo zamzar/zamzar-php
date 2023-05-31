@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Zamzar;
 
@@ -6,7 +8,6 @@ use PHPUnit\Framework\TestCase;
 
 final class FilesTest extends TestCase
 {
-
     use TestConfig;
 
     public function testFilesAreListable(): void
@@ -35,7 +36,7 @@ final class FilesTest extends TestCase
         $files = $zamzar->files->all(['limit' => 1]);
         $fileid = $files->data[0]->getId();
         $file = $zamzar->files->get($fileid);
-        
+
         //retrieve the file via the 'get' method
         $this->assertGreaterThan(0, $file->getSize());
     }
@@ -84,7 +85,7 @@ final class FilesTest extends TestCase
 
         // get a valid conversion format for the file
         $format = $zamzar->formats->get(pathinfo($file->getName(), PATHINFO_EXTENSION));
-		$targetFormat = $format->getTargets()[0]->getName();
+        $targetFormat = $format->getTargets()[0]->getName();
 
         // convert the file
         $job = $file->convert([
@@ -96,5 +97,4 @@ final class FilesTest extends TestCase
         // check the file has been converted
         $this->assertGreaterThan(0, $job->getTargetFiles()[0]->getSize());
     }
-
 }

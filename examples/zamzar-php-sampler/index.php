@@ -16,4 +16,3 @@ require_once($config['autoload']);
 
 // show the home page
 require 'views/home/index.html';
-

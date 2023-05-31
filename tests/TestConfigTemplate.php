@@ -1,10 +1,9 @@
 <?php
 
-Namespace Zamzar;
+namespace Zamzar;
 
 // Rename to TestConfig.php on local machine and specify api key
-
-trait testConfig
+trait TestConfig
 {
     private $apiKey = '';
 }

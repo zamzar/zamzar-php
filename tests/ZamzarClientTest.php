@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Zamzar;
 
@@ -6,7 +8,6 @@ use PHPUnit\Framework\TestCase;
 
 final class ZamzarClientTest extends TestCase
 {
-
     public function testEmptyApiKey(): void
     {
         $this->expectException(\Zamzar\Exception\InvalidArgumentException::class);
@@ -69,5 +70,4 @@ final class ZamzarClientTest extends TestCase
         ]);
         $this->assertEquals($zamzar->getConfig()['api_base'], 'https://sandbox.zamzar.com');
     }
-
 }

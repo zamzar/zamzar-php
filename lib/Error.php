@@ -1,15 +1,14 @@
 <?php
 
-Namespace Zamzar;
+namespace Zamzar;
 
 /**
  * Error Class
- * 
+ *
  * Stores custom errors returned from the API
  */
 class Error
 {
-
     private $code;
     private $message;
     private $context = [];
@@ -17,29 +16,28 @@ class Error
     /**
      * Initialises a new instance of the Error object
      */
-    public function __construct ($data) 
-    {   
+    public function __construct($data)
+    {
         $this->setValues($data);
     }
 
     private function setValues($data)
     {
-
         // Should always be supplied
         $this->code = $data->code;
         $this->message = $data->message;
 
         // Optionally supplied
         if (property_exists($data, "context")) {
-            foreach($data->context as $context)
-            $this->context[] = $context;
+            foreach ($data->context as $context) {
+                $this->context[] = $context;
+            }
         }
-
     }
 
     /**
      * Get the value of code
-     */ 
+     */
     public function getCode()
     {
         return $this->code;
@@ -47,7 +45,7 @@ class Error
 
     /**
      * Get the value of message
-     */ 
+     */
     public function getMessage()
     {
         return $this->message;
@@ -55,7 +53,7 @@ class Error
 
     /**
      * Get the value of context
-     */ 
+     */
     public function getContext()
     {
         return $this->context;
@@ -68,5 +66,4 @@ class Error
     {
         return \count($this->context) == 0 ? false : true;
     }
-
 }

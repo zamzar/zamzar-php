@@ -3,7 +3,7 @@
 namespace Zamzar\Util;
 
 /**
- * A basic implementation of LoggerInterface 
+ * A basic implementation of LoggerInterface
  */
 class DefaultLogger implements LoggerInterface
 {
@@ -38,5 +38,4 @@ class DefaultLogger implements LoggerInterface
             \error_log($message, $this->messageType, $this->destination);
         }
     }
-
 }

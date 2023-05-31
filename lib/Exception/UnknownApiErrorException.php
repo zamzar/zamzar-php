@@ -7,5 +7,4 @@ namespace Zamzar\Exception;
  */
 class UnknownApiErrorException extends ApiErrorException
 {
-
 }
