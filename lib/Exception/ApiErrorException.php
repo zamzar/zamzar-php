@@ -2,7 +2,7 @@
 
 namespace Zamzar\Exception;
 
-use Zamzar\Util\Logger;
+use Zamzar\Zamzar;
 
 /**
  * ApiErrorException object which is thrown from the HTTPUtility class based on response codes
@@ -25,7 +25,7 @@ class ApiErrorException extends \Exception
         // Expected when extending \Exception
         parent::__construct($message, $code, $previous);
 
-        Logger::getLogger()->error(static::class . '. ' . $message);
+        Zamzar::getLogger()->error(static::class . '. ' . $message);
 
         // Store the raw array of errors
         if (is_array($errors)) {

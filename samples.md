@@ -51,17 +51,13 @@ $zamzar = new \Zamzar\ZamzarClient([
 The library does minimal logging of errors and information. Use either the supplied default logger or a psr-3 compatible logger.
 
 ```php
-// Default Zamzar Logger (output to the PHP error log)
-$logger = new \Zamzar\Util\DefaultLogger;
-$zamzar->setLogger($logger);
-
 // PSR-3 Compatible Logger
-$zamzar->setLogger($logger);
+\Zamzar\Zamzar::setLogger($logger);
 
 // Using Monolog to output to a custom log file
 $logger = new Logger('Zamzar');
 $logger->pushHandler(new StreamHandler(__DIR__.'/app.log', Logger::DEBUG));
-$zamzar->setLogger($logger);
+\Zamzar\Zamzar::setLogger($logger);
 ```
 
 ### Viewing the Config Array

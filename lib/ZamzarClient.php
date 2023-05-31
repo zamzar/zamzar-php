@@ -3,7 +3,6 @@
 namespace Zamzar;
 
 use Zamzar\Util\Core;
-use Zamzar\Util\Logger;
 
 /**
  *
@@ -52,7 +51,7 @@ class ZamzarClient extends ApiResource
      */
     public function setLogger($logger)
     {
-        Logger::setLogger($logger);
+        Zamzar::setLogger($logger);
     }
 
     /**
@@ -61,7 +60,7 @@ class ZamzarClient extends ApiResource
      */
     public function getLogger()
     {
-        return Logger::getLogger();
+        return Zamzar::getLogger();
     }
 
     /**

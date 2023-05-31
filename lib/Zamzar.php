@@ -1,17 +1,19 @@
 <?php
 
-namespace Zamzar\Util;
+namespace Zamzar;
 
-class Logger
+use Zamzar\Util\DefaultLogger;
+
+class Zamzar
 {
     /**
-     * @var null|LoggerInterface The logger to which the library will
+     * @var null|Util\LoggerInterface The logger to which the library will
      *   produce messages
      */
     protected static $logger = null;
 
     /**
-     * @return LoggerInterface the logger to which the library will
+     * @return Util\LoggerInterface the logger to which the library will
      *   produce messages
      */
     public static function getLogger()
@@ -20,7 +22,7 @@ class Logger
     }
 
     /**
-     * @param LoggerInterface $logger The logger to which the library
+     * @param Util\LoggerInterface $logger The logger to which the library
      *   will produce messages
      */
     public static function setLogger($logger)

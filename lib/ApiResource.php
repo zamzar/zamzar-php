@@ -3,7 +3,6 @@
 namespace Zamzar;
 
 use Zamzar\Util\Core;
-use Zamzar\Util\Logger;
 
 /**
  * ApiResource Class
@@ -47,9 +46,9 @@ class ApiResource
 
         $class = str_replace("Zamzar\\", "", static::class);
         if ($objectId == '') {
-            Logger::getLogger()->info('CreateObj=>' . $class . get_parent_class());
+            Zamzar::getLogger()->info('CreateObj=>' . $class . get_parent_class());
         } else {
-            Logger::getLogger()->info('CreateObj=>' . $class . '=>' . $objectId);
+            Zamzar::getLogger()->info('CreateObj=>' . $class . '=>' . $objectId);
         }
     }
 

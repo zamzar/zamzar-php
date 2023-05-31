@@ -2,6 +2,8 @@
 
 namespace Zamzar\Util;
 
+use Zamzar\Zamzar;
+
 /**
  * Core Class
  *
@@ -101,8 +103,8 @@ class Core
 
         // Log the environment, this should happen only once on the initialisation of the ZamzarClient
         if ($environment != '') {
-            Logger::getLogger()->info('Zamzar Client Initialised');
-            Logger::getLogger()->info('Environment=' . ucwords($environment) . ';ApiKey=' . $config['api_key']);
+            Zamzar::getLogger()->info('Zamzar Client Initialised');
+            Zamzar::getLogger()->info('Environment=' . ucwords($environment) . ';ApiKey=' . $config['api_key']);
         }
 
         // Store config array
