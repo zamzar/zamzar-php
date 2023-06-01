@@ -146,11 +146,16 @@ $job = $zamzar
 
 ## Configure a Logger
 
-The library does minimal logging of errors and information. Use either the supplied default logger or a psr-3 compatible logger.
+The library does minimal logging, if the `debug` config option is used. Use either the supplied default logger or a psr-3 compatible logger.
 
 ```php
+$client = new Zamzar\ZamzarClient([
+    'api_key' = '****',
+    'debug' => true,
+]);
+
 // PSR-3 Compatible Logger
-\Zamzar\Zamzar::setLogger($psr3logger);
+\Zamzar\Zamzar::setLogger($psr3Logger);
 
 // Using Monolog
 $logger = new Logger('Zamzar');
