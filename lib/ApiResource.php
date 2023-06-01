@@ -43,13 +43,6 @@ class ApiResource
         $this->setConfig($config);
 
         $this->setEndPoint($objectId);
-
-        $class = str_replace("Zamzar\\", "", static::class);
-        if ($objectId == '') {
-            Zamzar::getLogger()->info('CreateObj=>' . $class . get_parent_class());
-        } else {
-            Zamzar::getLogger()->info('CreateObj=>' . $class . '=>' . $objectId);
-        }
     }
 
     /**

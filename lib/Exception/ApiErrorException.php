@@ -25,9 +25,6 @@ class ApiErrorException extends \Exception
         // Expected when extending \Exception
         parent::__construct($message, $code, $previous);
 
-        Zamzar::getLogger()->error(static::class . '. ' . $message);
-
-        // Store the raw array of errors
         if (is_array($errors)) {
             $apiErrors = [];
             foreach ($errors as $error) {
