@@ -18,7 +18,7 @@ class Format extends ApiResource
      */
     public function __construct($config, $data)
     {
-        $this->apiInit($config, $data->name);
+        parent::__construct($config, $data->name);
         $this->setValues($data);
     }
 

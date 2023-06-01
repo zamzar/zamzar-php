@@ -81,30 +81,6 @@ class Core
     }
 
     /**
-     * Set the last response returned from api
-     * Note that this is done by reference and stored within ZamzarClient if instantiated
-     */
-    public static function zamzarClientSetLastResponse(&$config, $lastResponse)
-    {
-        if (array_key_exists("zamzar_client_last_response", $config)) {
-            $zamzarClientLastResponse = &$config['zamzar_client_last_response'];
-            $zamzarClientLastResponse = $lastResponse;
-        }
-    }
-
-    /**
-     * Get the last response returned from api
-     * Note that this done by reference to the the ZamzarClient if instantiated
-     */
-    public static function zamzarClientGetLastResponse(&$config)
-    {
-        if (array_key_exists("zamzar_client_last_response", $config)) {
-            $lastResponse = &$config['zamzar_client_last_response'];
-            return $lastResponse;
-        }
-    }
-
-    /**
      * Get the Default Config Array
      */
     private static function getDefaultConfig()

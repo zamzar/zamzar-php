@@ -17,14 +17,6 @@ class Account extends ApiResource
     private $plan;
 
     /**
-     * Inialises a new instance of the Account object
-     */
-    public function __construct($config)
-    {
-        $this->apiInit($config);
-    }
-
-    /**
      * Retrieve the account & plan information
      */
     public function get()

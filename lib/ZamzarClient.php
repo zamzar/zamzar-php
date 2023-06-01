@@ -37,28 +37,13 @@ class ZamzarClient extends ApiResource
     private $jobs;
 
     /**
-     * Reference Pointers
-     * Read/Write from Util/Core and Util/Logger only, do not implement any direct access to these variables.
-     */
-    private $zamzarClientLastResponse;
-
-    /**
      * Initialises a new instance of the Zamzar class
      */
     public function __construct($config)
     {
-        // Convert to an array if a string is provided
-        if (\is_string($config)) {
-            $config = [
-                'api_key' => $config,
-            ];
-        }
+        parent::__construct($config);
 
-        // Set Reference Pointer to Last Response
-        $config['zamzar_client_last_response'] = &$this->zamzarClientLastResponse;
-
-        // Initialise
-        $this->apiInit($config);
+        $this->config['client'] = $this;
     }
 
     /**
@@ -87,23 +72,6 @@ class ZamzarClient extends ApiResource
         $apiResponse = $this->apiRequest($this->getEndpoint());
         $data = $apiResponse->getBody();
         return $data->message;
-    }
-
-    /**
-     * HasLastResponse
-     */
-    public function hasLastResponse()
-    {
-        return !is_null($this->getLastResponse());
-    }
-
-    /**
-     * GetLastResponse (overrides inherited version)
-     */
-    public function getLastResponse()
-    {
-        $config = $this->getConfig();
-        return core::zamzarClientGetLastResponse($config);
     }
 
     /**

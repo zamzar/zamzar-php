@@ -39,15 +39,12 @@ class ApiResource
      * Should be called from an object's constructor
      * $config will contain an apikey or a config array and optionally an objectid (a job id, a file id, a format name etc)
      */
-    protected function apiInit($config, $objectId = '')
+    public function __construct($config, $objectId = '')
     {
-        // Check/Set Config Array
         $this->setConfig($config);
 
-        // Set Endpoint for this object
         $this->setEndPoint($objectId);
 
-        // Log this class and object id
         $class = str_replace("Zamzar\\", "", static::class);
         if ($objectId == '') {
             Logger::log($this->config, 'CreateObj=>' . $class . get_parent_class());
@@ -68,8 +65,9 @@ class ApiResource
         // Make the request and save the last response
         $this->lastResponse = $apiRequestor->request($endpoint, $method, $params, $getFileContent, $filename);
 
-        // Store the last response in the ZamzarClient (use $this->config instead of $this->getConfig() because we are passing values by reference)
-        core::zamzarClientSetLastResponse($this->config, $this->lastResponse);
+        if (isset($this->config['client'])) {
+            ($this->config['client'])->setLastResponse($this->lastResponse);
+        }
 
         // Store the paging information
         $this->paging = $this->lastResponse->getPaging();
@@ -134,6 +132,16 @@ class ApiResource
     public function getLastResponse()
     {
         return $this->lastResponse;
+    }
+
+    public function hasLastResponse()
+    {
+        return !is_null($this->getLastResponse());
+    }
+
+    protected function setLastResponse($response)
+    {
+        $this->lastResponse = $response;
     }
 
     /**
