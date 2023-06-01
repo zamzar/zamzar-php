@@ -60,6 +60,7 @@ class Core
             'api_version' => self::API_VERSION,
             'user_agent' => self::USER_AGENT,
             'http_debug' => false,
+            'debug' => false,
         ];
     }
 
@@ -116,9 +117,6 @@ class Core
      */
     private static function validateConfig($config)
     {
-        $msg = null;
-
-        // api_key
         if (!\is_string($config['api_key']) || is_null($config['api_key'])) {
             $msg = 'api_key must be a string with a valid api key';
             throw new \Zamzar\Exception\InvalidArgumentException($msg);
@@ -134,21 +132,23 @@ class Core
             throw new \Zamzar\Exception\InvalidArgumentException($msg);
         }
 
-        // api_base
         if (!strcmp($config['api_base'], self::ZAMZAR_API_PRODUCTION_BASE) == 0 && !strcmp($config['api_base'], self::ZAMZAR_API_SANDBOX_BASE) == 0) {
             $msg = 'api_base must be ' . self::ZAMZAR_API_PRODUCTION_BASE . ' or ' . self::ZAMZAR_API_SANDBOX_BASE;
             throw new \Zamzar\Exception\InvalidArgumentException($msg);
         }
 
-        // api_version
         if (strcmp($config['api_version'], self::API_VERSION) != 0) {
             $msg = 'api_version must be ' . self::API_VERSION;
             throw new \Zamzar\Exception\InvalidArgumentException($msg);
         }
 
-        // user_agent
         if (strcmp($config['user_agent'], self::USER_AGENT) != 0) {
             $msg = 'user_agent must be ' . self::USER_AGENT;
+            throw new \Zamzar\Exception\InvalidArgumentException($msg);
+        }
+
+        if (!is_bool($config['debug'])) {
+            $msg = 'debug must be a boolean';
             throw new \Zamzar\Exception\InvalidArgumentException($msg);
         }
     }
