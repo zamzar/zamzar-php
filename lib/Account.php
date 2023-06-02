@@ -43,26 +43,41 @@ class Account extends ApiResource
     }
 
     /**
-     * Return the Test Credits Remaining
+     * Return the remaining test credits. This value may be out of date;
+     * consider calling `refresh()` to ensure it's up-to-date.
      */
     public function getTestCreditsRemaining()
     {
+        if (is_null($this->test_credits_remaining)) {
+            $this->get();
+        }
+
         return $this->test_credits_remaining;
     }
 
     /**
-     * Return the Production Credits Remaining
+     * Return the remaining production credits. This value may be out of date;
+     * consider calling `refresh()` to ensure it's up-to-date.
      */
     public function getProductionCreditsRemaining()
     {
+        if (is_null($this->production_credits_remaining)) {
+            $this->get();
+        }
+
         return $this->production_credits_remaining;
     }
 
     /**
-     * Return the Plan
+     * Return information about your plan. This data may be out of date;
+     * consider calling `refresh()` to ensure it's up-to-date.
      */
     public function getPlan()
     {
+        if (is_null($this->plan)) {
+            $this->get();
+        }
+
         return $this->plan;
     }
 }

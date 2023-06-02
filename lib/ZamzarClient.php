@@ -76,19 +76,43 @@ class ZamzarClient extends ApiResource
     }
 
     /**
-     * Get Production Credits Remaining
+     * Get the current amount of production credits remaining from the API
      */
     public function getProductionCreditsRemaining()
     {
-        return $this->getLastResponse()->getProductionCreditsRemaining();
+        return $this->account->get()->getProductionCreditsRemaining();
     }
 
     /**
-     * Get Test Credits Remaining
+     * Get the current amount of test credits remaining from the API
      */
     public function getTestCreditsRemaining()
     {
-        return $this->getLastResponse()->getTestCreditsRemaining();
+        return $this->account->get()->getTestCreditsRemaining();
+    }
+
+    /**
+     * Get the production credits remaining at the time of the last API call.
+     * This may be out of date; consider using `getProductionCreditsRemaining()`
+     * for an up-to-date value.
+     */
+    public function getLastProductionCreditsRemaining()
+    {
+        return $this->hasLastResponse()
+            ? $this->getLastResponse()->getProductionCreditsRemaining()
+            : $this->getProductionCreditsRemaining();
+    }
+
+    /**
+     * Get the test credits remaining at the time of the last API call.
+     * This may be out of date; consider using `getTestCreditsRemaining()`
+     * for an up-to-date value.
+     */
+    public function getLastTestCreditsRemaining()
+    {
+        return $this->hasLastResponse()
+            ? $this->getLastResponse()->getTestCreditsRemaining()
+            : $this->getTestCreditsRemaining();
     }
 
     /**

@@ -20,7 +20,6 @@ Jump to:
 
 [End-to-End Job Conversion With Exceptions Handling](#End-to-End-Job-Conversion-With-Exceptions-Handling)
 
-
 [Per-Object instantiation](#Per-Object-Instantiation)
 
 [Object Endpoints](#Object-Endpoints)
@@ -73,15 +72,6 @@ When the ZamzarClient is created, a config array is created which is used during
 var_dump($zamzar->getConfig());
 ```
 
-### Viewing the Production and Test Credits Remaining
-
-The credits remaining are returned in the headers of every call to the API and made available through the ZamzarClient.
-
-```php
-echo $zamzar->getProductionCreditsRemaining();
-echo $zamzar->getTestCreditsRemaining();
-```
-
 ### Viewing the Last Response from the API
 
 Viewing the last response from the API can be useful for troubleshooting purposes if the raw responses from the API need to be viewed.
@@ -90,6 +80,25 @@ Viewing the last response from the API can be useful for troubleshooting purpose
 if($zamzar->hasLastResponse()) {
     var_dump($zamzar->getLastResponse());
 }
+```
+
+### Viewing the Production and Test Credits Remaining
+
+The credits remaining are returned in the headers of every call to the API. To retrieve the credits that were available at the time of the last request, either directly access the last response, or call the helper methods on the client:
+
+```php
+$zamzar->getLastResponse()->getProductionCreditsRemaining();
+$zamzar->getLastResponse()->getTestCreditsRemaining();
+
+$zamzar->getLastProductionCreditsRemaining();
+$zamzar->getLastTestCreditsRemaining();
+```
+
+To make a new API call and return the current credits remaining:
+
+```php
+$zamzar->getProductionCreditsRemaining();
+$zamzar->getTestCreditsRemaining();
 ```
 
 ## Account
