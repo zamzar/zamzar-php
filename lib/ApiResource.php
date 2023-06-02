@@ -217,19 +217,4 @@ class ApiResource
     {
         return Zamzar::API_BASE[$this->config['environment']];
     }
-
-    /**
-     * Get a fully formed endpoint given the class name
-     */
-    public function getFullyFormedEndPointFromClassName($className, $objectId = '', $addFileContentEndpoint = false)
-    {
-        $endpoint = $this->getApiBaseUrl() . '/' . $this->config['api_version'] . '/' . Zamzar::CLASS_ENDPOINT_MAP[$className];
-        if ($objectId != '') {
-            $endpoint = $endpoint . '/' . $objectId;
-        }
-        if ($addFileContentEndpoint) {
-            $endpoint = $endpoint . '/' . Zamzar::FILE_CONTENT_ENDPOINT;
-        }
-        return $endpoint;
-    }
 }

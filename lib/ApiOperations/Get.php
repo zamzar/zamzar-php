@@ -30,18 +30,13 @@ trait Get
 
         // If params is an array, extract the id
         if (is_array($params)) {
-            $objectId = $params['id'];
+            $endpoint = $this->getEndpoint() . '/' . $params['id'];
         } else {
-            $objectId = $params;
+            $endpoint = $this->getEndpoint() . '/' . $params;
         }
 
-        // Get a full endpoint based on Config, Class Name and Object Id
-        $endpoint = $this->getFullyFormedEndPointFromClassName($className, $objectId);
-
-        // Make the api request and return a response
         $apiResponse = $this->apiRequest($endpoint);
 
-        // Request the data for the specified object id
         $data = $apiResponse->getBody();
 
         // Return a new initialised object of the appropriate type
