@@ -2,9 +2,7 @@
 
 namespace Zamzar;
 
-use Zamzar\Exception;
 use Zamzar\HttpClient\GuzzleClient;
-use Zamzar\Util\Logger;
 
 /**
  * ApiRequestor Class
@@ -39,10 +37,10 @@ class ApiRequestor
      */
     public function request($endpoint, $method = 'GET', $params = [], $getFileContent = false, $filename = '')
     {
-        // Capture some log information in the ZamzarClient
-        Logger::log($this->config, '(' . $method . ') ' . $endpoint . ' params=' . json_encode($params));
+        if ($this->config['debug']) {
+            Zamzar::getLogger()->info("($method) $endpoint params=" . json_encode($params));
+        }
 
-        // Store local values
         $this->endpoint = $endpoint;
         $this->method = $method;
         $this->params = $params;

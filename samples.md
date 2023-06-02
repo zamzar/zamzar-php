@@ -48,20 +48,21 @@ $zamzar = new \Zamzar\ZamzarClient([
 
 ### Configuring a Logger
 
-The library does minimal logging of errors and information. Use either the supplied default logger or a psr-3 compatible logger.
+The library does minimal logging, if the `debug` config option is used. Use either the supplied default logger or a psr-3 compatible logger.
 
 ```php
-// Default Zamzar Logger (output to the PHP error log)
-$logger = new \Zamzar\Util\DefaultLogger;
-$zamzar->setLogger($logger);
+$client = new Zamzar\ZamzarClient([
+    'api_key' = '****',
+    'debug' => true,
+]);
 
 // PSR-3 Compatible Logger
-$zamzar->setLogger($logger);
+\Zamzar\Zamzar::setLogger($psr3Logger);
 
 // Using Monolog to output to a custom log file
 $logger = new Logger('Zamzar');
 $logger->pushHandler(new StreamHandler(__DIR__.'/app.log', Logger::DEBUG));
-$zamzar->setLogger($logger);
+\Zamzar\Zamzar::setLogger($logger);
 ```
 
 ### Viewing the Config Array

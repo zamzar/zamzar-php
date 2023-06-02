@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Zamzar;
+namespace Tests;
 
 use PHPUnit\Framework\TestCase;
 

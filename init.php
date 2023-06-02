@@ -4,7 +4,7 @@
 require __DIR__ . '/lib/Util/Core.php';
 require __DIR__ . '/lib/Util/LoggerInterface.php';
 require __DIR__ . '/lib/Util/DefaultLogger.php';
-require __DIR__ . '/lib/Util/Logger.php';
+require __DIR__ . '/lib/Zamzar.php';
 
 // HTTPClient
 require __DIR__ . '/lib/HttpClient/GuzzleClient.php';

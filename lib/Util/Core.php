@@ -47,39 +47,6 @@ class Core
         'Zamzar\Job' => self::JOBS_ENDPOINT,
     ];
 
-
-    /**
-     * The Last Response from any call to the API is stored in the ZamzarClient object
-     * A config array is passed into this function from which a reference to the lastresponse variable is obtained
-     * Only update if it's already set, i.e. if per object instantiation is done, the lastresponse won't be available (because the ZamzarClient is not instantiated if using per-object instantiation)
-     */
-
-    /**
-     * Sets the Logger Object
-     * Note that this is done by reference and stored within ZamzarClient if instantiated
-     */
-    public static function zamzarClientSetLogger(&$config, $logger)
-    {
-        if (array_key_exists("zamzar_client_logger", $config)) {
-            // Get the reference to the logger
-            $zamzarClientLogger = &$config["zamzar_client_logger"];
-            // Set the reference to the supplied logger
-            $zamzarClientLogger = $logger;
-        }
-    }
-
-    /**
-     * Gets the Logger from the supplied Config Array
-     * Note that this done by reference to the the ZamzarClient if instantiated
-     */
-    public static function zamzarClientGetLogger(&$config)
-    {
-        if (array_key_exists("zamzar_client_logger", $config)) {
-            $logger = &$config["zamzar_client_logger"];
-            return $logger;
-        }
-    }
-
     /**
      * Get the Default Config Array
      */
@@ -91,6 +58,7 @@ class Core
             'api_version' => self::API_VERSION,
             'user_agent' => self::USER_AGENT,
             'http_debug' => false,
+            'debug' => false,
         ];
     }
 
@@ -132,12 +100,6 @@ class Core
         // Validate the config array and throw exceptions if there are any issues
         self::validateConfig($config);
 
-        // Log the environment, this should happen only once on the initialisation of the ZamzarClient
-        if ($environment != '') {
-            Logger::log($config, "Zamzar Client Initialised");
-            Logger::log($config, "Environment=" . ucwords($environment) . ';ApiKey=' . $config['api_key']);
-        }
-
         // Store config array
         return $config;
     }
@@ -147,9 +109,6 @@ class Core
      */
     private static function validateConfig($config)
     {
-        $msg = null;
-
-        // api_key
         if (!\is_string($config['api_key']) || is_null($config['api_key'])) {
             $msg = 'api_key must be a string with a valid api key';
             throw new \Zamzar\Exception\InvalidArgumentException($msg);
@@ -165,21 +124,23 @@ class Core
             throw new \Zamzar\Exception\InvalidArgumentException($msg);
         }
 
-        // api_base
         if (!strcmp($config['api_base'], self::ZAMZAR_API_PRODUCTION_BASE) == 0 && !strcmp($config['api_base'], self::ZAMZAR_API_SANDBOX_BASE) == 0) {
             $msg = 'api_base must be ' . self::ZAMZAR_API_PRODUCTION_BASE . ' or ' . self::ZAMZAR_API_SANDBOX_BASE;
             throw new \Zamzar\Exception\InvalidArgumentException($msg);
         }
 
-        // api_version
         if (strcmp($config['api_version'], self::API_VERSION) != 0) {
             $msg = 'api_version must be ' . self::API_VERSION;
             throw new \Zamzar\Exception\InvalidArgumentException($msg);
         }
 
-        // user_agent
         if (strcmp($config['user_agent'], self::USER_AGENT) != 0) {
             $msg = 'user_agent must be ' . self::USER_AGENT;
+            throw new \Zamzar\Exception\InvalidArgumentException($msg);
+        }
+
+        if (!is_bool($config['debug'])) {
+            $msg = 'debug must be a boolean';
             throw new \Zamzar\Exception\InvalidArgumentException($msg);
         }
     }

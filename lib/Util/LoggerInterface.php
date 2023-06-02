@@ -29,7 +29,7 @@ interface LoggerInterface
      * @param array $context
      * @return void
      */
-    public function error($message, array $context = array());
+    public function error($message, array $context = []);
 
     /**
      * Interesting events.
@@ -40,5 +40,5 @@ interface LoggerInterface
      * @param array $context
      * @return void
      */
-    public function info($message, array $context = array());
+    public function info($message, array $context = []);
 }

@@ -2,8 +2,6 @@
 
 namespace Zamzar;
 
-use Util\Logger;
-
 /**
  * ApiResponse Class
  *

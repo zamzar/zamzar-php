@@ -3,7 +3,6 @@
 namespace Zamzar;
 
 use Zamzar\Util\Core;
-use Zamzar\Util\Logger;
 
 /**
  * ApiResource Class
@@ -44,13 +43,6 @@ class ApiResource
         $this->setConfig($config);
 
         $this->setEndPoint($objectId);
-
-        $class = str_replace("Zamzar\\", "", static::class);
-        if ($objectId == '') {
-            Logger::log($this->config, 'CreateObj=>' . $class . get_parent_class());
-        } else {
-            Logger::log($this->config, 'CreateObj=>' . $class . '=>' . $objectId);
-        }
     }
 
     /**

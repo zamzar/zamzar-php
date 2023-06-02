@@ -3,7 +3,6 @@
 namespace Zamzar;
 
 use Zamzar\Util\Core;
-use Zamzar\Util\Logger;
 
 /**
  *
@@ -47,21 +46,23 @@ class ZamzarClient extends ApiResource
     }
 
     /**
-     * Setting the logs stores a reference to the logger which is written to in /Util/Logger/Logger using Logger::Log
+     * @deprecated Use \Zamzar\Zamzar::setLogger() instead.
+     * @param Util\LoggerInterface $logger the logger to which the library
+     *   will produce messages
      */
-    public function setLogger(&$logger)
+    public function setLogger($logger)
     {
-        // set the logger within the config array as a reference to the supplied logger
-        $this->config['zamzar_client_logger'] = &$logger;
-        core::zamzarClientSetLogger($this->config, $logger);
+        Zamzar::setLogger($logger);
     }
 
     /**
-     * Get the Logger
+     * @deprecated Use \Zamzar\Zamzar::getLogger() instead.
+     * @return Util\LoggerInterface the logger to which the library will
+     *   produce messages
      */
     public function getLogger()
     {
-        return core::zamzarClientGetLogger($this->config);
+        return Zamzar::getLogger();
     }
 
     /**
