@@ -2,8 +2,6 @@
 
 namespace Zamzar;
 
-use Zamzar\Util\Core;
-
 /**
  * ApiResource Class
  *
@@ -11,9 +9,14 @@ use Zamzar\Util\Core;
  */
 class ApiResource
 {
-    /**
-     * Properties
-     */
+    protected const DEFAULT_CONFIG = [
+        'api_key' => null,
+        'environment' => 'production',
+        'api_version' => Zamzar::API_VERSION,
+        'user_agent' => Zamzar::USER_AGENT,
+        'http_debug' => false,
+        'debug' => false,
+    ];
 
     // config is protected because it is accessed directly from subclasses
     protected $config;
@@ -40,7 +43,17 @@ class ApiResource
      */
     public function __construct($config, $objectId = '')
     {
-        $this->setConfig($config);
+        if (is_string($config)) {
+            $config = ['api_key' => $config];
+        } elseif (!is_array($config)) {
+            throw new \Zamzar\Exception\InvalidArgumentException('$config must be a string containing an api key or an array');
+        }
+
+        $config = array_merge(self::DEFAULT_CONFIG, $config);
+
+        $this->validateConfig($config);
+
+        $this->config = $config;
 
         $this->setEndPoint($objectId);
     }
@@ -68,12 +81,42 @@ class ApiResource
         return $this->lastResponse;
     }
 
-    /**
-     * Initialise the config array given a string or an array
-     */
-    protected function setConfig($config)
+    protected function validateConfig($config)
     {
-        $this->config = core::setConfig($config);
+        if (!\is_string($config['api_key']) || is_null($config['api_key'])) {
+            $msg = 'api_key must be a string with a valid api key';
+            throw new \Zamzar\Exception\InvalidArgumentException($msg);
+        }
+
+        if ($config['api_key'] === '') {
+            $msg = 'api_key cannot be an empty string';
+            throw new \Zamzar\Exception\InvalidArgumentException($msg);
+        }
+
+        if (\preg_match('/\s/', $config['api_key'])) {
+            $msg = 'api_key cannot contain whitespace';
+            throw new \Zamzar\Exception\InvalidArgumentException($msg);
+        }
+
+        if (strcmp($config['environment'], 'production') !== 0 && strcmp($config['environment'], 'sandbox') !== 0) {
+            $msg = "environment must be 'production' or 'sandbox'";
+            throw new \Zamzar\Exception\InvalidArgumentException($msg);
+        }
+
+        if (strcmp($config['api_version'], Zamzar::API_VERSION) != 0) {
+            $msg = 'api_version must be ' . Zamzar::API_VERSION;
+            throw new \Zamzar\Exception\InvalidArgumentException($msg);
+        }
+
+        if (strcmp($config['user_agent'], Zamzar::USER_AGENT) != 0) {
+            $msg = 'user_agent must be ' . Zamzar::USER_AGENT;
+            throw new \Zamzar\Exception\InvalidArgumentException($msg);
+        }
+
+        if (!is_bool($config['debug'])) {
+            $msg = 'debug must be a boolean';
+            throw new \Zamzar\Exception\InvalidArgumentException($msg);
+        }
     }
 
     /**
@@ -89,8 +132,8 @@ class ApiResource
      */
     private function setEndPoint($objectId = '')
     {
-        $this->endpoint = $this->config['api_base'] . '/' . $this->config['api_version'] . '/';
-        $this->endpoint = $this->endpoint . core::getEndPointFromClassName(static::class);
+        $this->endpoint = $this->getApiBaseUrl() . '/' . $this->config['api_version'] . '/';
+        $this->endpoint = $this->endpoint . Zamzar::CLASS_ENDPOINT_MAP[static::class];
         if ($objectId !== '') {
             $this->endpoint = $this->endpoint . '/' . $objectId;
         }
@@ -112,7 +155,7 @@ class ApiResource
     public function getEndPoint($addFileContentEndpoint = false)
     {
         if ($addFileContentEndpoint) {
-            return $this->endpoint . '/' . core::FILE_CONTENT_ENDPOINT;
+            return $this->endpoint . '/' . Zamzar::FILE_CONTENT_ENDPOINT;
         } else {
             return $this->endpoint;
         }
@@ -168,5 +211,25 @@ class ApiResource
     protected function addData($item)
     {
         $this->data[] = $item;
+    }
+
+    public function getApiBaseUrl()
+    {
+        return Zamzar::API_BASE[$this->config['environment']];
+    }
+
+    /**
+     * Get a fully formed endpoint given the class name
+     */
+    public function getFullyFormedEndPointFromClassName($className, $objectId = '', $addFileContentEndpoint = false)
+    {
+        $endpoint = $this->getApiBaseUrl() . '/' . $this->config['api_version'] . '/' . Zamzar::CLASS_ENDPOINT_MAP[$className];
+        if ($objectId != '') {
+            $endpoint = $endpoint . '/' . $objectId;
+        }
+        if ($addFileContentEndpoint) {
+            $endpoint = $endpoint . '/' . Zamzar::FILE_CONTENT_ENDPOINT;
+        }
+        return $endpoint;
     }
 }

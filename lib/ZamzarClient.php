@@ -2,8 +2,6 @@
 
 namespace Zamzar;
 
-use Zamzar\Util\Core;
-
 /**
  *
  * The ZamzarClient is a simpler wrapper around collection classes from which all high level endpoints are exposed:
