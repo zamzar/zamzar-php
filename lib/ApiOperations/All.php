@@ -33,7 +33,7 @@ trait All
     public function all($requestOptions = null)
     {
         // Get the standard format endpoint and modify with Request Options if supplied
-        $endpoint = $this->getEndPoint();
+        $endpoint = $this->getEndpoint();
 
         // Capture the request options
         $this->requestOptions = $requestOptions;

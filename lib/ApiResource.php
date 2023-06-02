@@ -152,7 +152,7 @@ class ApiResource
      * Get the endpoint for this object
      * Public to assist with any debugging of issues
      */
-    public function getEndPoint($addFileContentEndpoint = false)
+    public function getEndpoint($addFileContentEndpoint = false)
     {
         if ($addFileContentEndpoint) {
             return $this->endpoint . '/' . Zamzar::FILE_CONTENT_ENDPOINT;

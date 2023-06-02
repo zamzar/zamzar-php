@@ -26,7 +26,7 @@ trait Paging
     private function pageNav($direction)
     {
         // Get the base endpoint for jobs which may also include a filter on job status from the previous call
-        $endpoint = $this->getEndPoint();
+        $endpoint = $this->getEndpoint();
 
         // Paging data will be stored in the last response
         if ($direction == 'forward') {
