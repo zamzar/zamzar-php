@@ -60,12 +60,12 @@ Returns the config array being used to submit the request, which may be useful f
 $error->getConfig();
 ```
 
-## -> <code>getEndPoint()</code>
+## -> <code>getEndpoint()</code>
 
 Returns the endpoint which was being accessed, which may be useful for troubleshooting purposes.
 
 ```php
-$error->getEndPoint();
+$error->getEndpoint();
 ```
 
 ## AuthenticationException (<code>401</code>)

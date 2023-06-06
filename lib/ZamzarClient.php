@@ -2,8 +2,6 @@
 
 namespace Zamzar;
 
-use Zamzar\Util\Core;
-
 /**
  *
  * The ZamzarClient is a simpler wrapper around collection classes from which all high level endpoints are exposed:
@@ -25,15 +23,29 @@ use Zamzar\Util\Core;
  *
  *         // Test the Connection
  *         echo $zamzar->testConnection();
+ *
+ * @method \Zamzar\Account account()
+ * @method \Zamzar\Files files()
+ * @method \Zamzar\Formats formats()
+ * @method \Zamzar\Imports imports()
+ * @method \Zamzar\Jobs jobs()
+ * @property \Zamzar\Account $account
+ * @property \Zamzar\Files $files
+ * @property \Zamzar\Formats $formats
+ * @property \Zamzar\Imports $imports
+ * @property \Zamzar\Jobs $jobs
  */
 class ZamzarClient extends ApiResource
 {
-    /** Collection objects representing the main endpoints */
-    private $account;
-    private $files;
-    private $formats;
-    private $imports;
-    private $jobs;
+    private static $classMap = [
+        'account' => Account::class,
+        'files' => Files::class,
+        'formats' => Formats::class,
+        'imports' => Imports::class,
+        'jobs' => Jobs::class,
+    ];
+
+    private $services = [];
 
     /**
      * Initialises a new instance of the Zamzar class
@@ -115,79 +127,24 @@ class ZamzarClient extends ApiResource
             : $this->getTestCreditsRemaining();
     }
 
-    /**
-     * Overloaded operator to allow objects to be referenced without parentheses
-     * Objects are also instantiated dynamically when needed
-     * If the user adds parentheses, this is also catered for below
-     */
-    public function __get($key)
+    private function getServiceClass($key)
     {
-        if (in_array($key, ["account", "files", "formats", "imports", "jobs"])) {
-            $nsObject = '\\Zamzar\\' . ucwords($key);
-            if (!isset($this->$key)) {
-                $this->$key = new $nsObject($this->getConfig());
+        return self::$classMap[$key] ?? null;
+    }
+
+    public function __get($name)
+    {
+        if (($serviceClass = $this->getServiceClass($name)) !== null) {
+            if (!array_key_exists($name, $this->services)) {
+                $this->services[$name] = new $serviceClass($this->config);
             }
-            return $this->$key;
+
+            return $this->services[$name];
         }
     }
 
-    /**
-     * Instantiate and use the Account object
-     * e.g. $zamzar->account()
-     */
-    public function account()
+    public function __call($name, $arguments)
     {
-        if (!isset($this->account)) {
-            $this->account = new \Zamzar\Account($this->getConfig());
-        }
-        return $this->account;
-    }
-
-    /**
-     * Instantiate and use the Files object
-     * e.g. $zamzar->files()
-     */
-    public function files()
-    {
-        if (!isset($this->files)) {
-            $this->files = new \Zamzar\Files($this->getConfig());
-        }
-        return $this->files;
-    }
-
-    /**
-     * Instantiate and use the Formats object
-     * e.g. $zamzar->formats()
-     */
-    public function formats()
-    {
-        if (!isset($this->formats)) {
-            $this->formats = new \Zamzar\Formats($this->getConfig());
-        }
-        return $this->formats;
-    }
-
-    /**
-     * Instantiate and use the Imports object
-     * e.g. $zamzar->imports()
-     */
-    public function imports()
-    {
-        if (!isset($this->imports)) {
-            $this->imports = new \Zamzar\Imports($this->getConfig());
-        }
-        return $this->imports;
-    }
-
-    /**
-     * Instantiate and use the Jobs object
-     * e.g. $zamzar->jobs()
-     */
-    public function jobs()
-    {
-        if (!isset($this->jobs)) {
-            $this->jobs = new \Zamzar\Jobs($this->getConfig());
-        }
-        return $this->jobs;
+        return $this->__get($name);
     }
 }

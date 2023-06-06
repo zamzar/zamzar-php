@@ -1,7 +1,6 @@
 <?php
 
 // Utilities
-require __DIR__ . '/lib/Util/Core.php';
 require __DIR__ . '/lib/Util/LoggerInterface.php';
 require __DIR__ . '/lib/Util/DefaultLogger.php';
 require __DIR__ . '/lib/Zamzar.php';

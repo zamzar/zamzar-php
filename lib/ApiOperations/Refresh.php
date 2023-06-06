@@ -20,7 +20,7 @@ trait Refresh
     public function refresh()
     {
         // Make the api request and return a response
-        $apiResponse = $this->apiRequest($this->getEndPoint());
+        $apiResponse = $this->apiRequest($this->getEndpoint());
 
         // Get the Data
         $data = $apiResponse->getBody();

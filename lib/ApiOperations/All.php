@@ -2,7 +2,7 @@
 
 namespace Zamzar\ApiOperations;
 
-use Zamzar\Util\Core;
+use Zamzar\Zamzar;
 
 /**
  * All Trait
@@ -33,7 +33,7 @@ trait All
     public function all($requestOptions = null)
     {
         // Get the standard format endpoint and modify with Request Options if supplied
-        $endpoint = $this->getEndPoint();
+        $endpoint = $this->getEndpoint();
 
         // Capture the request options
         $this->requestOptions = $requestOptions;
@@ -66,7 +66,7 @@ trait All
         // Convert to a array of specific objects
         $this->resetData();
         foreach ($data as $object) {
-            $objectType = core::getSingularClassNameFromCollectionClassName(static::class);
+            $objectType = Zamzar::COLLECTION_CLASS_MAP[static::class];
             $this->addData(new $objectType($this->getConfig(), $object));
         }
 

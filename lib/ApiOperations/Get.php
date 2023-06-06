@@ -2,7 +2,7 @@
 
 namespace Zamzar\ApiOperations;
 
-use Zamzar\Util\Core;
+use Zamzar\Zamzar;
 
 /**
  * Get Trait
@@ -26,22 +26,17 @@ trait Get
     public function get($params)
     {
         // This Get method will have been called on the collection class, get the singular class name
-        $className = core::getSingularClassNameFromCollectionClassName(static::class);
+        $className = Zamzar::COLLECTION_CLASS_MAP[static::class];
 
         // If params is an array, extract the id
         if (is_array($params)) {
-            $objectId = $params['id'];
+            $endpoint = $this->getEndpoint() . '/' . $params['id'];
         } else {
-            $objectId = $params;
+            $endpoint = $this->getEndpoint() . '/' . $params;
         }
 
-        // Get a full endpoint based on Config, Class Name and Object Id
-        $endpoint = core::getFullyFormedEndPointFromClassName($this->getConfig(), $className, $objectId);
-
-        // Make the api request and return a response
         $apiResponse = $this->apiRequest($endpoint);
 
-        // Request the data for the specified object id
         $data = $apiResponse->getBody();
 
         // Return a new initialised object of the appropriate type

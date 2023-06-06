@@ -2,7 +2,7 @@
 
 namespace Zamzar\ApiOperations;
 
-use Zamzar\Util\Core;
+use Zamzar\Zamzar;
 
 /**
  * The Paging trait is used by objects which provide paged collections, for example the Jobs, Files, Formats & Imports endpoints.
@@ -26,7 +26,7 @@ trait Paging
     private function pageNav($direction)
     {
         // Get the base endpoint for jobs which may also include a filter on job status from the previous call
-        $endpoint = $this->getEndPoint();
+        $endpoint = $this->getEndpoint();
 
         // Paging data will be stored in the last response
         if ($direction == 'forward') {
@@ -47,7 +47,7 @@ trait Paging
         // Convert to a array of specific objects
         $this->resetData();
         foreach ($data as $object) {
-            $objectType = core::getSingularClassNameFromCollectionClassName(static::class);
+            $objectType = Zamzar::COLLECTION_CLASS_MAP[static::class];
             $this->addData(new $objectType($this->getConfig(), $object));
         }
 

@@ -854,7 +854,7 @@ Each object stores its own endpoint, which is not essential part of using the li
 
 ```php
 foreach($jobs->data as $job) {
-	echo $job->getEndPoint() . "\n\n";
+	echo $job->getEndpoint() . "\n\n";
 }
 ```
 

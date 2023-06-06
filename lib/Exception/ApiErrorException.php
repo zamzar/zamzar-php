@@ -57,7 +57,7 @@ class ApiErrorException extends \Exception
     {
         return $this->config;
     }
-    public function getEndPoint()
+    public function getEndpoint()
     {
         return $this->endpoint;
     }
