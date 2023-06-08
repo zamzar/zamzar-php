@@ -61,12 +61,12 @@ class Job extends InteractsWithApi
 
         // Target Files will be empty when a job is submitted
         foreach ($data->target_files as $target_file) {
-            $this->target_files[] = new \Zamzar\File($this->getConfig(), $target_file);
+            $this->target_files[] = File::constructFrom((array)$target_file, $this->getConfig());
         }
 
         // Optionally supplied
         if (property_exists($data, "source_file")) {
-            $this->source_file = new \Zamzar\File($this->getConfig(), $data->source_file);
+            $this->source_file = File::constructFrom((array)$data->source_file, $this->getConfig());
         }
 
         if (property_exists($data, "failure")) {

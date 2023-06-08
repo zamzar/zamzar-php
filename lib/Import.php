@@ -55,7 +55,7 @@ class Import extends InteractsWithApi
         }
 
         if (property_exists($data, "file")) {
-            $this->file = new \Zamzar\File($this->getConfig(), $data->file);
+            $this->file = File::constructFrom((array)$data->file, $this->config);
         }
 
         if (property_exists($data, "created_at")) {

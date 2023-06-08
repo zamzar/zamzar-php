@@ -3,54 +3,18 @@
 namespace Zamzar;
 
 /**
- * File Object
+ * @property int $id
+ * @property int $size
+ * @property string $key
+ * @property string $name
+ * @property string $format
+ * @property string $created_at
  */
-class File extends InteractsWithApi
+class File extends ApiResource
 {
-    private $id;
-    private $key;
-    private $name;
-    private $size;
-    private $format;
-    private $created_at;
-
-    /**
-     * Initialise a new instance of the File object
-     */
-    public function __construct($config, $data)
-    {
-        parent::__construct($config, $data->id);
-        $this->setValues($data);
-    }
-
-    /**
-     * Cast to string
-     */
     public function __toString()
     {
         return $this->id . '-' . $this->name;
-    }
-
-    /**
-     * Initialise or Update properties
-     */
-    private function setValues($data)
-    {
-        // Should always be supplied
-        $this->id = $data->id;
-        $this->name = $data->name;
-        $this->size = $data->size;
-
-        // Optionally supplied depending on endpoint
-        if (property_exists($data, "key")) {
-            $this->key = $data->key;
-        }
-        if (property_exists($data, "format")) {
-            $this->format = $data->format;
-        }
-        if (property_exists($data, "created_at")) {
-            $this->created_at = $data->created_at;
-        }
     }
 
     /**
@@ -63,13 +27,13 @@ class File extends InteractsWithApi
             $path = rtrim($path, '/') . '/' . $this->name;
         }
 
-        $this->apiRequest($this->getEndpoint(true), 'GET', ['download_path' => $path], true);
+        $this->request('GET', $this->instanceUrl() . '/content', ['download_path' => $path], true);
         return $this;
     }
 
     public function delete()
     {
-        $this->apiRequest($this->getEndpoint(), 'DELETE');
+        $this->request('DELETE', $this->instanceUrl());
         return $this;
     }
 
@@ -79,13 +43,13 @@ class File extends InteractsWithApi
      */
     public function convert($params)
     {
-        $params['source_file'] = $this->getId();
-        $jobs = new \Zamzar\Jobs($this->getConfig());
-        return $jobs->create($params);
+        $response = $this->request('POST', '/v1/jobs', array_merge($params, ['source_file' => $this->id]));
+        return new Job($this->config, $response->getBody());
     }
 
     /**
      * Get the value of id
+     * @deprecated
      */
     public function getId()
     {
@@ -94,6 +58,7 @@ class File extends InteractsWithApi
 
     /**
      * Get the value of key
+     * @deprecated
      */
     public function getKey()
     {
@@ -102,6 +67,7 @@ class File extends InteractsWithApi
 
     /**
      * Get the value of name
+     * @deprecated
      */
     public function getName()
     {
@@ -110,6 +76,7 @@ class File extends InteractsWithApi
 
     /**
      * Get the value of size
+     * @deprecated
      */
     public function getSize()
     {
@@ -118,6 +85,7 @@ class File extends InteractsWithApi
 
     /**
      * Get the value of format
+     * @deprecated
      */
     public function getFormat()
     {
@@ -126,6 +94,7 @@ class File extends InteractsWithApi
 
     /**
      * Get the value of created_at
+     * @deprecated
      */
     public function getCreatedAt()
     {
