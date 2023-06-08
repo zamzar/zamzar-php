@@ -5,7 +5,7 @@ namespace Zamzar;
 /**
  * Import Object
  */
-class Import extends ApiResource
+class Import extends InteractsWithApi
 {
     /** Valid API Operations for this Class */
     use \Zamzar\ApiOperations\Refresh;

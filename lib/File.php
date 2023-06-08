@@ -5,7 +5,7 @@ namespace Zamzar;
 /**
  * File Object
  */
-class File extends ApiResource
+class File extends InteractsWithApi
 {
     private $id;
     private $key;

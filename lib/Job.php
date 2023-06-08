@@ -5,7 +5,7 @@ namespace Zamzar;
 /**
  * Job Object
  */
-class Job extends ApiResource
+class Job extends InteractsWithApi
 {
     /** Valid API Operations for this Class */
     use \Zamzar\ApiOperations\Cancel;

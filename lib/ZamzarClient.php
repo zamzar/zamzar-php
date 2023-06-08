@@ -8,7 +8,7 @@ namespace Zamzar;
  *
  *     Inherits:
  *
- *         - 'ApiResource' contains key properties and methods which all endpoint based classes use (Account, Formats, Files, Imports, Jobs)
+ *         - 'InteractsWithApi' contains key properties and methods which all endpoint based classes use (Account, Formats, Files, Imports, Jobs)
  *
  *     The intended usage in which the config array is created and passed correctly to other objects looks like:
  *
@@ -35,7 +35,7 @@ namespace Zamzar;
  * @property \Zamzar\Imports $imports
  * @property \Zamzar\Jobs $jobs
  */
-class ZamzarClient extends ApiResource
+class ZamzarClient extends InteractsWithApi
 {
     private static $classMap = [
         'account' => Account::class,

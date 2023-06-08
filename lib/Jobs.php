@@ -2,7 +2,7 @@
 
 namespace Zamzar;
 
-class Jobs extends ApiResource
+class Jobs extends InteractsWithApi
 {
     /** Valid API Operations for this Class */
     use \Zamzar\ApiOperations\Paging;

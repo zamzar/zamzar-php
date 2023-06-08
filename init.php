@@ -28,7 +28,7 @@ require __DIR__ . '/lib/ApiOperations/Paging.php';
 require __DIR__ . '/lib/ApiOperations/Refresh.php';
 
 // Plumbing
-require __DIR__ . '/lib/ApiResource.php';
+require __DIR__ . '/lib/InteractsWithApi.php';
 require __DIR__ . '/lib/ApiRequestor.php';
 require __DIR__ . '/lib/ApiResponse.php';
 

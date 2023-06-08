@@ -7,7 +7,7 @@ namespace Zamzar;
  *
  * Stores basic Account and Plan information
  */
-class Account extends ApiResource
+class Account extends InteractsWithApi
 {
     /** Properties */
     protected $test_credits_remaining;

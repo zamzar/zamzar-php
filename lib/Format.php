@@ -5,7 +5,7 @@ namespace Zamzar;
 /**
  * Format Object
  */
-class Format extends ApiResource
+class Format extends InteractsWithApi
 {
     /** Properties */
     private $name;

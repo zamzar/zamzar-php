@@ -38,7 +38,7 @@ trait Paging
         // Maintain any record limits which have previously been set either from the first call to the endpoint or explicitly by the user
         $endpoint = $endpoint . '&limit=' . $this->getLastResponse()->getPaging()->limit;
 
-        // Make the api request via the ApiResource:apiRequest function
+        // Make the api request via the InteractsWithApi:apiRequest function
         $apiResponse = $this->apiRequest($endpoint);
 
         // Get the data and paging arrays

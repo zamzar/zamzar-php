@@ -3,11 +3,11 @@
 namespace Zamzar;
 
 /**
- * ApiResource Class
+ * InteractsWithApi Class
  *
  * The core functions and values all classes use and expose
  */
-class ApiResource
+class InteractsWithApi
 {
     protected const DEFAULT_CONFIG = [
         'api_key' => null,

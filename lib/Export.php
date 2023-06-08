@@ -7,7 +7,7 @@ namespace Zamzar;
  *
  * Exports are requested when submitting jobs, i.e. submit the job and export the converted file(s) to a remote server
  * Export Objects are therefore only created when retrieving Jobs data, they are not part of an exports collection
- * Exports Objects do not interact with the api, hence no inheritance of the ApiResource class
+ * Exports Objects do not interact with the api, hence no inheritance of the InteractsWithApi class
  */
 class Export
 {

@@ -2,7 +2,7 @@
 
 namespace Zamzar;
 
-class Files extends ApiResource
+class Files extends InteractsWithApi
 {
     use \Zamzar\ApiOperations\Paging;
     use \Zamzar\ApiOperations\All;

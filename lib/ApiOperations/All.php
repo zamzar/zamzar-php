@@ -57,7 +57,7 @@ trait All
             $endpoint = $endpoint . '/?' . http_build_query($requestOptions);
         }
 
-        // Make the api request via the ApiResource:apiRequest function
+        // Make the api request via the InteractsWithApi:apiRequest function
         $apiResponse = $this->apiRequest($endpoint);
 
         // Get the data from the response
