@@ -132,7 +132,7 @@ class InteractsWithApi
      */
     private function setEndPoint($objectId = '')
     {
-        $this->endpoint = $this->getApiBaseUrl() . '/' . $this->config['api_version'] . '/';
+        $this->endpoint = '/' . $this->config['api_version'] . '/';
         $this->endpoint = $this->endpoint . Zamzar::CLASS_ENDPOINT_MAP[static::class];
         if ($objectId !== '') {
             $this->endpoint = $this->endpoint . '/' . $objectId;
@@ -211,10 +211,5 @@ class InteractsWithApi
     protected function addData($item)
     {
         $this->data[] = $item;
-    }
-
-    public function getApiBaseUrl()
-    {
-        return Zamzar::API_BASE[$this->config['environment']];
     }
 }

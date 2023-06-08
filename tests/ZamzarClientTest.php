@@ -50,7 +50,7 @@ final class ZamzarClientTest extends TestCase
     public function testBaseEndPointProductionDefault(): void
     {
         $zamzar = new \Zamzar\ZamzarClient('abcd1234');
-        $this->assertEquals($zamzar->getApiBaseUrl(), 'https://api.zamzar.com');
+        $this->assertEquals($zamzar->getConfig()['environment'], 'production');
     }
 
     public function testProductionEnvironmentVariableTranslates(): void
@@ -59,7 +59,7 @@ final class ZamzarClientTest extends TestCase
             'api_key' => 'abcd1234',
             'environment' => 'production'
         ]);
-        $this->assertEquals($zamzar->getApiBaseUrl(), 'https://api.zamzar.com');
+        $this->assertEquals($zamzar->getConfig()['environment'], 'production');
     }
 
     public function testTestEnvironmentVariableTranslates(): void
@@ -68,6 +68,6 @@ final class ZamzarClientTest extends TestCase
             'api_key' => 'abcd1234',
             'environment' => 'sandbox'
         ]);
-        $this->assertEquals($zamzar->getApiBaseUrl(), 'https://sandbox.zamzar.com');
+        $this->assertEquals($zamzar->getConfig()['environment'], 'sandbox');
     }
 }

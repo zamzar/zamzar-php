@@ -36,6 +36,8 @@ class ApiRequestor
      */
     public function request($endpoint, $method = 'GET', $params = [], $getFileContent = false)
     {
+        $endpoint = Zamzar::API_BASE[$this->config['environment']] . $endpoint;
+
         if ($this->config['debug']) {
             Zamzar::getLogger()->info("($method) $endpoint params=" . json_encode($params));
         }
