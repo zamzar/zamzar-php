@@ -112,14 +112,10 @@ $job = $zamzar->jobs->submit([
 ]);
 
 // Wait for the job to complete (the default timeout is 60 seconds)
-$job->waitForCompletion([
-    'timeout' => 60
-]);
+$job->waitForCompletion(30);
 
 // Download the converted files 
-$job->downloadTargetFiles([
-    'download_path' => 'path/to/folder/'
-]);
+$job->downloadTargetFiles('path/to/folder/');
 
 // Delete the source and target files on Zamzar's servers
 $job->deleteAllFiles();
@@ -135,12 +131,8 @@ $job = $zamzar
                 'source_file' => 'path/to/localfile', 
                 'target_format' => 'pdf'
                 ])
-        ->waitForCompletion([
-                'timeout' => 120
-        ])
-        ->downloadTargetFiles([
-                'download_path' => 'path/to/folder'
-                ])
+        ->waitForCompletion(120)
+        ->downloadTargetFiles('path/to/folder')
         ->deleteAllFiles();
 ```
 

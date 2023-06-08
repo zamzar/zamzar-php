@@ -50,9 +50,7 @@ final class ExceptionsTest extends TestCase
         $job = $zamzar->jobs->submit([
             'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
             'target_format' => 'pdf'
-        ])->waitForCompletion([
-            'timeout' => 0
-        ]);
+        ])->waitForCompletion(0);
     }
 
     // public function testPayloadException(): void

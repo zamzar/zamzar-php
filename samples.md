@@ -146,14 +146,10 @@ The <code>download</code> operator is performed against the file object once its
 $file = $zamzar->files->get(123456);
 
 // download the file to the specified folder
-$file->download([
-    'download_path' => 'path/to/download/folder'
-]);
+$file->download('path/to/download/folder');
 
 // or in one statement
-$file = $zamzar->files->get(123456)->download([
-    'download_path' => 'path/to/download/folder'
-]);
+$file = $zamzar->files->get(123456)->download('path/to/download/folder');
 ```
 
 ### Deleting a File
@@ -208,9 +204,7 @@ Iterate through the list using the <code>data</code> property (which is an array
 ```php
 foreach($files->data as $file) {
     //download and delete all files
-    $file->download([
-        'download_path' => 'path/to/local/folder'
-    ]);
+    $file->download('path/to/download/folder');
     $file->delete();
 }
 ```
@@ -525,9 +519,7 @@ The <code>waitForCompletion()</code> method is used to wait for a job to complet
 $job = $job->waitForCompletion();
 
 // specify a timeout
-$job = $job->waitForCompletion([
-    'timeout' => 120
-]);
+$job = $job->waitForCompletion(120);
 ```
 
 ### Check on the status of a Job
@@ -607,9 +599,7 @@ if($job->isStatusFailed()) {
 To download converted files:
 
 ```php
-$job->downloadTargetFiles([
-    'download_path' => 'path/to/local/folder'
-]);
+$job->downloadTargetFiles('path/to/download/folder');
 ```
 
 ### Deleting converted files
@@ -644,12 +634,8 @@ $job = $zamzar->jobs->submit([
         'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
         'target_format' => 'pdf',
         ])
-  ->waitForCompletion([
-        'timeout' => 120
-        ])
-  ->downloadTargetFiles([
-      'download_path' => 'path/to/folder'
-        ])
+  ->waitForCompletion(120)
+  ->downloadTargetFiles('path/to/folder')
   ->deleteAllFiles();
 ```
 
@@ -781,14 +767,12 @@ if($proceed) {
 
     // Wait for completion
     try {
-        $job = $job->waitForCompletion([
-            'timeout' => 60
-        ]);
+        $job = $job->waitForCompletion(60);
     } catch (\Zamzar\Exception\TimeOutException $e) {
         // Retry with a longer timeout period
         echo $e->getMessage() . "\n\n";
         echo "Increasing timeout period" . "\n\n";
-        $job = $job->waitForCompletion(['timeout' => 180]);
+        $job = $job->waitForCompletion(180);
     }
 
     // Refresh the job object to get the latest status
@@ -807,9 +791,7 @@ if($proceed) {
             // try downloading and deleting the files
             try {
             
-                $job = $job->downloadTargetFiles([
-                    'download_path' => 'path/to/folder'
-                ]);
+                $job = $job->downloadTargetFiles('path/to/folder');
 
                 echo 'deleting files' . "\n\n";
                 $job = $job->deleteAllFiles();

@@ -83,24 +83,18 @@ final class FilesTest extends TestCase
 
     public function testFileCanBeConverted(): void
     {
-        // get any file
         $zamzar = new \Zamzar\ZamzarClient($this->apiKey);
         $files = $zamzar->files->all(['limit' => 1]);
         $fileid = $files->data[0]->getId();
         $file = $zamzar->files->get($fileid);
 
-        // get a valid conversion format for the file
         $format = $zamzar->formats->get(pathinfo($file->getName(), PATHINFO_EXTENSION));
         $targetFormat = $format->getTargets()[0]->getName();
 
-        // convert the file
         $job = $file->convert([
             'target_format' => $targetFormat
-        ])->waitForCompletion([
-            'timeout' => 30
-        ]);
+        ])->waitForCompletion();
 
-        // check the file has been converted
         $this->assertGreaterThan(0, $job->getTargetFiles()[0]->getSize());
     }
 }

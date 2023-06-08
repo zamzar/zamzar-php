@@ -56,8 +56,7 @@ final class JobsTest extends TestCase
         ]);
         $this->assertEquals($job->getStatus(), 'initialising');
 
-        //wait for completion so that the next function can use the converted file
-        $job->waitForCompletion(['timeout' => 30]);
+        $job->waitForCompletion();
     }
 
     public function testJobCanBeSubmittedForZamzarFile(): void
@@ -86,18 +85,6 @@ final class JobsTest extends TestCase
         ]);
     }
 
-    public function testTimeOutException(): void
-    {
-        $zamzar = new \Zamzar\ZamzarClient($this->apiKey);
-        $this->expectException(\Zamzar\Exception\TimeOutException::class);
-        $job = $zamzar->jobs->submit([
-            'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
-            'target_format' => 'pdf'
-        ])->waitForCompletion([
-            'timeout' => 0
-        ]);
-    }
-
     public function testFilesCanBeDownloadedAndDeleted()
     {
 
@@ -106,9 +93,7 @@ final class JobsTest extends TestCase
         $job = $zamzar->jobs->submit([
             'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
             'target_format' => 'pdf'
-        ])->waitForCompletion([
-            'timeout' => 60
-        ]);
+        ])->waitForCompletion();
 
         //download the target file
         $job->downloadTargetFiles($this->targetFilePath);

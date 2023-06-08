@@ -145,17 +145,10 @@ class Job extends ApiResource
     /**
      * Wait for the job to complete
      */
-    public function waitForCompletion($params = [])
+    public function waitForCompletion($timeout = 60)
     {
         $totalSleep = 0;
         $sleepInterval = 1;
-        $timeout = 60;
-
-        if (is_array($params)) {
-            if (array_key_exists("timeout", $params)) {
-                $timeout = $params['timeout'];
-            }
-        }
 
         do {
             // goto sleep

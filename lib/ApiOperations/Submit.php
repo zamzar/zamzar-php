@@ -66,7 +66,7 @@ trait Submit
             }
 
             // Wait
-            $job = $job->waitForCompletion(['timeout' => $timeout]);
+            $job = $job->waitForCompletion($timeout);
 
             // Check the status of the job and throw an error if the job failed
             if ($job->getStatus() == 'successful') {

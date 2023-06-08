@@ -194,9 +194,7 @@ try {
   	    'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
   	    'target_format' => 'pdf'
     ])
-  	    ->waitForCompletion([
-		    'timeout' => 0
-	    ]);
+  	    ->waitForCompletion(0);
 } catch (\Zamzar\Exception\TimeOutException $e) {
     echo $e->getMessage();
 }
