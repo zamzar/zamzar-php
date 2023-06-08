@@ -639,23 +639,6 @@ $job = $zamzar->jobs->submit([
   ->deleteAllFiles();
 ```
 
-### Single Call
-
-To achieve all the steps above in a single call to <code>submit</code>, provide a full set of params.
-
-```php
-//start, wait, download, delete
-$job = $zamzar->jobs->submit([
-    'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
-    'target_format' => 'pdf',
-    'timeout' => 120,
-    'download_path' => 'path/to/folder',
-    'delete_files' => 'all' | 'source' | 'target'
-]);
-```
-
-None of the above are preferred. Use what fits in with your workflow.
-
 ### Retrieving a specific job
 
 As demonstrated above, the <code>get</code> method is used to retrieve a specific job.
@@ -709,27 +692,19 @@ All of the above examples do not use exceptions handling for brevity. In real-wo
 $job = $zamzar->jobs->submit([
     'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
     'target_format' => 'pdf',
-    'timeout' => 0,
-    'download_path' => 'path/to/folder',
-    'delete_files' => 'all' | 'source' | 'target'
-]);
+])->waitForCompletion(0);
 ```
 
 The above example fails immediately, an uncaught error is reported and the process aborted. Using exception handling provides an opportunity to handle the error.
 
 ```php
 try {
-  
-  $job = $zamzar->jobs->submit([
-      'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
-      'target_format' => 'pdf',
-      'timeout' => 0, 
-      'download_path' => 'path/to/folder',
-      'delete_files' => 'all'
-  ]);
-
+    $job = $zamzar->jobs->submit([
+        'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
+        'target_format' => 'pdf',
+    ])->waitForCompletion(0);
 } catch (\Zamzar\Exception\TimeOutException $e) {
-  echo $e->getMessage();
+    echo $e->getMessage();
 }
 ```
 

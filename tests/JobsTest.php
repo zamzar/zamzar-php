@@ -120,25 +120,4 @@ final class JobsTest extends TestCase
         $job = $job->cancel();
         $this->assertEquals($job->getStatus(), 'cancelled');
     }
-
-    public function testSubmitDownloadDelete()
-    {
-
-        //submit a job and wait for completion
-        $zamzar = new \Zamzar\ZamzarClient($this->apiKey);
-        $job = $zamzar->jobs->submit([
-            'source_file' => 'tests/files/source/test.pdf',
-            'target_format' => 'doc',
-            'download_path' => $this->targetFilePath,
-            'timeout' => 120,
-            'delete_files' => 'all'
-        ]);
-
-        //confirm the file has been downloaded
-        $this->assertEquals(file_exists($this->targetFilePath . 'test.doc'), true);
-
-        //assert that the files cannot be downloaded again
-        $this->expectException(\Zamzar\Exception\InvalidResourceException::class);
-        $job = $job->downloadAndDeleteAllFiles($this->targetFilePath);
-    }
 }
