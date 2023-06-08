@@ -4,8 +4,6 @@ namespace Zamzar;
 
 class Jobs extends InteractsWithApi
 {
-    use \Zamzar\ApiOperations\Paging;
-
     public function create($params)
     {
         $response = $this->apiRequest(Job::classUrl(), 'POST', $params);
@@ -20,15 +18,13 @@ class Jobs extends InteractsWithApi
         return Job::constructFrom($response->getBody(), $this->config);
     }
 
+    /**
+     * @return \Zamzar\Collection<\Zamzar\Job>
+     */
     public function all($params = [])
     {
         $response = $this->apiRequest(Job::classUrl(), 'GET', $params);
 
-        $this->resetData();
-        foreach ($response->getData() as $object) {
-            $this->addData(Job::constructFrom($object, $this->config));
-        }
-
-        return $this;
+        return Collection::constructFrom($response->getBody(), $this->config, Job::classUrl(), Job::class);
     }
 }

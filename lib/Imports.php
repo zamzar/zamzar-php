@@ -4,8 +4,6 @@ namespace Zamzar;
 
 class Imports extends InteractsWithApi
 {
-    use \Zamzar\ApiOperations\Paging;
-
     public function create($params)
     {
         $response = $this->apiRequest(Import::classUrl(), 'POST', $params);
@@ -20,15 +18,13 @@ class Imports extends InteractsWithApi
         return Import::constructFrom($response->getBody(), $this->config);
     }
 
+    /**
+     * @return \Zamzar\Collection<\Zamzar\Import>
+     */
     public function all($params = [])
     {
         $response = $this->apiRequest(Import::classUrl(), 'GET', $params);
 
-        $this->resetData();
-        foreach ($response->getData() as $object) {
-            $this->addData(Import::constructFrom($object, $this->config));
-        }
-
-        return $this;
+        return Collection::constructFrom($response->getBody(), $this->config, Import::classUrl(), Import::class);
     }
 }

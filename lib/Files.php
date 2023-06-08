@@ -4,8 +4,6 @@ namespace Zamzar;
 
 class Files extends InteractsWithApi
 {
-    use \Zamzar\ApiOperations\Paging;
-
     public function create($params)
     {
         $response = $this->apiRequest(File::classUrl(), 'POST', $params);
@@ -20,15 +18,13 @@ class Files extends InteractsWithApi
         return File::constructFrom($response->getBody(), $this->config);
     }
 
+    /**
+     * @return \Zamzar\Collection<\Zamzar\File>
+     */
     public function all($params = [])
     {
         $response = $this->apiRequest(File::classUrl(), 'GET', $params);
 
-        $this->resetData();
-        foreach ($response->getData() as $object) {
-            $this->addData(File::constructFrom($object, $this->config));
-        }
-
-        return $this;
+        return Collection::constructFrom($response->getBody(), $this->config, File::classUrl(), File::class);
     }
 }

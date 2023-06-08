@@ -4,8 +4,6 @@ namespace Zamzar;
 
 class Formats extends InteractsWithApi
 {
-    use \Zamzar\ApiOperations\Paging;
-
     public function get($id)
     {
         $response = $this->apiRequest(Format::resourceUrl($id), 'GET');
@@ -13,15 +11,13 @@ class Formats extends InteractsWithApi
         return Format::constructFrom($response->getBody(), $this->config);
     }
 
+    /**
+     * @return \Zamzar\Collection<\Zamzar\Format>
+     */
     public function all($params = [])
     {
         $response = $this->apiRequest(Format::classUrl(), 'GET', $params);
 
-        $this->resetData();
-        foreach ($response->getData() as $object) {
-            $this->addData(Format::constructFrom($object, $this->config));
-        }
-
-        return $this;
+        return Collection::constructFrom($response->getBody(), $this->config, Format::classUrl(), Format::class);
     }
 }
