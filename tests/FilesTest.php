@@ -45,7 +45,7 @@ final class FilesTest extends TestCase
     {
         $zamzar = new \Zamzar\ZamzarClient($this->apiKey);
         $file = $zamzar->files->upload([
-            'name' => 'tests/files/source/test.pdf'
+            'name' => __DIR__ . '/files/source/test.pdf'
         ]);
         $this->assertGreaterThan(0, $file->getId());
     }
@@ -53,13 +53,21 @@ final class FilesTest extends TestCase
     public function testFileCanBeDownloaded(): void
     {
         $zamzar = new \Zamzar\ZamzarClient($this->apiKey);
-        $files = $zamzar->files->all(['limit' => 1]);
-        $fileid = $files->data[0]->getId();
-        $file = $zamzar->files->get($fileid);
-        $file->download([
-            'download_path' => 'tests/files/target/'
+        $file = $zamzar->files->upload([
+            'name' => __DIR__ . '/files/source/test.pdf'
         ]);
-        $this->assertEquals(file_exists('tests/files/target/' . $file->getName()), true);
+        $file->download(__DIR__ . '/files/target/');
+        $this->assertEquals(file_exists(__DIR__ . '/files/target/' . $file->getName()), true);
+    }
+
+    public function testFileCanBeDownloadedWithCustomFilename(): void
+    {
+        $zamzar = new \Zamzar\ZamzarClient($this->apiKey);
+        $file = $zamzar->files->upload([
+            'name' => __DIR__ . '/files/source/test.pdf'
+        ]);
+        $file->download(__DIR__ . '/files/target/output.pdf');
+        $this->assertEquals(file_exists(__DIR__ . '/files/target/output.pdf'), true);
     }
 
     public function testFileCanBeDeleted(): void
@@ -70,9 +78,7 @@ final class FilesTest extends TestCase
         $file = $zamzar->files->get($fileid);
         $file->delete();
         $this->expectException(\Zamzar\Exception\InvalidResourceException::class);
-        $file->download([
-            'download_path' => 'tests/files/target/'
-        ]);
+        $file->download(__DIR__ . '/files/target/');
     }
 
     public function testFileCanBeConverted(): void

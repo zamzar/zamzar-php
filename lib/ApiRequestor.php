@@ -20,7 +20,6 @@ class ApiRequestor
     private $method;
     private $params;
     private $getFileContent;
-    private $filename;
     private $hasLocalFile;
     private $apiResponse;
 
@@ -35,7 +34,7 @@ class ApiRequestor
     /**
      * Submit the request
      */
-    public function request($endpoint, $method = 'GET', $params = [], $getFileContent = false, $filename = '')
+    public function request($endpoint, $method = 'GET', $params = [], $getFileContent = false)
     {
         if ($this->config['debug']) {
             Zamzar::getLogger()->info("($method) $endpoint params=" . json_encode($params));
@@ -45,7 +44,6 @@ class ApiRequestor
         $this->method = $method;
         $this->params = $params;
         $this->getFileContent = $getFileContent;
-        $this->filename = $filename;
 
         // Check the request parameters before the request is submitted
         // During the checks, the $hasLocalFile semaphore will be set to true if a local file is being used in the request
@@ -76,10 +74,8 @@ class ApiRequestor
                         throw new \Zamzar\Exception\InvalidArgumentException($msg);
                     }
 
-                    // If a local path, ensure it's correctly formatted and append the name of the file
-                    if (is_dir($this->params["download_path"])) {
-                        $this->params['local_filename'] = rtrim($this->params['download_path'], '/') . '/' . $this->filename;
-                    } else {
+                    // If a local path, ensure it's correctly formatted and the directory exists.
+                    if (!is_dir(dirname($this->params["download_path"]))) {
                         $msg = "The path specified does not exist. Specify a valid path within the params in the form ['download_path' => 'valid/local/file/path']";
                         throw new \Zamzar\Exception\InvalidArgumentException($msg);
                     }

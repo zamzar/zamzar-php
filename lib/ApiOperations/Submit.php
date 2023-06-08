@@ -71,7 +71,7 @@ trait Submit
             // Check the status of the job and throw an error if the job failed
             if ($job->getStatus() == 'successful') {
                 // Download converted files
-                $job = $job->downloadTargetFiles($params);
+                $job = $job->downloadTargetFiles($params['download_path']);
 
                 // Delete converted files?
                 if (array_key_exists("delete_files", $params)) {

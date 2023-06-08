@@ -7,11 +7,8 @@ namespace Zamzar;
  */
 class File extends ApiResource
 {
-    /** Valid API Operations for this Class */
     use \Zamzar\ApiOperations\Delete;
-    use \Zamzar\ApiOperations\Download;
 
-    /** Properties */
     private $id;
     private $key;
     private $name;
@@ -56,6 +53,20 @@ class File extends ApiResource
         if (property_exists($data, "created_at")) {
             $this->created_at = $data->created_at;
         }
+    }
+
+    /**
+     * @param string $path Path to where the file should be downloaded. This can be a file, or a directory;
+     * in the case of a directory, the file's name will be used.
+     */
+    public function download($path)
+    {
+        if (is_dir($path)) {
+            $path = rtrim($path, '/') . '/' . $this->name;
+        }
+
+        $this->apiRequest($this->getEndpoint(true), 'GET', ['download_path' => $path], true);
+        return $this;
     }
 
     /**

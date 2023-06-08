@@ -111,19 +111,17 @@ final class JobsTest extends TestCase
         ]);
 
         //download the target file
-        $job->downloadTargetFiles([
-            'download_path' => $this->targetFilePath
-        ]);
+        $job->downloadTargetFiles($this->targetFilePath);
 
         //confirm the file has been downloaded
         $this->assertEquals(file_exists($this->targetFilePath . 'zamzar-logo.pdf'), true);
 
         //download and delete all files which repeats the download via a different function
-        $job = $job->downloadAndDeleteAllFiles(['download_path' => $this->targetFilePath]);
+        $job = $job->downloadAndDeleteAllFiles($this->targetFilePath);
 
         //assert that the files cannot be downloaded again
         $this->expectException(\Zamzar\Exception\InvalidResourceException::class);
-        $job = $job->downloadAndDeleteAllFiles(['download_path' => $this->targetFilePath]);
+        $job = $job->downloadAndDeleteAllFiles($this->targetFilePath);
     }
 
     public function testJobCanBeCancelledandStatusRefreshed()
@@ -156,6 +154,6 @@ final class JobsTest extends TestCase
 
         //assert that the files cannot be downloaded again
         $this->expectException(\Zamzar\Exception\InvalidResourceException::class);
-        $job = $job->downloadAndDeleteAllFiles(['download_path' => $this->targetFilePath]);
+        $job = $job->downloadAndDeleteAllFiles($this->targetFilePath);
     }
 }
