@@ -44,7 +44,7 @@ final class FilesTest extends TestCase
     public function testFileCanBeUploaded(): void
     {
         $zamzar = new \Zamzar\ZamzarClient($this->apiKey);
-        $file = $zamzar->files->upload([
+        $file = $zamzar->files->create([
             'name' => __DIR__ . '/files/source/test.pdf'
         ]);
         $this->assertGreaterThan(0, $file->getId());
@@ -53,7 +53,7 @@ final class FilesTest extends TestCase
     public function testFileCanBeDownloaded(): void
     {
         $zamzar = new \Zamzar\ZamzarClient($this->apiKey);
-        $file = $zamzar->files->upload([
+        $file = $zamzar->files->create([
             'name' => __DIR__ . '/files/source/test.pdf'
         ]);
         $file->download(__DIR__ . '/files/target/');
@@ -63,7 +63,7 @@ final class FilesTest extends TestCase
     public function testFileCanBeDownloadedWithCustomFilename(): void
     {
         $zamzar = new \Zamzar\ZamzarClient($this->apiKey);
-        $file = $zamzar->files->upload([
+        $file = $zamzar->files->create([
             'name' => __DIR__ . '/files/source/test.pdf'
         ]);
         $file->download(__DIR__ . '/files/target/output.pdf');

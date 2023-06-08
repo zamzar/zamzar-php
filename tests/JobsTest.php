@@ -50,7 +50,7 @@ final class JobsTest extends TestCase
     {
         // remote files are tested as part of subsequent tests, so no need to test individually
         $zamzar = new \Zamzar\ZamzarClient($this->apiKey);
-        $job = $zamzar->jobs->submit([
+        $job = $zamzar->jobs->create([
             'source_file' => $this->validLocalSourceFile,
             'target_format' => $this->validTargetFormat
         ]);
@@ -68,7 +68,7 @@ final class JobsTest extends TestCase
         $fileid = $files->data[0]->getId();
 
         //submit a job using the file id
-        $job = $zamzar->jobs->submit([
+        $job = $zamzar->jobs->create([
             'source_file' => $fileid,
             'target_format' => 'pdf'
         ]);
@@ -79,7 +79,7 @@ final class JobsTest extends TestCase
     {
         $zamzar = new \Zamzar\ZamzarClient($this->apiKey);
         $this->expectException(\Zamzar\Exception\InvalidArgumentException::class);
-        $job = $zamzar->jobs->submit([
+        $job = $zamzar->jobs->create([
             'so1urce_file' => 'anything',
             'tar1get_format' => 'anything'
         ]);
@@ -90,7 +90,7 @@ final class JobsTest extends TestCase
 
         //submit a job and wait for completion
         $zamzar = new \Zamzar\ZamzarClient($this->apiKey);
-        $job = $zamzar->jobs->submit([
+        $job = $zamzar->jobs->create([
             'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
             'target_format' => 'pdf'
         ])->waitForCompletion();
@@ -113,7 +113,7 @@ final class JobsTest extends TestCase
     {
         //submit a job and wait for completion
         $zamzar = new \Zamzar\ZamzarClient($this->apiKey);
-        $job = $zamzar->jobs->submit([
+        $job = $zamzar->jobs->create([
             'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
             'target_format' => 'pdf'
         ]);

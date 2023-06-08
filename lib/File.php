@@ -81,7 +81,7 @@ class File extends ApiResource
     {
         $params['source_file'] = $this->getId();
         $jobs = new \Zamzar\Jobs($this->getConfig());
-        return $jobs->submit($params);
+        return $jobs->create($params);
     }
 
     /**

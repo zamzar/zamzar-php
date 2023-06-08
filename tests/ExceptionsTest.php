@@ -21,7 +21,7 @@ final class ExceptionsTest extends TestCase
     {
         $this->expectException(\Zamzar\Exception\InvalidArgumentException::class);
         $zamzar = new \Zamzar\ZamzarClient($this->apiKey);
-        $zamzar->jobs->submit([
+        $zamzar->jobs->create([
             'sour1file' => 'invalid'
         ]);
     }
@@ -30,7 +30,7 @@ final class ExceptionsTest extends TestCase
     {
         $this->expectException(\Zamzar\Exception\InvalidRequestException::class);
         $zamzar = new \Zamzar\ZamzarClient($this->apiKey);
-        $job = $zamzar->jobs->submit([
+        $job = $zamzar->jobs->create([
             'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
             'target_format' => 'mpg'
         ]);
@@ -47,7 +47,7 @@ final class ExceptionsTest extends TestCase
     {
         $this->expectException(\Zamzar\Exception\TimeOutException::class);
         $zamzar = new \Zamzar\ZamzarClient($this->apiKey);
-        $job = $zamzar->jobs->submit([
+        $job = $zamzar->jobs->create([
             'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
             'target_format' => 'pdf'
         ])->waitForCompletion(0);
@@ -58,7 +58,7 @@ final class ExceptionsTest extends TestCase
     //     // run the following separately, e.g. via tinkerwell, given the time taken to upload the 10gb file
     //     $zamzar = new \Zamzar\ZamzarClient($this->apiKey);
     //     try {
-    //         $job = $zamzar->jobs->submit([
+    //         $job = $zamzar->jobs->create([
     //             'source_file' => 'tests/files/source/large-file-10gb.txt',
     //             'target_format' => 'pdf'
     //         ]);

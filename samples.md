@@ -127,10 +127,10 @@ File related objects are used to retrieve a list of files, upload, download and 
 
 ### Uploading a File
 
-The <code>upload</code> operator is performed on the Files object, which creates and returns a File object.
+The <code>create</code> operator is performed on the Files object, which creates and returns a File object.
 
 ```php
-$file = $zamzar->files->upload([
+$file = $zamzar->files->create([
     'name' => 'path/to/local/filename.ext'
 ]);
 
@@ -294,10 +294,10 @@ Import related objects are used to retrieve information about imports and to sta
 
 ### Starting an Import
 
-The <code>start</code> operator is performed on the Imports object, which creates and returns an Import object.
+The <code>create</code> operator is performed on the Imports object, which creates and returns an Import object.
 
 ```php
-$import = $zamzar->imports->start([
+$import = $zamzar->imports->create([
     'url' => 'https://www.zamzar.com/images/zamzar-logo.png'
 ]);
 
@@ -310,7 +310,7 @@ After an import has started, the status can be checked to determine one of four 
 
 ```php
 // start an import
-$import = $zamzar->imports->start([
+$import = $zamzar->imports->create([
     'url' => 'https://www.zamzar.com/images/zamzar-logo.png'
 ]);
 
@@ -454,30 +454,30 @@ Job related objects are used to retrieve information about jobs and to submit co
 
 ### Starting a Job
 
-The <code>submit</code> operator is performed on the Jobs object, which creates and returns a Job object.
+The <code>create</code> operator is performed on the Jobs object, which creates and returns a Job object.
 
 ```php
 
 // start a job for a local file
-$job = $zamzar->jobs->submit([
+$job = $zamzar->jobs->create([
     'source_file' => 'path/to/local/file',
     'target_format' => 'xxx'
 ]);
 
 // start a job for a remote url
-$job = $zamzar->jobs->submit([
+$job = $zamzar->jobs->create([
     'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
     'target_format' => 'pdf'
 ]);
 
 // start a job for a file which already exists on Zamzar's servers
-$job = $zamzar->jobs->submit([
+$job = $zamzar->jobs->create([
     'source_file' => '123456',
     'target_format' => 'pdf'
 ]);
 
 // start a job for a S3 file (requires Connected Services to be configured in the developer dashboard)
-$job = $zamzar->jobs->submit([
+$job = $zamzar->jobs->create([
     'source_file' => 's3://CREDENTIAL_NAME@my-bucket-name/logo.png',
     'target_format' => 'pdf'
 ]);
@@ -490,7 +490,7 @@ echo $job->getId();
 The source format can be overridden if the <code>source_file</code> does not have a format within the filename for example:
 
 ```php
-$job = $zamzar->jobs->submit([
+$job = $zamzar->jobs->create([
     'source_file' => 'https://www.zamzar.com/images/zamzar-logo',
     'target_format' => 'pdf',
     'source_format' => 'png'
@@ -502,7 +502,7 @@ $job = $zamzar->jobs->submit([
 An <code>export_url</code> can be provided to instruct the conversion process to export files to a remote server once the job has completed:
 
 ```php
-$job = $zamzar->jobs->submit([
+$job = $zamzar->jobs->create([
     'source_file' => 'https://www.zamzar.com/images/zamzar-logo',
     'target_format' => 'pdf',
     'source_format' => 'png',
@@ -528,7 +528,7 @@ After an job has started, the status can be checked to determine one of five sta
 
 ```php
 // start a job
-$job = $zamzar->jobs->submit([
+$job = $zamzar->jobs->create([
     'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
     'target_format' => 'pdf'
 ]);
@@ -630,7 +630,7 @@ Method chaining is supported for the processes described above.
 ```php
 // start a job, wait, download, delete. 
 // downloading and deleting files will only happen if the job status is successful
-$job = $zamzar->jobs->submit([
+$job = $zamzar->jobs->create([
         'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
         'target_format' => 'pdf',
         ])
@@ -689,7 +689,7 @@ All of the above examples do not use exceptions handling for brevity. In real-wo
 
 ```php
 //start, wait, download, delete - but don't give the job any time to complete
-$job = $zamzar->jobs->submit([
+$job = $zamzar->jobs->create([
     'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
     'target_format' => 'pdf',
 ])->waitForCompletion(0);
@@ -699,7 +699,7 @@ The above example fails immediately, an uncaught error is reported and the proce
 
 ```php
 try {
-    $job = $zamzar->jobs->submit([
+    $job = $zamzar->jobs->create([
         'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
         'target_format' => 'pdf',
     ])->waitForCompletion(0);
@@ -723,7 +723,7 @@ In a production batch processing scenario, it might be preferable to break the a
 $proceed = true;
 
 try {
-    $job = $zamzar->jobs->submit([
+    $job = $zamzar->jobs->create([
         'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
         'target_format' => 'pdf',
     ]);

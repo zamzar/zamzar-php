@@ -106,7 +106,7 @@ The most common requirement is to submit a job to convert a file, wait for the j
 
 ```php
 // Submit the file
-$job = $zamzar->jobs->submit([
+$job = $zamzar->jobs->create([
     'source_file' => 'path/to/local/file',
     'target_format' => 'xxx'
 ]);
@@ -127,7 +127,7 @@ The above use case might be applied when other things are happening in between e
 // Do the whole thing together
 $job = $zamzar
         ->jobs
-        ->submit([
+        ->create([
                 'source_file' => 'path/to/localfile', 
                 'target_format' => 'pdf'
                 ])

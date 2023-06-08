@@ -43,7 +43,7 @@ final class ImportsTest extends TestCase
     public function testImportCanBeStarted(): void
     {
         $zamzar = new \Zamzar\ZamzarClient($this->apiKey);
-        $import = $zamzar->imports->start([
+        $import = $zamzar->imports->create([
             'url' => 'https://www.zamzar.com/images/zamzar-logo.png'
         ]);
         $this->assertGreaterThan(0, $import->getId());
@@ -52,7 +52,7 @@ final class ImportsTest extends TestCase
     public function testImportCanBeRefreshed(): void
     {
         $zamzar = new \Zamzar\ZamzarClient($this->apiKey);
-        $import = $zamzar->imports->start([
+        $import = $zamzar->imports->create([
             'url' => 'https://www.zamzar.com/images/zamzar-logo.png'
         ]);
         $statusBefore = $import->getStatus();
