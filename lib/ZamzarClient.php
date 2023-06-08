@@ -3,32 +3,6 @@
 namespace Zamzar;
 
 /**
- *
- * The ZamzarClient is a simpler wrapper around collection classes from which all high level endpoints are exposed:
- *
- *     Inherits:
- *
- *         - 'InteractsWithApi' contains key properties and methods which all endpoint based classes use (Account, Formats, Files, Imports, Jobs)
- *
- *     The intended usage in which the config array is created and passed correctly to other objects looks like:
- *
- *         // An api key can be provided as a string which is then merged with a default config array and validated
- *         $zamzar = new \Zamzar\ZamzarClient('apikey');
- *
- *         // An api key and other parameters can be provided as a config array which is then merged with a default config array and validated
- *         $zamzar = new \Zamzar\ZamzarClient([
- *             api_key' => 'apikey',
- *             'environment' => 'sandbox' | 'production' (default)
- *         ]);
- *
- *         // Test the Connection
- *         echo $zamzar->testConnection();
- *
- * @method \Zamzar\Account account()
- * @method \Zamzar\Files files()
- * @method \Zamzar\Formats formats()
- * @method \Zamzar\Imports imports()
- * @method \Zamzar\Jobs jobs()
  * @property \Zamzar\Account $account
  * @property \Zamzar\Files $files
  * @property \Zamzar\Formats $formats
