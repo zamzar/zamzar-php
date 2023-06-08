@@ -7,8 +7,6 @@ namespace Zamzar;
  */
 class File extends ApiResource
 {
-    use \Zamzar\ApiOperations\Delete;
-
     private $id;
     private $key;
     private $name;
@@ -66,6 +64,12 @@ class File extends ApiResource
         }
 
         $this->apiRequest($this->getEndpoint(true), 'GET', ['download_path' => $path], true);
+        return $this;
+    }
+
+    public function delete()
+    {
+        $this->apiRequest($this->getEndpoint(), 'DELETE');
         return $this;
     }
 
