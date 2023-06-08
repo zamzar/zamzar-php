@@ -3,92 +3,37 @@
 namespace Zamzar;
 
 /**
- * Job Object
+ * @property int $id
+ * @property string $key
+ * @property string $status
+ * @property null|\Zamzar\Failure $failure
+ * @property bool $sandbox
+ * @property string $created_at
+ * @property string $finished_at
+ * @property null|\Zamzar\Import $import
+ * @property null|\Zamzar\File $source_file
+ * @property \Zamzar\File[] $target_files
+ * @property string $target_format
+ * @property int $credit_cost
+ * @property string $export_url
+ * @property null|\Zamzar\Export $exports
  */
-class Job extends InteractsWithApi
+class Job extends ApiResource
 {
-    /** Valid API Operations for this Class */
-    use \Zamzar\ApiOperations\Cancel;
-    use \Zamzar\ApiOperations\Refresh;
+    // use \Zamzar\ApiOperations\Cancel;
 
-    /** Constants */
     public const STATUS_INITIALISING = 'initialising';
     public const STATUS_CONVERTING = 'converting';
     public const STATUS_SUCCESSFUL = 'successful';
     public const STATUS_FAILED = 'failed';
     public const STATUS_CANCELLED = 'cancelled';
 
-    /** Properties */
-    private $id;
-    private $key;
-    private $status;
-    private $failure;
-    private $sandbox;
-    private $created_at;
-    private $finished_at;
-    private $import;
-    private $source_file;
-    private $target_files;
-    private $target_format;
-    private $credit_cost;
-    private $export_url;
-    private $exports;
-
-    /**
-     * Initialise a new instance of the Job object
-     */
-    public function __construct($config, $data)
-    {
-        parent::__construct($config, $data->id);
-        $this->setValues($data);
-    }
-
-    /**
-     * Initialise or Update properties
-     */
-    private function setValues($data)
-    {
-        // Should always be supplied
-        $this->id = $data->id;
-        $this->key = $data->key;
-        $this->status = $data->status;
-        $this->sandbox = $data->sandbox;
-        $this->finished_at = $data->finished_at;
-        $this->created_at = $data->created_at;
-        $this->target_files = array();
-        $this->target_format = $data->target_format;
-        $this->credit_cost = $data->credit_cost;
-
-        // Target Files will be empty when a job is submitted
-        foreach ($data->target_files as $target_file) {
-            $this->target_files[] = File::constructFrom((array)$target_file, $this->getConfig());
-        }
-
-        // Optionally supplied
-        if (property_exists($data, "source_file")) {
-            $this->source_file = File::constructFrom((array)$data->source_file, $this->getConfig());
-        }
-
-        if (property_exists($data, "failure")) {
-            $this->failure = new \Zamzar\Failure($data->failure);
-        }
-
-        if (property_exists($data, "import")) {
-            $this->import = new \Zamzar\Import($this->getConfig(), $data->import);
-        }
-
-        if (property_exists($data, "export_url")) {
-            $this->export_url = $data->export_url;
-        } else {
-            $this->export_url = '';
-        }
-
-        if (property_exists($data, "exports")) {
-            foreach ($data->exports as $export) {
-                $this->exports[] = new \Zamzar\Export($export);
-            }
-        }
-    }
+    protected array $propertyMap = [
+        'failure' => Failure::class,
+        'import' => Import::class,
+        'source_file' => File::class,
+        'target_files' => File::class,
+    ];
 
     /**
      * Delete source file
@@ -184,8 +129,15 @@ class Job extends InteractsWithApi
         return $this;
     }
 
+    public function cancel()
+    {
+        $this->request('DELETE', $this->instanceUrl());
+        return $this->refresh();
+    }
+
     /**
      * Get the value of id
+     * @deprecated
      */
     public function getId()
     {
@@ -194,6 +146,7 @@ class Job extends InteractsWithApi
 
     /**
      * Get the value of key
+     * @deprecated
      */
     public function getKey()
     {
@@ -202,6 +155,7 @@ class Job extends InteractsWithApi
 
     /**
      * Get the value of status
+     * @deprecated
      */
     public function getStatus()
     {
@@ -210,6 +164,7 @@ class Job extends InteractsWithApi
 
     /**
      * Get the value of failure
+     * @deprecated
      */
     public function getFailure()
     {
@@ -218,6 +173,7 @@ class Job extends InteractsWithApi
 
     /**
      * Get the value of sandbox
+     * @deprecated
      */
     public function getSandbox()
     {
@@ -226,6 +182,7 @@ class Job extends InteractsWithApi
 
     /**
      * Get the value of created_at
+     * @deprecated
      */
     public function getCreatedAt()
     {
@@ -234,6 +191,7 @@ class Job extends InteractsWithApi
 
     /**
      * Get the value of finished_at
+     * @deprecated
      */
     public function getFinishedAt()
     {
@@ -242,6 +200,7 @@ class Job extends InteractsWithApi
 
     /**
      * Get the value of import
+     * @deprecated
      */
     public function getImport()
     {
@@ -250,6 +209,7 @@ class Job extends InteractsWithApi
 
     /**
      * Get the value of source_file
+     * @deprecated
      */
     public function getSourceFile()
     {
@@ -258,6 +218,7 @@ class Job extends InteractsWithApi
 
     /**
      * Get the value of target_files
+     * @deprecated
      */
     public function getTargetFiles()
     {
@@ -266,6 +227,7 @@ class Job extends InteractsWithApi
 
     /**
      * Get the value of target_format
+     * @deprecated
      */
     public function getTargetFormat()
     {
@@ -274,6 +236,7 @@ class Job extends InteractsWithApi
 
     /**
      * Get the value of credit_cost
+     * @deprecated
      */
     public function getCreditCost()
     {
@@ -282,6 +245,7 @@ class Job extends InteractsWithApi
 
     /**
      * Get the value of export_url
+     * @deprecated
      */
     public function getExportUrl()
     {
@@ -290,6 +254,7 @@ class Job extends InteractsWithApi
 
     /**
      * Get the value of exports
+     * @deprecated
      */
     public function getExports()
     {

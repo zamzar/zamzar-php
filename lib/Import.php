@@ -3,72 +3,30 @@
 namespace Zamzar;
 
 /**
- * Import Object
+ * @property int $id
+ * @property string $key
+ * @property string $url
+ * @property string $status
+ * @property null|\Zamzar\Failure $failure
+ * @property string $created_at
+ * @property string $finished_at
+ * @property null|\Zamzar\File $file
  */
-class Import extends InteractsWithApi
+class Import extends ApiResource
 {
-    /** Valid API Operations for this Class */
-    use \Zamzar\ApiOperations\Refresh;
-
-    /** Constants */
     public const STATUS_INITIALISING = 'initialising';
     public const STATUS_DOWNLOADING = 'downloading';
     public const STATUS_SUCCESSFUL = 'successful';
     public const STATUS_FAILED = 'failed';
 
-    /** Properties */
-    private $id;
-    private $key;
-    private $url;
-    private $status;
-    private $failure;
-    private $file;
-    private $created_at;
-    private $finished_at;
-
-    /**
-     * Initialise a new instance of the Import object
-     */
-    public function __construct($config, $data)
-    {
-        parent::__construct($config, $data->id);
-        $this->setValues($data);
-    }
-
-    /**
-     * Initialise or Update properties
-     */
-    private function setValues($data)
-    {
-        // Should always be supplied
-        $this->id = $data->id;
-        $this->url = $data->url;
-        $this->status = $data->status;
-
-        // Optionally supplied
-        if (property_exists($data, "key")) {
-            $this->key = $data->key;
-        }
-
-        if (property_exists($data, "failure")) {
-            $this->failure = new \Zamzar\Failure($data->failure);
-        }
-
-        if (property_exists($data, "file")) {
-            $this->file = File::constructFrom((array)$data->file, $this->config);
-        }
-
-        if (property_exists($data, "created_at")) {
-            $this->created_at = $data->created_at;
-        }
-
-        if (property_exists($data, "finished_at")) {
-            $this->finished_at = $data->finished_at;
-        }
-    }
+    protected array $propertyMap = [
+        'failure' => Failure::class,
+        'file' => File::class,
+    ];
 
     /**
      * Get the value of id
+     * @deprecated
      */
     public function getId()
     {
@@ -77,6 +35,7 @@ class Import extends InteractsWithApi
 
     /**
      * Get the value of key
+     * @deprecated
      */
     public function getKey()
     {
@@ -85,6 +44,7 @@ class Import extends InteractsWithApi
 
     /**
      * Get the value of url
+     * @deprecated
      */
     public function getUrl()
     {
@@ -93,6 +53,7 @@ class Import extends InteractsWithApi
 
     /**
      * Get the value of status
+     * @deprecated
      */
     public function getStatus()
     {
@@ -101,6 +62,7 @@ class Import extends InteractsWithApi
 
     /**
      * Get the value of failure
+     * @deprecated
      */
     public function getFailure()
     {
@@ -109,6 +71,7 @@ class Import extends InteractsWithApi
 
     /**
      * Get the value of file
+     * @deprecated
      */
     public function getFile()
     {
@@ -117,6 +80,7 @@ class Import extends InteractsWithApi
 
     /**
      * Get the value of created_at
+     * @deprecated
      */
     public function getCreatedAt()
     {
@@ -125,6 +89,7 @@ class Import extends InteractsWithApi
 
     /**
      * Get the value of finished_at
+     * @deprecated
      */
     public function getFinishedAt()
     {
@@ -133,6 +98,7 @@ class Import extends InteractsWithApi
 
     /**
      * Does this import have a file
+     * @deprecated
      */
     public function hasFile()
     {
@@ -141,6 +107,7 @@ class Import extends InteractsWithApi
 
     /**
      * Does this import have a failure
+     * @deprecated
      */
     public function hasFailure()
     {

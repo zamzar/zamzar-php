@@ -21,14 +21,12 @@ require __DIR__ . '/lib/Exception/TimeOutException.php';
 require __DIR__ . '/lib/Exception/UnknownApiErrorException.php';
 
 // API Operations
-require __DIR__ . '/lib/ApiOperations/All.php';
-require __DIR__ . '/lib/ApiOperations/Cancel.php';
-require __DIR__ . '/lib/ApiOperations/Get.php';
 require __DIR__ . '/lib/ApiOperations/Paging.php';
-require __DIR__ . '/lib/ApiOperations/Refresh.php';
 
 // Plumbing
 require __DIR__ . '/lib/InteractsWithApi.php';
+require __DIR__ . '/lib/ApiResource.php';
+require __DIR__ . '/lib/ZamzarObject.php';
 require __DIR__ . '/lib/ApiRequestor.php';
 require __DIR__ . '/lib/ApiResponse.php';
 

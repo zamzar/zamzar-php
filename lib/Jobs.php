@@ -4,17 +4,43 @@ namespace Zamzar;
 
 class Jobs extends InteractsWithApi
 {
-    /** Valid API Operations for this Class */
     use \Zamzar\ApiOperations\Paging;
-    use \Zamzar\ApiOperations\All;
-    use \Zamzar\ApiOperations\Get;
 
     public function create($params)
     {
-        $apiResponse = $this->apiRequest($this->getEndpoint(), 'POST', $params);
+        $apiResponse = $this->apiRequest(Job::classUrl(), 'POST', $params);
 
         $data = $apiResponse->getBody();
 
-        return new \Zamzar\Job($this->getConfig(), $data);
+        return Job::constructFrom($data, $this->config);
+    }
+
+    public function get($id)
+    {
+        $apiResponse = $this->apiRequest(Job::resourceUrl($id), 'GET');
+
+        $data = (array)$apiResponse->getBody();
+
+        return Job::constructFrom($data, $this->config);
+    }
+
+    public function all($requestOptions = null)
+    {
+        $endpoint = Job::classUrl();
+
+        if (!$requestOptions == null) {
+            $endpoint = $endpoint . '/?' . http_build_query($requestOptions);
+        }
+
+        $apiResponse = $this->apiRequest($endpoint);
+
+        $data = $apiResponse->getData();
+
+        $this->resetData();
+        foreach ($data as $object) {
+            $this->addData(Job::constructFrom((array)$object, $this->config));
+        }
+
+        return $this;
     }
 }
