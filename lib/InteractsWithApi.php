@@ -70,9 +70,7 @@ class InteractsWithApi
         // Make the request and save the last response
         $this->lastResponse = $apiRequestor->request($endpoint, $method, $params, $getFileContent);
 
-        if (isset($this->config['client'])) {
-            ($this->config['client'])->setLastResponse($this->lastResponse);
-        }
+        ZamzarClient::$lastResponse = $this->lastResponse;
 
         // Store the paging information
         $this->paging = $this->lastResponse->getPaging();

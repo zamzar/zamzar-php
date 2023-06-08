@@ -9,7 +9,7 @@ namespace Zamzar;
  * @property \Zamzar\Imports $imports
  * @property \Zamzar\Jobs $jobs
  */
-class ZamzarClient extends InteractsWithApi
+class ZamzarClient extends BaseZamzarClient
 {
     private static $classMap = [
         'account' => Account::class,
@@ -20,16 +20,6 @@ class ZamzarClient extends InteractsWithApi
     ];
 
     private $services = [];
-
-    /**
-     * Initialises a new instance of the Zamzar class
-     */
-    public function __construct($config)
-    {
-        parent::__construct($config);
-
-        $this->config['client'] = $this;
-    }
 
     /**
      * @deprecated Use \Zamzar\Zamzar::setLogger() instead.
@@ -56,9 +46,8 @@ class ZamzarClient extends InteractsWithApi
      */
     public function testConnection()
     {
-        $apiResponse = $this->apiRequest($this->getEndpoint());
-        $data = $apiResponse->getBody();
-        return $data->message;
+        $apiResponse = $this->request('GET', '');
+        return $apiResponse->getBody()->message;
     }
 
     /**
@@ -85,7 +74,7 @@ class ZamzarClient extends InteractsWithApi
     public function getLastProductionCreditsRemaining()
     {
         return $this->hasLastResponse()
-            ? $this->getLastResponse()->getProductionCreditsRemaining()
+            ? static::$lastResponse->getProductionCreditsRemaining()
             : $this->getProductionCreditsRemaining();
     }
 
@@ -97,7 +86,7 @@ class ZamzarClient extends InteractsWithApi
     public function getLastTestCreditsRemaining()
     {
         return $this->hasLastResponse()
-            ? $this->getLastResponse()->getTestCreditsRemaining()
+            ? static::$lastResponse->getTestCreditsRemaining()
             : $this->getTestCreditsRemaining();
     }
 

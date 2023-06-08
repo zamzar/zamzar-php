@@ -25,11 +25,7 @@ abstract class ApiResource extends ZamzarObject
     {
         $response = (new ApiRequestor($this->config))->request($url, $method, $params, $getFileContent);
 
-        if (isset($this->config['client'])) {
-            ($this->config['client'])->setLastResponse($response);
-        }
-
-        return $response;
+        return ZamzarClient::$lastResponse = $response;
     }
 
     public function refresh()
