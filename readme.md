@@ -163,9 +163,7 @@ To run tests:
 
 - Ensure dependencies are installed using <code>composer install</code>
 
-- Rename the <code>testconfigtemplate.php</code> file in the <code>tests</code> folder to <code>testconfig.php</code>
-
-- Specify your API Key within the <code>testconfig.php</code> file
+- Specify your API Key within an environment variable <code>ZAMZAR_API_KEY</code>
 
 - Run <code>./vendor/bin/phpunit tests</code>
 

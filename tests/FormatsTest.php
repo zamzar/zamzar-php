@@ -8,19 +8,17 @@ use PHPUnit\Framework\TestCase;
 
 final class FormatsTest extends TestCase
 {
-    use TestConfig;
+    use WithClient;
 
     public function testFormatsAreListable(): void
     {
-        $zamzar = new \Zamzar\ZamzarClient($this->apiKey);
-        $formats = $zamzar->formats->all(['limit' => 1]);
+        $formats = $this->client->formats->all(['limit' => 1]);
         $this->assertEquals(count($formats->data), 1);
     }
 
     public function testFormatsContainsPagingElements(): void
     {
-        $zamzar = new \Zamzar\ZamzarClient($this->apiKey);
-        $formats = $zamzar->formats->all(['limit' => 1]);
+        $formats = $this->client->formats->all(['limit' => 1]);
         $paging = $formats->paging;
         $this->assertGreaterThan(0, $paging->limit);
         $this->assertGreaterThan(0, $paging->first);
@@ -30,13 +28,7 @@ final class FormatsTest extends TestCase
 
     public function testFormatIsRetrievable(): void
     {
-        $zamzar = new \Zamzar\ZamzarClient($this->apiKey);
-
-        // get any format
-        $formats = $zamzar->formats->all(['limit' => 1]);
-        $format = $formats->data[0]->getName();
-        //retrieve the format via the 'get' method
-        $format = $zamzar->formats->get($format);
-        $this->assertGreaterThan(0, count($format->getTargets()));
+        $format = $this->client->formats->get('png');
+        $this->assertGreaterThan(0, count($format->targets));
     }
 }

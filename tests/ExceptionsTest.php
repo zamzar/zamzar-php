@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 final class ExceptionsTest extends TestCase
 {
-    use TestConfig;
+    use WithClient;
 
     public function testAuthenticationException(): void
     {
@@ -20,8 +20,7 @@ final class ExceptionsTest extends TestCase
     public function testInvalidArgumentException(): void
     {
         $this->expectException(\Zamzar\Exception\InvalidArgumentException::class);
-        $zamzar = new \Zamzar\ZamzarClient($this->apiKey);
-        $zamzar->jobs->create([
+        $this->client->jobs->create([
             'sour1file' => 'invalid'
         ]);
     }
@@ -29,8 +28,7 @@ final class ExceptionsTest extends TestCase
     public function testInvalidRequestException(): void
     {
         $this->expectException(\Zamzar\Exception\InvalidRequestException::class);
-        $zamzar = new \Zamzar\ZamzarClient($this->apiKey);
-        $job = $zamzar->jobs->create([
+        $job = $this->client->jobs->create([
             'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
             'target_format' => 'mpg'
         ]);
@@ -38,16 +36,14 @@ final class ExceptionsTest extends TestCase
 
     public function testInvalidResourceException(): void
     {
-        $zamzar = new \Zamzar\ZamzarClient($this->apiKey);
         $this->expectException(\Zamzar\Exception\InvalidResourceException::class);
-        $zamzar->files->get(1234);
+        $this->client->files->get(1234);
     }
 
     public function testTimeOutException(): void
     {
         $this->expectException(\Zamzar\Exception\TimeOutException::class);
-        $zamzar = new \Zamzar\ZamzarClient($this->apiKey);
-        $job = $zamzar->jobs->create([
+        $job = $this->client->jobs->create([
             'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
             'target_format' => 'pdf'
         ])->waitForCompletion(0);
