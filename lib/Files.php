@@ -10,18 +10,18 @@ class Files extends InteractsWithApi
     {
         $apiResponse = $this->apiRequest(File::classUrl(), 'POST', $params);
 
-        $data = (array)$apiResponse->getBody();
+        $data = $apiResponse->getBody();
 
-        return File::constructFrom($data, $this->config);
+        return File::constructFrom((array)$data, $this->config);
     }
 
     public function get($id)
     {
         $apiResponse = $this->apiRequest(File::resourceUrl($id), 'GET');
 
-        $data = (array)$apiResponse->getBody();
+        $data = $apiResponse->getBody();
 
-        return File::constructFrom($data, $this->config);
+        return File::constructFrom((array)$data, $this->config);
     }
 
     public function all($requestOptions = null)

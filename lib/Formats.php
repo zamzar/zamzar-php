@@ -10,9 +10,9 @@ class Formats extends InteractsWithApi
     {
         $apiResponse = $this->apiRequest(Format::resourceUrl($id), 'GET');
 
-        $data = (array)$apiResponse->getBody();
+        $data = $apiResponse->getBody();
 
-        return Format::constructFrom($data, $this->config);
+        return Format::constructFrom((array)$data, $this->config);
     }
 
     public function all($requestOptions = null)

@@ -12,16 +12,16 @@ class Jobs extends InteractsWithApi
 
         $data = $apiResponse->getBody();
 
-        return Job::constructFrom($data, $this->config);
+        return Job::constructFrom((array)$data, $this->config);
     }
 
     public function get($id)
     {
         $apiResponse = $this->apiRequest(Job::resourceUrl($id), 'GET');
 
-        $data = (array)$apiResponse->getBody();
+        $data = $apiResponse->getBody();
 
-        return Job::constructFrom($data, $this->config);
+        return Job::constructFrom((array)$data, $this->config);
     }
 
     public function all($requestOptions = null)

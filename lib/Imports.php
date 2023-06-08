@@ -12,16 +12,16 @@ class Imports extends InteractsWithApi
 
         $data = $apiResponse->getBody();
 
-        return Import::constructFrom($data, $this->config);
+        return Import::constructFrom((array)$data, $this->config);
     }
 
     public function get($id)
     {
         $apiResponse = $this->apiRequest(Import::resourceUrl($id), 'GET');
 
-        $data = (array)$apiResponse->getBody();
+        $data = $apiResponse->getBody();
 
-        return Import::constructFrom($data, $this->config);
+        return Import::constructFrom((array)$data, $this->config);
     }
 
     public function all($requestOptions = null)

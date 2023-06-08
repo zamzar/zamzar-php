@@ -44,7 +44,7 @@ class File extends ApiResource
     public function convert($params)
     {
         $response = $this->request('POST', '/v1/jobs', array_merge($params, ['source_file' => $this->id]));
-        return new Job($this->config, $response->getBody());
+        return Job::constructFrom((array)$response->getBody(), $this->config);
     }
 
     /**
