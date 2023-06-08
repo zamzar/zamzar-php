@@ -25,33 +25,27 @@ trait Paging
      */
     private function pageNav($direction)
     {
-        // Get the base endpoint for jobs which may also include a filter on job status from the previous call
-        $endpoint = $this->getEndpoint();
+        $params = [];
 
         // Paging data will be stored in the last response
         if ($direction == 'forward') {
-            $endpoint = $endpoint . '/?after=' . $this->getLastResponse()->getPaging()->last;
+            $params['after'] = $this->getLastResponse()->getPaging()->last;
         } elseif ($direction = 'back') {
-            $endpoint = $endpoint . '/?before=' . $this->getLastResponse()->getPaging()->first;
+            $params['before'] = $this->getLastResponse()->getPaging()->first;
         }
 
-        // Maintain any record limits which have previously been set either from the first call to the endpoint or explicitly by the user
-        $endpoint = $endpoint . '&limit=' . $this->getLastResponse()->getPaging()->limit;
+        $params['limit'] = $this->getLastResponse()->getPaging()->limit;
 
-        // Make the api request via the InteractsWithApi:apiRequest function
-        $apiResponse = $this->apiRequest($endpoint);
+        $apiResponse = $this->apiRequest($this->getEndpoint(), 'GET', $params);
 
-        // Get the data and paging arrays
         $data = $apiResponse->getData();
 
-        // Convert to a array of specific objects
         $this->resetData();
         foreach ($data as $object) {
             $objectType = Zamzar::COLLECTION_CLASS_MAP[static::class];
-            $this->addData(new $objectType($this->getConfig(), $object));
+            $this->addData($objectType::constructFrom((array)$object, $this->getConfig()));
         }
 
-        // return the object
         return $this;
     }
 

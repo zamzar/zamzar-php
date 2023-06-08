@@ -24,15 +24,9 @@ class Jobs extends InteractsWithApi
         return Job::constructFrom((array)$data, $this->config);
     }
 
-    public function all($requestOptions = null)
+    public function all($params = [])
     {
-        $endpoint = Job::classUrl();
-
-        if (!$requestOptions == null) {
-            $endpoint = $endpoint . '/?' . http_build_query($requestOptions);
-        }
-
-        $apiResponse = $this->apiRequest($endpoint);
+        $apiResponse = $this->apiRequest(Job::classUrl(), 'GET', $params);
 
         $data = $apiResponse->getData();
 

@@ -24,15 +24,9 @@ class Files extends InteractsWithApi
         return File::constructFrom((array)$data, $this->config);
     }
 
-    public function all($requestOptions = null)
+    public function all($params = [])
     {
-        $endpoint = File::classUrl();
-
-        if (!$requestOptions == null) {
-            $endpoint = $endpoint . '/?' . http_build_query($requestOptions);
-        }
-
-        $apiResponse = $this->apiRequest($endpoint);
+        $apiResponse = $this->apiRequest(File::classUrl(), 'GET', $params);
 
         $data = $apiResponse->getData();
 
