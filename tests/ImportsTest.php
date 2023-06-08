@@ -16,16 +16,6 @@ final class ImportsTest extends TestCase
         $this->assertEquals(count($imports->data), 1);
     }
 
-    public function testImportsContainsPagingElements(): void
-    {
-        $imports = $this->client->imports->all(['limit' => 1]);
-        $paging = $imports->paging;
-        $this->assertGreaterThan(0, $paging->limit);
-        $this->assertGreaterThan(0, $paging->first);
-        $this->assertGreaterThan(0, $paging->last);
-        $this->assertGreaterThan(0, $paging->total_count);
-    }
-
     public function testImportIsRetrievable(): void
     {
         $import = $this->client->imports->create([

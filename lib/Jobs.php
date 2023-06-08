@@ -8,31 +8,25 @@ class Jobs extends InteractsWithApi
 
     public function create($params)
     {
-        $apiResponse = $this->apiRequest(Job::classUrl(), 'POST', $params);
+        $response = $this->apiRequest(Job::classUrl(), 'POST', $params);
 
-        $data = $apiResponse->getBody();
-
-        return Job::constructFrom((array)$data, $this->config);
+        return Job::constructFrom($response->getBody(), $this->config);
     }
 
     public function get($id)
     {
-        $apiResponse = $this->apiRequest(Job::resourceUrl($id), 'GET');
+        $response = $this->apiRequest(Job::resourceUrl($id), 'GET');
 
-        $data = $apiResponse->getBody();
-
-        return Job::constructFrom((array)$data, $this->config);
+        return Job::constructFrom($response->getBody(), $this->config);
     }
 
     public function all($params = [])
     {
-        $apiResponse = $this->apiRequest(Job::classUrl(), 'GET', $params);
-
-        $data = $apiResponse->getData();
+        $response = $this->apiRequest(Job::classUrl(), 'GET', $params);
 
         $this->resetData();
-        foreach ($data as $object) {
-            $this->addData(Job::constructFrom((array)$object, $this->config));
+        foreach ($response->getData() as $object) {
+            $this->addData(Job::constructFrom($object, $this->config));
         }
 
         return $this;

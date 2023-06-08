@@ -17,7 +17,7 @@ class ApiResponse
 
     public function __construct($body, $code, $headers)
     {
-        $this->body = json_decode($body);
+        $this->body = json_decode($body, true);
         $this->code = $code;
         $this->headers = $headers;
     }
@@ -44,24 +44,12 @@ class ApiResponse
 
     public function getData()
     {
-        if (is_object($this->body)) {
-            if (property_exists($this->body, "data")) {
-                return $this->body->data;
-            } else {
-                return null;
-            }
-        }
+        return $this->body['data'] ?? null;
     }
 
     public function getPaging()
     {
-        if (is_object($this->body)) {
-            if (property_exists($this->body, "paging")) {
-                return $this->body->paging;
-            } else {
-                return null;
-            }
-        }
+        return $this->body['paging'] ?? null;
     }
 
     public function getProductionCreditsRemaining()

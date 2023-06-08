@@ -26,9 +26,9 @@ class Account extends InteractsWithApi
         $data = $apiResponse->getBody();
 
         // set the properties
-        $this->test_credits_remaining = $data->test_credits_remaining;
-        $this->production_credits_remaining = $data->credits_remaining;
-        $this->plan = new \Zamzar\Plan($data->plan);
+        $this->test_credits_remaining = $data['test_credits_remaining'];
+        $this->production_credits_remaining = $data['credits_remaining'];
+        $this->plan = new \Zamzar\Plan($data['plan']);
 
         // return this object
         return $this;

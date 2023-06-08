@@ -31,7 +31,7 @@ abstract class ApiResource extends ZamzarObject
     public function refresh()
     {
         $response = $this->request('GET', $this->instanceUrl());
-        $this->refreshFrom((array)$response->getBody());
+        $this->refreshFrom($response->getBody());
 
         return $this;
     }

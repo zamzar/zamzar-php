@@ -20,10 +20,10 @@ class Plan
 
     private function setValues($plan)
     {
-        $this->name = $plan->name;
-        $this->price_per_month = $plan->price_per_month;
-        $this->conversions_per_month = $plan->conversions_per_month;
-        $this->maximum_file_size = $plan->maximum_file_size;
+        $this->name = $plan['name'];
+        $this->price_per_month = $plan['price_per_month'];
+        $this->conversions_per_month = $plan['conversions_per_month'];
+        $this->maximum_file_size = $plan['maximum_file_size'];
     }
 
     public function getPlanName()

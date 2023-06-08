@@ -29,21 +29,19 @@ trait Paging
 
         // Paging data will be stored in the last response
         if ($direction == 'forward') {
-            $params['after'] = $this->getLastResponse()->getPaging()->last;
+            $params['after'] = $this->getLastResponse()->getPaging()['last'];
         } elseif ($direction = 'back') {
-            $params['before'] = $this->getLastResponse()->getPaging()->first;
+            $params['before'] = $this->getLastResponse()->getPaging()['first'];
         }
 
-        $params['limit'] = $this->getLastResponse()->getPaging()->limit;
+        $params['limit'] = $this->getLastResponse()->getPaging()['limit'];
 
         $apiResponse = $this->apiRequest($this->getEndpoint(), 'GET', $params);
 
-        $data = $apiResponse->getData();
-
         $this->resetData();
-        foreach ($data as $object) {
+        foreach ($apiResponse->getData() as $object) {
             $objectType = Zamzar::COLLECTION_CLASS_MAP[static::class];
-            $this->addData($objectType::constructFrom((array)$object, $this->getConfig()));
+            $this->addData($objectType::constructFrom($object, $this->getConfig()));
         }
 
         return $this;

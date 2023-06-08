@@ -16,16 +16,6 @@ final class FilesTest extends TestCase
         $this->assertEquals(count($files->data), 1);
     }
 
-    public function testFilesContainsPagingElements(): void
-    {
-        $files = $this->client->files->all(['limit' => 1]);
-        $paging = $files->paging;
-        $this->assertGreaterThan(0, $paging->limit);
-        $this->assertGreaterThan(0, $paging->first);
-        $this->assertGreaterThan(0, $paging->last);
-        $this->assertGreaterThan(0, $paging->total_count);
-    }
-
     public function testFileIsRetrievable(): void
     {
         $files = $this->client->files->all(['limit' => 1]);

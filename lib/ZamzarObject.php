@@ -35,12 +35,12 @@ class ZamzarObject
     {
         foreach ($this->propertyMap as $key => $class) {
             if (array_key_exists($key, $this->values)) {
-                if (is_array($this->values[$key])) {
+                if (is_array($class)) {
                     $this->values[$key] = array_map(function ($obj) use ($class) {
-                        return $class::constructFrom((array)$obj, $this->config);
+                        return $class[0]::constructFrom($obj, $this->config);
                     }, $this->values[$key]);
                 } else {
-                    $this->values[$key] = $class::constructFrom((array)$this->values[$key], $this->config);
+                    $this->values[$key] = $class::constructFrom($this->values[$key], $this->config);
                 }
             }
         }

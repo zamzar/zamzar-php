@@ -26,13 +26,11 @@ class ApiErrorException extends \Exception
         parent::__construct($message, $code, $previous);
 
         if (is_array($errors)) {
-            $apiErrors = [];
             foreach ($errors as $error) {
                 $this->apiErrors[] = new \Zamzar\Error($error);
             }
             $this->apiErrorsRaw = json_encode($errors);
         } else {
-            $apiErrors = [];
             $this->apiErrors[] = new \Zamzar\Error(["message" => "No additional information provided", "code" => $code]);
             $this->apiErrorsRaw = json_encode("No additional information provided");
         }

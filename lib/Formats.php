@@ -8,22 +8,18 @@ class Formats extends InteractsWithApi
 
     public function get($id)
     {
-        $apiResponse = $this->apiRequest(Format::resourceUrl($id), 'GET');
+        $response = $this->apiRequest(Format::resourceUrl($id), 'GET');
 
-        $data = $apiResponse->getBody();
-
-        return Format::constructFrom((array)$data, $this->config);
+        return Format::constructFrom($response->getBody(), $this->config);
     }
 
     public function all($params = [])
     {
-        $apiResponse = $this->apiRequest(Format::classUrl(), 'GET', $params);
-
-        $data = $apiResponse->getData();
+        $response = $this->apiRequest(Format::classUrl(), 'GET', $params);
 
         $this->resetData();
-        foreach ($data as $object) {
-            $this->addData(Format::constructFrom((array)$object, $this->config));
+        foreach ($response->getData() as $object) {
+            $this->addData(Format::constructFrom($object, $this->config));
         }
 
         return $this;

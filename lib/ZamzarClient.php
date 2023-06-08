@@ -47,7 +47,7 @@ class ZamzarClient extends BaseZamzarClient
     public function testConnection()
     {
         $apiResponse = $this->request('GET', '');
-        return $apiResponse->getBody()->message;
+        return $apiResponse->getBody()['message'];
     }
 
     /**

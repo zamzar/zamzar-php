@@ -220,10 +220,8 @@ class ApiRequestor
         $errors = [];
         if (!is_null($this->apiResponse)) {
             if (!is_null($this->apiResponse->getBody())) {
-                if (!is_null($this->apiResponse->getBody()->errors)) {
-                    if (property_exists($this->apiResponse->getBody(), "errors")) {
-                        $errors = $this->apiResponse->getBody()->errors;
-                    }
+                if (isset($this->apiResponse->getBody()['errors'])) {
+                    $errors = $this->apiResponse->getBody()['errors'];
                 }
             }
         }

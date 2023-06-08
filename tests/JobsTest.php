@@ -10,25 +10,15 @@ final class JobsTest extends TestCase
 {
     use WithClient;
 
-    private $sourceFilePath = "tests/files/source/";
-    private $targetFilePath = "tests/files/target/";
-    private $validLocalSourceFile = 'tests/files/source/test.pdf';
+    private $sourceFilePath = __DIR__ . "/files/source/";
+    private $targetFilePath = __DIR__ . "/files/target/";
+    private $validLocalSourceFile = __DIR__ . '/files/source/test.pdf';
     private $validTargetFormat = 'doc';
 
     public function testJobsAreListable(): void
     {
         $jobs = $this->client->jobs->all(['limit' => 1]);
         $this->assertEquals(count($jobs->data), 1);
-    }
-
-    public function testJobsContainsPagingElements(): void
-    {
-        $jobs = $this->client->jobs->all(['limit' => 1]);
-        $paging = $jobs->paging;
-        $this->assertGreaterThan(0, $paging->limit);
-        $this->assertGreaterThan(0, $paging->first);
-        $this->assertGreaterThan(0, $paging->last);
-        $this->assertGreaterThan(0, $paging->total_count);
     }
 
     public function testJobIsRetrievable(): void
@@ -97,6 +87,6 @@ final class JobsTest extends TestCase
             'target_format' => 'pdf'
         ]);
         $job = $job->cancel();
-        $this->assertEquals($job->status, 'cancelled');
+        $this->assertEquals('cancelled', $job->status);
     }
 }

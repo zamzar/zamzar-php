@@ -8,31 +8,25 @@ class Imports extends InteractsWithApi
 
     public function create($params)
     {
-        $apiResponse = $this->apiRequest(Import::classUrl(), 'POST', $params);
+        $response = $this->apiRequest(Import::classUrl(), 'POST', $params);
 
-        $data = $apiResponse->getBody();
-
-        return Import::constructFrom((array)$data, $this->config);
+        return Import::constructFrom($response->getBody(), $this->config);
     }
 
     public function get($id)
     {
-        $apiResponse = $this->apiRequest(Import::resourceUrl($id), 'GET');
+        $response = $this->apiRequest(Import::resourceUrl($id), 'GET');
 
-        $data = $apiResponse->getBody();
-
-        return Import::constructFrom((array)$data, $this->config);
+        return Import::constructFrom($response->getBody(), $this->config);
     }
 
     public function all($params = [])
     {
-        $apiResponse = $this->apiRequest(Import::classUrl(), 'GET', $params);
-
-        $data = $apiResponse->getData();
+        $response = $this->apiRequest(Import::classUrl(), 'GET', $params);
 
         $this->resetData();
-        foreach ($data as $object) {
-            $this->addData(Import::constructFrom((array)$object, $this->config));
+        foreach ($response->getData() as $object) {
+            $this->addData(Import::constructFrom($object, $this->config));
         }
 
         return $this;

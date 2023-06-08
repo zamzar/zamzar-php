@@ -32,7 +32,7 @@ class Job extends ApiResource
         'failure' => Failure::class,
         'import' => Import::class,
         'source_file' => File::class,
-        'target_files' => File::class,
+        'target_files' => [File::class],
     ];
 
     /**
