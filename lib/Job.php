@@ -31,6 +31,7 @@ class Job extends ApiResource
     public const STATUS_CANCELLED = 'cancelled';
 
     protected array $propertyMap = [
+        'export' => Export::class,
         'failure' => Failure::class,
         'import' => Import::class,
         'source_file' => File::class,
@@ -42,7 +43,7 @@ class Job extends ApiResource
      */
     public function deleteSourceFile()
     {
-        $this->getSourceFile()->delete();
+        $this->source_file->delete();
         return $this;
     }
 
@@ -51,7 +52,7 @@ class Job extends ApiResource
      */
     public function deleteTargetFiles()
     {
-        foreach ($this->getTargetFiles() as $target_file) {
+        foreach ($this->target_files as $target_file) {
             $target_file->delete();
         }
         return $this;
@@ -62,7 +63,7 @@ class Job extends ApiResource
      */
     public function downloadTargetFiles($path)
     {
-        foreach ($this->getTargetFiles() as $target_file) {
+        foreach ($this->target_files as $target_file) {
             $target_file->download($path);
         }
         return $this;
