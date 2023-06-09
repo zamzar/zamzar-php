@@ -4,10 +4,14 @@ namespace Zamzar;
 
 /**
  * @property string $name
- * @property null|array $targets
+ * @property \Zamzar\TargetFormat[] $targets
  */
 class Format extends ApiResource
 {
+    protected array $propertyMap = [
+        'targets' => [TargetFormat::class],
+    ];
+
     /**
      * @deprecated Access property directly instead
      */
