@@ -2,6 +2,8 @@
 
 namespace Zamzar;
 
+use Zamzar\ApiOperations\WaitForCompletion;
+
 /**
  * @property int $id
  * @property string $key
@@ -20,6 +22,8 @@ namespace Zamzar;
  */
 class Job extends ApiResource
 {
+    use WaitForCompletion;
+
     public const STATUS_INITIALISING = 'initialising';
     public const STATUS_CONVERTING = 'converting';
     public const STATUS_SUCCESSFUL = 'successful';
@@ -82,48 +86,6 @@ class Job extends ApiResource
     {
         $this->deleteSourceFile();
         $this->deleteTargetFiles();
-        return $this;
-    }
-
-    /**
-     * Wait for the job to complete
-     */
-    public function waitForCompletion($timeout = 60)
-    {
-        $totalSleep = 0;
-        $sleepInterval = 1;
-
-        do {
-            // goto sleep
-            sleep($sleepInterval);
-
-            // how long have we been sleeping for
-            $totalSleep += $sleepInterval;
-
-            // gradually decrease the number of api calls based on the time spent waiting, upto a max of 30 second intervals
-            if ($totalSleep >= 10) {
-                $sleepInterval = 5;
-            } elseif ($totalSleep >= 20) {
-                $sleepInterval = 10;
-            } elseif ($totalSleep >= 40) {
-                $sleepInterval = 20;
-            } elseif ($totalSleep >= 60) {
-                $sleepInterval = 30;
-            }
-
-            // throw an exception if we exceed the timeout
-            if ($totalSleep > $timeout) {
-                throw new \Zamzar\Exception\TimeOutException('Timed out waiting for Job Id ' . $this->getId() . ' to complete. Increase the timeout period.');
-            }
-
-            // refresh this job's values
-            $this->refresh();
-        } while (
-            // check the latest status
-            $this->status !== self::STATUS_SUCCESSFUL && $this->status !== self::STATUS_FAILED && $this->status !== self::STATUS_CANCELLED
-        );
-
-        // return this job
         return $this;
     }
 
@@ -297,6 +259,6 @@ class Job extends ApiResource
 
     public function hasCompleted()
     {
-        return $this->isStatusSuccessful() || $this->isStatusFailed();
+        return $this->isStatusSuccessful() || $this->isStatusFailed() || $this->isStatusCancelled();
     }
 }

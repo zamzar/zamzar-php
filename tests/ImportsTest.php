@@ -33,15 +33,11 @@ final class ImportsTest extends TestCase
         $this->assertGreaterThan(0, $import->id);
     }
 
-    public function testImportCanBeRefreshed(): void
+    public function testCanWaitUntilComplete(): void
     {
         $import = $this->client->imports->create([
             'url' => 'https://www.zamzar.com/images/zamzar-logo.png'
-        ]);
-        $statusBefore = $import->status;
-        sleep(10);
-        $import->refresh();
-        $statusAfter = $import->status;
-        $this->assertNotEquals($statusBefore, $statusAfter);
+        ])->waitForCompletion();
+        $this->assertTrue($import->hasCompleted());
     }
 }

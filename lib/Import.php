@@ -2,6 +2,8 @@
 
 namespace Zamzar;
 
+use Zamzar\ApiOperations\WaitForCompletion;
+
 /**
  * @property int $id
  * @property string $key
@@ -14,6 +16,8 @@ namespace Zamzar;
  */
 class Import extends ApiResource
 {
+    use WaitForCompletion;
+
     public const STATUS_INITIALISING = 'initialising';
     public const STATUS_DOWNLOADING = 'downloading';
     public const STATUS_SUCCESSFUL = 'successful';
