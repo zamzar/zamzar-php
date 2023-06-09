@@ -134,8 +134,7 @@ class Job extends ApiResource
     }
 
     /**
-     * Get the value of id
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getId()
     {
@@ -143,8 +142,7 @@ class Job extends ApiResource
     }
 
     /**
-     * Get the value of key
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getKey()
     {
@@ -152,8 +150,7 @@ class Job extends ApiResource
     }
 
     /**
-     * Get the value of status
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getStatus()
     {
@@ -161,8 +158,7 @@ class Job extends ApiResource
     }
 
     /**
-     * Get the value of failure
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getFailure()
     {
@@ -170,8 +166,7 @@ class Job extends ApiResource
     }
 
     /**
-     * Get the value of sandbox
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getSandbox()
     {
@@ -179,8 +174,7 @@ class Job extends ApiResource
     }
 
     /**
-     * Get the value of created_at
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getCreatedAt()
     {
@@ -188,8 +182,7 @@ class Job extends ApiResource
     }
 
     /**
-     * Get the value of finished_at
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getFinishedAt()
     {
@@ -197,8 +190,7 @@ class Job extends ApiResource
     }
 
     /**
-     * Get the value of import
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getImport()
     {
@@ -206,8 +198,7 @@ class Job extends ApiResource
     }
 
     /**
-     * Get the value of source_file
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getSourceFile()
     {
@@ -215,8 +206,7 @@ class Job extends ApiResource
     }
 
     /**
-     * Get the value of target_files
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getTargetFiles()
     {
@@ -224,8 +214,7 @@ class Job extends ApiResource
     }
 
     /**
-     * Get the value of target_format
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getTargetFormat()
     {
@@ -233,8 +222,7 @@ class Job extends ApiResource
     }
 
     /**
-     * Get the value of credit_cost
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getCreditCost()
     {
@@ -242,8 +230,7 @@ class Job extends ApiResource
     }
 
     /**
-     * Get the value of export_url
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getExportUrl()
     {
@@ -251,97 +238,63 @@ class Job extends ApiResource
     }
 
     /**
-     * Get the value of exports
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getExports()
     {
         return $this->exports;
     }
 
-    /**
-     * Does this job have a source file
-     */
     public function hasSourceFile()
     {
         return !is_null($this->source_file);
     }
 
-    /**
-     * Does this job have target files
-     */
     public function hasTargetFiles()
     {
         return !is_null($this->target_files);
     }
 
-    /**
-     * Does this job have a failure
-     */
     public function hasFailure()
     {
         return !is_null($this->failure);
     }
 
-    /**
-     * Does this job have an import
-     */
     public function hasImport()
     {
         return !is_null($this->import);
     }
 
-    /**
-     * Does this job have exports
-     */
     public function hasExports()
     {
         return !is_null($this->exports);
     }
 
-    /**
-     * Is the Status = Initialising
-     */
     public function isStatusInitialising()
     {
         return $this->status == self::STATUS_INITIALISING;
     }
 
-    /**
-     * Is the Status = Converting
-     */
     public function isStatusConverting()
     {
         return $this->status == self::STATUS_CONVERTING;
     }
 
-    /**
-     * Is the Status = Successful
-     */
     public function isStatusSuccessful()
     {
         return $this->status == self::STATUS_SUCCESSFUL;
     }
 
-    /**
-     * Is the Status = Failed
-     */
     public function isStatusFailed()
     {
         return $this->status == self::STATUS_FAILED;
     }
 
-    /**
-     * Is the Status = Cancelled
-     */
     public function isStatusCancelled()
     {
         return $this->status == self::STATUS_CANCELLED;
     }
 
-    /**
-     * Has the job completed (successfully or not)
-     */
     public function hasCompleted()
     {
         return $this->isStatusSuccessful() || $this->isStatusFailed();

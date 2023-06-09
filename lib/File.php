@@ -48,8 +48,7 @@ class File extends ApiResource
     }
 
     /**
-     * Get the value of id
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getId()
     {
@@ -57,8 +56,7 @@ class File extends ApiResource
     }
 
     /**
-     * Get the value of key
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getKey()
     {
@@ -66,8 +64,7 @@ class File extends ApiResource
     }
 
     /**
-     * Get the value of name
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getName()
     {
@@ -75,8 +72,7 @@ class File extends ApiResource
     }
 
     /**
-     * Get the value of size
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getSize()
     {
@@ -84,8 +80,7 @@ class File extends ApiResource
     }
 
     /**
-     * Get the value of format
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getFormat()
     {
@@ -93,8 +88,7 @@ class File extends ApiResource
     }
 
     /**
-     * Get the value of created_at
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getCreatedAt()
     {

@@ -11,7 +11,7 @@ namespace Zamzar;
 class Plan extends ZamzarObject
 {
     /**
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getPlanName()
     {
@@ -19,7 +19,7 @@ class Plan extends ZamzarObject
     }
 
     /**
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getPricePerMonth()
     {
@@ -27,7 +27,7 @@ class Plan extends ZamzarObject
     }
 
     /**
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getConversionsPerMonth()
     {
@@ -35,7 +35,7 @@ class Plan extends ZamzarObject
     }
 
     /**
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getMaximumFileSize()
     {

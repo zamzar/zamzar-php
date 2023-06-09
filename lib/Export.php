@@ -20,8 +20,7 @@ class Export extends ZamzarObject
     ];
 
     /**
-     * Get the value of id
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getId()
     {
@@ -29,8 +28,7 @@ class Export extends ZamzarObject
     }
 
     /**
-     * Get the value of url
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getUrl()
     {
@@ -38,8 +36,7 @@ class Export extends ZamzarObject
     }
 
     /**
-     * Get the value of status
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getStatus()
     {

@@ -25,8 +25,7 @@ class Import extends ApiResource
     ];
 
     /**
-     * Get the value of id
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getId()
     {
@@ -34,8 +33,7 @@ class Import extends ApiResource
     }
 
     /**
-     * Get the value of key
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getKey()
     {
@@ -43,8 +41,7 @@ class Import extends ApiResource
     }
 
     /**
-     * Get the value of url
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getUrl()
     {
@@ -52,8 +49,7 @@ class Import extends ApiResource
     }
 
     /**
-     * Get the value of status
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getStatus()
     {
@@ -61,8 +57,7 @@ class Import extends ApiResource
     }
 
     /**
-     * Get the value of failure
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getFailure()
     {
@@ -70,8 +65,7 @@ class Import extends ApiResource
     }
 
     /**
-     * Get the value of file
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getFile()
     {
@@ -79,8 +73,7 @@ class Import extends ApiResource
     }
 
     /**
-     * Get the value of created_at
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getCreatedAt()
     {
@@ -88,59 +81,38 @@ class Import extends ApiResource
     }
 
     /**
-     * Get the value of finished_at
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getFinishedAt()
     {
         return $this->finished_at;
     }
 
-    /**
-     * Does this import have a file
-     * @deprecated
-     */
     public function hasFile()
     {
         return !is_null($this->file);
     }
 
-    /**
-     * Does this import have a failure
-     * @deprecated
-     */
     public function hasFailure()
     {
         return !is_null($this->failure);
     }
 
-    /**
-     * Is the Status = Initialising
-     */
     public function isStatusInitialising()
     {
         return $this->status == self::STATUS_INITIALISING;
     }
 
-    /**
-     * Is the Status = Downloading
-     */
     public function isStatusDownloading()
     {
         return $this->status == self::STATUS_DOWNLOADING;
     }
 
-    /**
-     * Is the Status = Successful
-     */
     public function isStatusSuccessful()
     {
         return $this->status == self::STATUS_SUCCESSFUL;
     }
 
-    /**
-     * Is the Status = Failed
-     */
     public function isStatusFailed()
     {
         return $this->status == self::STATUS_FAILED;

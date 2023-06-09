@@ -23,7 +23,7 @@ class Account extends ApiResource
     }
 
     /**
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getPlan()
     {
@@ -31,7 +31,7 @@ class Account extends ApiResource
     }
 
     /**
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getProductionCreditsRemaining()
     {
@@ -39,7 +39,7 @@ class Account extends ApiResource
     }
 
     /**
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getTestCreditsRemaining()
     {

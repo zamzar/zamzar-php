@@ -17,8 +17,7 @@ class Failure extends ZamzarObject
     }
 
     /**
-     * Get the value of code
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getCode()
     {
@@ -26,8 +25,7 @@ class Failure extends ZamzarObject
     }
 
     /**
-     * Get the value of message
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getMessage()
     {

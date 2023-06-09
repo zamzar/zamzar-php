@@ -9,8 +9,7 @@ namespace Zamzar;
 class Format extends ApiResource
 {
     /**
-     * Get the value of name
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getName()
     {
@@ -18,8 +17,7 @@ class Format extends ApiResource
     }
 
     /**
-     * Get the value of targets
-     * @deprecated
+     * @deprecated Access property directly instead
      */
     public function getTargets()
     {
@@ -32,7 +30,7 @@ class Format extends ApiResource
     public function getTargetsToCsv()
     {
         $csv = '';
-        foreach ($this->getTargets() as $targetformat) {
+        foreach ($this->targets as $targetformat) {
             $csv = $csv . $targetformat->name . ',';
         }
         return $csv;
