@@ -20,8 +20,6 @@ namespace Zamzar;
  */
 class Job extends ApiResource
 {
-    // use \Zamzar\ApiOperations\Cancel;
-
     public const STATUS_INITIALISING = 'initialising';
     public const STATUS_CONVERTING = 'converting';
     public const STATUS_SUCCESSFUL = 'successful';

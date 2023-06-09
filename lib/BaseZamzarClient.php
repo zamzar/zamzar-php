@@ -2,9 +2,10 @@
 
 namespace Zamzar;
 
+use Zamzar\Contracts\ClientInterface;
 use Zamzar\Exception\InvalidArgumentException;
 
-class BaseZamzarClient
+class BaseZamzarClient implements ClientInterface
 {
     protected const DEFAULT_CONFIG = [
         'api_key' => null,
@@ -78,7 +79,7 @@ class BaseZamzarClient
         return $this->config;
     }
 
-    protected function request($method, $url, $params = [], $getFileContent = false)
+    public function request($method, $url, $params = [], $getFileContent = false)
     {
         $response = (new ApiRequestor($this->config))->request($url, $method, $params, $getFileContent);
 

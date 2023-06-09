@@ -2,21 +2,27 @@
 
 namespace Zamzar;
 
+use Zamzar\Service\AccountService;
+use Zamzar\Service\FileService;
+use Zamzar\Service\FormatService;
+use Zamzar\Service\ImportService;
+use Zamzar\Service\JobService;
+
 /**
- * @property \Zamzar\Account $account
- * @property \Zamzar\Files $files
- * @property \Zamzar\Formats $formats
- * @property \Zamzar\Imports $imports
- * @property \Zamzar\Jobs $jobs
+ * @property \Zamzar\Service\AccountService $account
+ * @property \Zamzar\Service\FileService $files
+ * @property \Zamzar\Service\FormatService $formats
+ * @property \Zamzar\Service\ImportService $imports
+ * @property \Zamzar\Service\JobService $jobs
  */
 class ZamzarClient extends BaseZamzarClient
 {
     private static $classMap = [
-        'account' => Account::class,
-        'files' => Files::class,
-        'formats' => Formats::class,
-        'imports' => Imports::class,
-        'jobs' => Jobs::class,
+        'account' => AccountService::class,
+        'files' => FileService::class,
+        'formats' => FormatService::class,
+        'imports' => ImportService::class,
+        'jobs' => JobService::class,
     ];
 
     private $services = [];
@@ -99,7 +105,7 @@ class ZamzarClient extends BaseZamzarClient
     {
         if (($serviceClass = $this->getServiceClass($name)) !== null) {
             if (!array_key_exists($name, $this->services)) {
-                $this->services[$name] = new $serviceClass($this->config);
+                $this->services[$name] = new $serviceClass($this);
             }
 
             return $this->services[$name];

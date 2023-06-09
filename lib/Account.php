@@ -3,81 +3,46 @@
 namespace Zamzar;
 
 /**
- * Account Class
- *
- * Stores basic Account and Plan information
+ * @property \Zamzar\Plan $plan
+ * @property int $production_credits_remaining
+ * @property int $test_credits_remaining
  */
-class Account extends InteractsWithApi
+class Account extends ApiResource
 {
-    /** Properties */
-    protected $test_credits_remaining;
-    protected $production_credits_remaining;
-
-    /** Nested Objects */
-    private $plan;
+    protected array $propertyMap = [
+        'plan' => Plan::class,
+    ];
 
     /**
-     * Retrieve the account & plan information
+     * Overload the classUrl method, as the account endpoint
+     * is not pluralised.
      */
-    public function get()
+    public static function classUrl()
     {
-        // make the api request
-        $apiResponse = $this->apiRequest($this->getEndpoint());
-        $data = $apiResponse->getBody();
-
-        // set the properties
-        $this->test_credits_remaining = $data['test_credits_remaining'];
-        $this->production_credits_remaining = $data['credits_remaining'];
-        $this->plan = new \Zamzar\Plan($data['plan']);
-
-        // return this object
-        return $this;
+        return "/v1/account";
     }
 
     /**
-     * Refresh account information
+     * @deprecated
      */
-    public function refresh()
+    public function getPlan()
     {
-        $this->get();
+        return $this->plan;
     }
 
     /**
-     * Return the remaining test credits. This value may be out of date;
-     * consider calling `refresh()` to ensure it's up-to-date.
-     */
-    public function getTestCreditsRemaining()
-    {
-        if (is_null($this->test_credits_remaining)) {
-            $this->get();
-        }
-
-        return $this->test_credits_remaining;
-    }
-
-    /**
-     * Return the remaining production credits. This value may be out of date;
-     * consider calling `refresh()` to ensure it's up-to-date.
+     * @deprecated
      */
     public function getProductionCreditsRemaining()
     {
-        if (is_null($this->production_credits_remaining)) {
-            $this->get();
-        }
-
         return $this->production_credits_remaining;
     }
 
     /**
-     * Return information about your plan. This data may be out of date;
-     * consider calling `refresh()` to ensure it's up-to-date.
+     * @deprecated
      */
-    public function getPlan()
+    public function getTestCreditsRemaining()
     {
-        if (is_null($this->plan)) {
-            $this->get();
-        }
-
-        return $this->plan;
+        return $this->test_credits_remaining;
     }
 }
