@@ -21,6 +21,7 @@ require __DIR__ . '/lib/Exception/TimeOutException.php';
 require __DIR__ . '/lib/Exception/UnknownApiErrorException.php';
 
 // API Operations
+require __DIR__ . '/lib/ApiOperations/WaitForCompletion.php';
 
 // Services
 require __DIR__ . '/lib/Service/AbstractService.php';
@@ -48,6 +49,7 @@ require __DIR__ . '/lib/Error.php';
 require __DIR__ . '/lib/Failure.php';
 require __DIR__ . '/lib/File.php';
 require __DIR__ . '/lib/Format.php';
+require __DIR__ . '/lib/TargetFormat.php';
 require __DIR__ . '/lib/Import.php';
 require __DIR__ . '/lib/Job.php';
 require __DIR__ . '/lib/Plan.php';
