@@ -125,15 +125,13 @@ The above use case might be applied when other things are happening in between e
 
 ```php
 // Do the whole thing together
-$job = $zamzar
-        ->jobs
-        ->create([
-                'source_file' => 'path/to/localfile', 
-                'target_format' => 'pdf'
-                ])
-        ->waitForCompletion(120)
-        ->downloadTargetFiles('path/to/folder')
-        ->deleteAllFiles();
+$job = $zamzar->jobs->create([
+        'source_file' => 'path/to/localfile', 
+        'target_format' => 'pdf'
+    ])
+    ->waitForCompletion(120)
+    ->downloadTargetFiles('path/to/folder')
+    ->deleteAllFiles();
 ```
 
 ## Configure a Logger
