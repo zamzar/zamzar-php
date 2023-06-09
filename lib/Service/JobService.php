@@ -26,7 +26,15 @@ class JobService extends AbstractService
      */
     public function all($params = [])
     {
-        $response = $this->client->request('GET', Job::classUrl(), $params);
+        $uri = Job::classUrl();
+
+        // Filtering by status doesn't use a querystring, and only supports successful jobs
+        if (array_key_exists('status', $params) && $params['status'] === Job::STATUS_SUCCESSFUL) {
+            $uri .= '/successful';
+            unset($params['status']);
+        }
+
+        $response = $this->client->request('GET', $uri, $params);
 
         return Collection::constructFrom($response->getBody(), $this->client->getConfig(), Job::classUrl(), Job::class);
     }

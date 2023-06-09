@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests;
 
 use PHPUnit\Framework\TestCase;
+use Zamzar\Job;
 
 final class JobsTest extends TestCase
 {
@@ -36,9 +37,20 @@ final class JobsTest extends TestCase
     {
         $job = $this->client->jobs->create([
             'source_file' => $this->validLocalSourceFile,
-            'target_format' => $this->validTargetFormat
-        ]);
-        $this->assertEquals($job->status, 'initialising');
+            'target_format' => $this->validTargetFormat,
+        ])->waitForCompletion();
+
+        $this->assertEquals($job->status, Job::STATUS_SUCCESSFUL);
+    }
+
+    public function testJobCanBeSubmittedForUrlFile(): void
+    {
+        $job = $this->client->jobs->create([
+            'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
+            'target_format' => 'jpg',
+        ])->waitForCompletion();
+
+        $this->assertEquals($job->status, Job::STATUS_SUCCESSFUL);
     }
 
     public function testJobCanBeSubmittedForZamzarFile(): void
@@ -49,18 +61,24 @@ final class JobsTest extends TestCase
 
         $job = $this->client->jobs->create([
             'source_file' => $file->id,
-            'target_format' => 'png'
-        ]);
-        $this->assertEquals($job->status, 'initialising');
+            'target_format' => 'png',
+        ])->waitForCompletion();
+
+        $this->assertEquals($job->status, Job::STATUS_SUCCESSFUL);
     }
 
-    public function testInvalidParameterException(): void
+    public function testCanListOnlysuccessfulJobs()
     {
-        $this->expectException(\Zamzar\Exception\InvalidArgumentException::class);
         $job = $this->client->jobs->create([
-            'so1urce_file' => 'anything',
-            'tar1get_format' => 'anything'
-        ]);
+            'source_file' => 'https://www.zamzar.com/non-existant.png',
+            'target_format' => 'jpg',
+        ])->waitForCompletion();
+
+        $this->assertEquals(Job::STATUS_FAILED, $job->status);
+
+        $jobs = $this->client->jobs->all(['status' => Job::STATUS_SUCCESSFUL]);
+
+        $this->assertEmpty(array_filter($jobs->data, fn ($job) => $job->status !== Job::STATUS_SUCCESSFUL));
     }
 
     public function testFilesCanBeDownloadedAndDeleted()
