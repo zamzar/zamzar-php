@@ -81,6 +81,33 @@ final class JobsTest extends TestCase
         $this->assertEmpty(array_filter($jobs->data, fn ($job) => $job->status !== Job::STATUS_SUCCESSFUL));
     }
 
+    public function testCanPageOnlysuccessfulJobs()
+    {
+        $job = $this->client->jobs->create([
+            'source_file' => 'https://www.zamzar.com/non-existant.png',
+            'target_format' => 'jpg',
+        ])->waitForCompletion();
+
+        $this->assertEquals(Job::STATUS_FAILED, $job->status);
+
+        $job = $this->client->jobs->create([
+            'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
+            'target_format' => 'jpg',
+        ])->waitForCompletion();
+
+        $this->assertEquals(Job::STATUS_SUCCESSFUL, $job->status);
+
+        $jobs = $this->client->jobs->all(['status' => Job::STATUS_SUCCESSFUL, 'limit' => 1]);
+
+        $this->assertCount(1, $jobs);
+        $this->assertTrue($jobs[0]->isStatusSuccessful());
+
+        $jobs = $jobs->nextPage();
+
+        $this->assertCount(1, $jobs);
+        $this->assertTrue($jobs[0]->isStatusSuccessful());
+    }
+
     public function testFilesCanBeDownloadedAndDeleted()
     {
         $job = $this->client->jobs->create([

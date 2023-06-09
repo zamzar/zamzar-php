@@ -36,6 +36,6 @@ class JobService extends AbstractService
 
         $response = $this->client->request('GET', $uri, $params);
 
-        return Collection::constructFrom($response->getBody(), $this->client->getConfig(), Job::classUrl(), Job::class);
+        return Collection::constructFrom($response->getBody(), $this->client->getConfig(), $uri, Job::class);
     }
 }
