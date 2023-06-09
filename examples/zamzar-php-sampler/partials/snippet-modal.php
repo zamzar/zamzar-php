@@ -56,7 +56,7 @@ switch(basename($_SERVER['PHP_SELF'])) {
 ?>
 
     // Upload a file using the files object
-    $file = $zamzar->files->upload([
+    $file = $zamzar->files->create([
         'name' => 'path/to/local/filename.ext'
     ]);
 
@@ -144,7 +144,7 @@ switch(basename($_SERVER['PHP_SELF'])) {
 ?>
 
     // Start an Import. Optionally provide a filename to override the url file name
-    $import = $zamzar->imports->start([
+    $import = $zamzar->imports->create([
         'url' => 'https://www.zamzar.com/images/zamzar-logo.png',
         'filename' => 'zamzar-logo-new-name.png'
     ]);
@@ -247,25 +247,25 @@ switch(basename($_SERVER['PHP_SELF'])) {
 
 
     // start a job for a local file
-    $job = $zamzar->jobs->submit([
+    $job = $zamzar->jobs->create([
         'source_file' => 'path/to/local/file',
         'target_format' => 'xxx'
     ]);
 
     // start a job for a remote url
-    $job = $zamzar->jobs->submit([
+    $job = $zamzar->jobs->create([
         'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
         'target_format' => 'pdf'
     ]);
 
     // start a job for a file which already exists on Zamzar's servers
-    $job = $zamzar->jobs->submit([
+    $job = $zamzar->jobs->create([
         'source_file' => '123456',
         'target_format' => 'pdf'
     ]);
 
     // start a job for a S3 file (requires Connected Services to be configured in the developer dashboard)
-    $job = $zamzar->jobs->submit([
+    $job = $zamzar->jobs->create([
         'source_file' => 's3://CREDENTIAL_NAME@my-bucket-name/logo.png',
         'target_format' => 'pdf'
     ]);

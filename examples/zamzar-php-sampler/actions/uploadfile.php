@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 move_uploaded_file($file_tmp, $file);
 
                 // upload to zamzar
-                $newFile = $zamzar->files->upload([
+                $newFile = $zamzar->files->create([
                     'name' => $file
                 ]);
                 $data = ["id" => $newFile->getId()];
