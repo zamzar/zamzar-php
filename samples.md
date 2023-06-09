@@ -127,10 +127,10 @@ File related objects are used to retrieve a list of files, upload, download and 
 
 ### Uploading a File
 
-The <code>upload</code> operator is performed on the Files object, which creates and returns a File object.
+The <code>create</code> operator is performed on the Files object, which creates and returns a File object.
 
 ```php
-$file = $zamzar->files->upload([
+$file = $zamzar->files->create([
     'name' => 'path/to/local/filename.ext'
 ]);
 
@@ -146,14 +146,10 @@ The <code>download</code> operator is performed against the file object once its
 $file = $zamzar->files->get(123456);
 
 // download the file to the specified folder
-$file->download([
-    'download_path' => 'path/to/download/folder'
-]);
+$file->download('path/to/download/folder');
 
 // or in one statement
-$file = $zamzar->files->get(123456)->download([
-    'download_path' => 'path/to/download/folder'
-]);
+$file = $zamzar->files->get(123456)->download('path/to/download/folder');
 ```
 
 ### Deleting a File
@@ -208,9 +204,7 @@ Iterate through the list using the <code>data</code> property (which is an array
 ```php
 foreach($files->data as $file) {
     //download and delete all files
-    $file->download([
-        'download_path' => 'path/to/local/folder'
-    ]);
+    $file->download('path/to/download/folder');
     $file->delete();
 }
 ```
@@ -300,10 +294,10 @@ Import related objects are used to retrieve information about imports and to sta
 
 ### Starting an Import
 
-The <code>start</code> operator is performed on the Imports object, which creates and returns an Import object.
+The <code>create</code> operator is performed on the Imports object, which creates and returns an Import object.
 
 ```php
-$import = $zamzar->imports->start([
+$import = $zamzar->imports->create([
     'url' => 'https://www.zamzar.com/images/zamzar-logo.png'
 ]);
 
@@ -316,7 +310,7 @@ After an import has started, the status can be checked to determine one of four 
 
 ```php
 // start an import
-$import = $zamzar->imports->start([
+$import = $zamzar->imports->create([
     'url' => 'https://www.zamzar.com/images/zamzar-logo.png'
 ]);
 
@@ -460,30 +454,30 @@ Job related objects are used to retrieve information about jobs and to submit co
 
 ### Starting a Job
 
-The <code>submit</code> operator is performed on the Jobs object, which creates and returns a Job object.
+The <code>create</code> operator is performed on the Jobs object, which creates and returns a Job object.
 
 ```php
 
 // start a job for a local file
-$job = $zamzar->jobs->submit([
+$job = $zamzar->jobs->create([
     'source_file' => 'path/to/local/file',
     'target_format' => 'xxx'
 ]);
 
 // start a job for a remote url
-$job = $zamzar->jobs->submit([
+$job = $zamzar->jobs->create([
     'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
     'target_format' => 'pdf'
 ]);
 
 // start a job for a file which already exists on Zamzar's servers
-$job = $zamzar->jobs->submit([
+$job = $zamzar->jobs->create([
     'source_file' => '123456',
     'target_format' => 'pdf'
 ]);
 
 // start a job for a S3 file (requires Connected Services to be configured in the developer dashboard)
-$job = $zamzar->jobs->submit([
+$job = $zamzar->jobs->create([
     'source_file' => 's3://CREDENTIAL_NAME@my-bucket-name/logo.png',
     'target_format' => 'pdf'
 ]);
@@ -496,7 +490,7 @@ echo $job->getId();
 The source format can be overridden if the <code>source_file</code> does not have a format within the filename for example:
 
 ```php
-$job = $zamzar->jobs->submit([
+$job = $zamzar->jobs->create([
     'source_file' => 'https://www.zamzar.com/images/zamzar-logo',
     'target_format' => 'pdf',
     'source_format' => 'png'
@@ -508,7 +502,7 @@ $job = $zamzar->jobs->submit([
 An <code>export_url</code> can be provided to instruct the conversion process to export files to a remote server once the job has completed:
 
 ```php
-$job = $zamzar->jobs->submit([
+$job = $zamzar->jobs->create([
     'source_file' => 'https://www.zamzar.com/images/zamzar-logo',
     'target_format' => 'pdf',
     'source_format' => 'png',
@@ -525,9 +519,7 @@ The <code>waitForCompletion()</code> method is used to wait for a job to complet
 $job = $job->waitForCompletion();
 
 // specify a timeout
-$job = $job->waitForCompletion([
-    'timeout' => 120
-]);
+$job = $job->waitForCompletion(120);
 ```
 
 ### Check on the status of a Job
@@ -536,7 +528,7 @@ After an job has started, the status can be checked to determine one of five sta
 
 ```php
 // start a job
-$job = $zamzar->jobs->submit([
+$job = $zamzar->jobs->create([
     'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
     'target_format' => 'pdf'
 ]);
@@ -607,9 +599,7 @@ if($job->isStatusFailed()) {
 To download converted files:
 
 ```php
-$job->downloadTargetFiles([
-    'download_path' => 'path/to/local/folder'
-]);
+$job->downloadTargetFiles('path/to/download/folder');
 ```
 
 ### Deleting converted files
@@ -640,35 +630,14 @@ Method chaining is supported for the processes described above.
 ```php
 // start a job, wait, download, delete. 
 // downloading and deleting files will only happen if the job status is successful
-$job = $zamzar->jobs->submit([
+$job = $zamzar->jobs->create([
         'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
         'target_format' => 'pdf',
         ])
-  ->waitForCompletion([
-        'timeout' => 120
-        ])
-  ->downloadTargetFiles([
-      'download_path' => 'path/to/folder'
-        ])
+  ->waitForCompletion(120)
+  ->downloadTargetFiles('path/to/folder')
   ->deleteAllFiles();
 ```
-
-### Single Call
-
-To achieve all the steps above in a single call to <code>submit</code>, provide a full set of params.
-
-```php
-//start, wait, download, delete
-$job = $zamzar->jobs->submit([
-    'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
-    'target_format' => 'pdf',
-    'timeout' => 120,
-    'download_path' => 'path/to/folder',
-    'delete_files' => 'all' | 'source' | 'target'
-]);
-```
-
-None of the above are preferred. Use what fits in with your workflow.
 
 ### Retrieving a specific job
 
@@ -720,30 +689,22 @@ All of the above examples do not use exceptions handling for brevity. In real-wo
 
 ```php
 //start, wait, download, delete - but don't give the job any time to complete
-$job = $zamzar->jobs->submit([
+$job = $zamzar->jobs->create([
     'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
     'target_format' => 'pdf',
-    'timeout' => 0,
-    'download_path' => 'path/to/folder',
-    'delete_files' => 'all' | 'source' | 'target'
-]);
+])->waitForCompletion(0);
 ```
 
 The above example fails immediately, an uncaught error is reported and the process aborted. Using exception handling provides an opportunity to handle the error.
 
 ```php
 try {
-  
-  $job = $zamzar->jobs->submit([
-      'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
-      'target_format' => 'pdf',
-      'timeout' => 0, 
-      'download_path' => 'path/to/folder',
-      'delete_files' => 'all'
-  ]);
-
+    $job = $zamzar->jobs->create([
+        'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
+        'target_format' => 'pdf',
+    ])->waitForCompletion(0);
 } catch (\Zamzar\Exception\TimeOutException $e) {
-  echo $e->getMessage();
+    echo $e->getMessage();
 }
 ```
 
@@ -762,7 +723,7 @@ In a production batch processing scenario, it might be preferable to break the a
 $proceed = true;
 
 try {
-    $job = $zamzar->jobs->submit([
+    $job = $zamzar->jobs->create([
         'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
         'target_format' => 'pdf',
     ]);
@@ -781,14 +742,12 @@ if($proceed) {
 
     // Wait for completion
     try {
-        $job = $job->waitForCompletion([
-            'timeout' => 60
-        ]);
+        $job = $job->waitForCompletion(60);
     } catch (\Zamzar\Exception\TimeOutException $e) {
         // Retry with a longer timeout period
         echo $e->getMessage() . "\n\n";
         echo "Increasing timeout period" . "\n\n";
-        $job = $job->waitForCompletion(['timeout' => 180]);
+        $job = $job->waitForCompletion(180);
     }
 
     // Refresh the job object to get the latest status
@@ -807,9 +766,7 @@ if($proceed) {
             // try downloading and deleting the files
             try {
             
-                $job = $job->downloadTargetFiles([
-                    'download_path' => 'path/to/folder'
-                ]);
+                $job = $job->downloadTargetFiles('path/to/folder');
 
                 echo 'deleting files' . "\n\n";
                 $job = $job->deleteAllFiles();

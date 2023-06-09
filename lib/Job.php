@@ -113,10 +113,10 @@ class Job extends ApiResource
     /**
      * Download the target files
      */
-    public function downloadTargetFiles($params)
+    public function downloadTargetFiles($path)
     {
         foreach ($this->getTargetFiles() as $target_file) {
-            $target_file->download($params);
+            $target_file->download($path);
         }
         return $this;
     }
@@ -124,9 +124,9 @@ class Job extends ApiResource
     /**
      * Download and Delete all files
      */
-    public function downloadAndDeleteAllFiles($params)
+    public function downloadAndDeleteAllFiles($path)
     {
-        $this->downloadTargetFiles($params);
+        $this->downloadTargetFiles($path);
         $this->deleteSourceFile();
         $this->deleteTargetFiles();
         return $this;
@@ -145,17 +145,10 @@ class Job extends ApiResource
     /**
      * Wait for the job to complete
      */
-    public function waitForCompletion($params = [])
+    public function waitForCompletion($timeout = 60)
     {
         $totalSleep = 0;
         $sleepInterval = 1;
-        $timeout = 60;
-
-        if (is_array($params)) {
-            if (array_key_exists("timeout", $params)) {
-                $timeout = $params['timeout'];
-            }
-        }
 
         do {
             // goto sleep

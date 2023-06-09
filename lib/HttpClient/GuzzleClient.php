@@ -37,7 +37,7 @@ class GuzzleClient
         // If a GET for file content, then add a sink parameter to download the file
         if ($method == 'GET') {
             if ($getFileContent) {
-                $clientParams['sink'] = $params['local_filename'];
+                $clientParams['sink'] = $params['download_path'];
             }
         } elseif ($method == 'POST') {
             // If we have a local file to post, then it's either a job conversion or a file upload

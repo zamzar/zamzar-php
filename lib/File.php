@@ -7,11 +7,6 @@ namespace Zamzar;
  */
 class File extends ApiResource
 {
-    /** Valid API Operations for this Class */
-    use \Zamzar\ApiOperations\Delete;
-    use \Zamzar\ApiOperations\Download;
-
-    /** Properties */
     private $id;
     private $key;
     private $name;
@@ -59,6 +54,26 @@ class File extends ApiResource
     }
 
     /**
+     * @param string $path Path to where the file should be downloaded. This can be a file, or a directory;
+     * in the case of a directory, the file's name will be used.
+     */
+    public function download($path)
+    {
+        if (is_dir($path)) {
+            $path = rtrim($path, '/') . '/' . $this->name;
+        }
+
+        $this->apiRequest($this->getEndpoint(true), 'GET', ['download_path' => $path], true);
+        return $this;
+    }
+
+    public function delete()
+    {
+        $this->apiRequest($this->getEndpoint(), 'DELETE');
+        return $this;
+    }
+
+    /**
      * Convert this file (which already exists on Zamzar)
      * Specify target_format in the params
      */
@@ -66,7 +81,7 @@ class File extends ApiResource
     {
         $params['source_file'] = $this->getId();
         $jobs = new \Zamzar\Jobs($this->getConfig());
-        return $jobs->submit($params);
+        return $jobs->create($params);
     }
 
     /**

@@ -23,14 +23,9 @@ require __DIR__ . '/lib/Exception/UnknownApiErrorException.php';
 // API Operations
 require __DIR__ . '/lib/ApiOperations/All.php';
 require __DIR__ . '/lib/ApiOperations/Cancel.php';
-require __DIR__ . '/lib/ApiOperations/Delete.php';
-require __DIR__ . '/lib/ApiOperations/Download.php';
 require __DIR__ . '/lib/ApiOperations/Get.php';
 require __DIR__ . '/lib/ApiOperations/Paging.php';
 require __DIR__ . '/lib/ApiOperations/Refresh.php';
-require __DIR__ . '/lib/ApiOperations/Start.php';
-require __DIR__ . '/lib/ApiOperations/Submit.php';
-require __DIR__ . '/lib/ApiOperations/Upload.php';
 
 // Plumbing
 require __DIR__ . '/lib/ApiResource.php';

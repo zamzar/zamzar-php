@@ -173,7 +173,7 @@ Output: api_key cannot contain whitespace
 // try submitting a job without any parameters
 try {
     $zamzar = new \Zamzar\ZamzarClient('apikey');
-    $jobs = $zamzar->jobs->submit([]);
+    $jobs = $zamzar->jobs->create([]);
 } catch (\Zamzar\Exception\InvalidArgumentException $e) {
     echo $e->getMessage();
 }
@@ -190,13 +190,11 @@ TimeOut exceptions are thrown when a function experiences a timeout related issu
 ```php
 // try submitting a job and waiting for the job to complete for 0 seconds
 try {
-    $job = $zamzar->jobs->submit([
+    $job = $zamzar->jobs->create([
   	    'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
   	    'target_format' => 'pdf'
     ])
-  	    ->waitForCompletion([
-		    'timeout' => 0
-	    ]);
+  	    ->waitForCompletion(0);
 } catch (\Zamzar\Exception\TimeOutException $e) {
     echo $e->getMessage();
 }

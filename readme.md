@@ -106,20 +106,16 @@ The most common requirement is to submit a job to convert a file, wait for the j
 
 ```php
 // Submit the file
-$job = $zamzar->jobs->submit([
+$job = $zamzar->jobs->create([
     'source_file' => 'path/to/local/file',
     'target_format' => 'xxx'
 ]);
 
 // Wait for the job to complete (the default timeout is 60 seconds)
-$job->waitForCompletion([
-    'timeout' => 60
-]);
+$job->waitForCompletion(30);
 
 // Download the converted files 
-$job->downloadTargetFiles([
-    'download_path' => 'path/to/folder/'
-]);
+$job->downloadTargetFiles('path/to/folder/');
 
 // Delete the source and target files on Zamzar's servers
 $job->deleteAllFiles();
@@ -131,16 +127,12 @@ The above use case might be applied when other things are happening in between e
 // Do the whole thing together
 $job = $zamzar
         ->jobs
-        ->submit([
+        ->create([
                 'source_file' => 'path/to/localfile', 
                 'target_format' => 'pdf'
                 ])
-        ->waitForCompletion([
-                'timeout' => 120
-        ])
-        ->downloadTargetFiles([
-                'download_path' => 'path/to/folder'
-                ])
+        ->waitForCompletion(120)
+        ->downloadTargetFiles('path/to/folder')
         ->deleteAllFiles();
 ```
 

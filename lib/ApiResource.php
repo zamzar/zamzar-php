@@ -62,13 +62,13 @@ class ApiResource
      * apiRequest is a wrapper around the apiRequestor/Response Objects
      * Make the request, save the response, and return the response
      */
-    protected function apiRequest($endpoint, $method = 'GET', $params = [], $getFileContent = false, $filename = '')
+    protected function apiRequest($endpoint, $method = 'GET', $params = [], $getFileContent = false)
     {
         // Initialise requestor
         $apiRequestor = new \Zamzar\ApiRequestor($this->getConfig());
 
         // Make the request and save the last response
-        $this->lastResponse = $apiRequestor->request($endpoint, $method, $params, $getFileContent, $filename);
+        $this->lastResponse = $apiRequestor->request($endpoint, $method, $params, $getFileContent);
 
         if (isset($this->config['client'])) {
             ($this->config['client'])->setLastResponse($this->lastResponse);
