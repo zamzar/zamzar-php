@@ -46,6 +46,10 @@ class GuzzleClient
             'sink' => $params['download_path'] ?? null,
         ];
 
+        if (array_key_exists('download_path', $params)) {
+            unset($params['download_path']);
+        }
+
         if ($hasFile && array_key_exists("name", $params)) {
             $params['content'] = $params['name'];
             $params['name'] = basename($params['name']);
