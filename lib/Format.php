@@ -3,48 +3,17 @@
 namespace Zamzar;
 
 /**
- * Format Object
+ * @property string $name
+ * @property \Zamzar\TargetFormat[] $targets
  */
 class Format extends ApiResource
 {
-    /** Properties */
-    private $name;
-    private $credit_cost;
-    private $targets;
+    protected array $propertyMap = [
+        'targets' => [TargetFormat::class],
+    ];
 
     /**
-     * Initialise a new instance of the Format object
-     * Recursively used to create target formats for a given source format
-     */
-    public function __construct($config, $data)
-    {
-        parent::__construct($config, $data->name);
-        $this->setValues($data);
-    }
-
-    /**
-     * Initialise or Update properties
-     */
-    private function setValues($data)
-    {
-        // Should always be supplied
-        $this->name = $data->name;
-
-        // Optionally supplied
-        if (property_exists($data, "credit_cost")) {
-            $this->credit_cost = $data->credit_cost;
-        }
-
-        if (property_exists($data, "targets")) {
-            $this->targets = array();
-            foreach ($data->targets as $target) {
-                $this->targets[] = new Format($this->getConfig(), $target);
-            }
-        }
-    }
-
-    /**
-     * Get the value of name
+     * @deprecated Access property directly instead
      */
     public function getName()
     {
@@ -52,15 +21,7 @@ class Format extends ApiResource
     }
 
     /**
-     * Get the value of credit_cost
-     */
-    public function getCreditCost()
-    {
-        return $this->credit_cost;
-    }
-
-    /**
-     * Get the value of targets
+     * @deprecated Access property directly instead
      */
     public function getTargets()
     {
@@ -73,7 +34,7 @@ class Format extends ApiResource
     public function getTargetsToCsv()
     {
         $csv = '';
-        foreach ($this->getTargets() as $targetformat) {
+        foreach ($this->targets as $targetformat) {
             $csv = $csv . $targetformat->name . ',';
         }
         return $csv;

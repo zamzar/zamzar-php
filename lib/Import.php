@@ -2,73 +2,34 @@
 
 namespace Zamzar;
 
+use Zamzar\ApiOperations\WaitForCompletion;
+
 /**
- * Import Object
+ * @property int $id
+ * @property string $key
+ * @property string $url
+ * @property string $status
+ * @property null|\Zamzar\Failure $failure
+ * @property string $created_at
+ * @property string $finished_at
+ * @property null|\Zamzar\File $file
  */
 class Import extends ApiResource
 {
-    /** Valid API Operations for this Class */
-    use \Zamzar\ApiOperations\Refresh;
+    use WaitForCompletion;
 
-    /** Constants */
     public const STATUS_INITIALISING = 'initialising';
     public const STATUS_DOWNLOADING = 'downloading';
     public const STATUS_SUCCESSFUL = 'successful';
     public const STATUS_FAILED = 'failed';
 
-    /** Properties */
-    private $id;
-    private $key;
-    private $url;
-    private $status;
-    private $failure;
-    private $file;
-    private $created_at;
-    private $finished_at;
+    protected array $propertyMap = [
+        'failure' => Failure::class,
+        'file' => File::class,
+    ];
 
     /**
-     * Initialise a new instance of the Import object
-     */
-    public function __construct($config, $data)
-    {
-        parent::__construct($config, $data->id);
-        $this->setValues($data);
-    }
-
-    /**
-     * Initialise or Update properties
-     */
-    private function setValues($data)
-    {
-        // Should always be supplied
-        $this->id = $data->id;
-        $this->url = $data->url;
-        $this->status = $data->status;
-
-        // Optionally supplied
-        if (property_exists($data, "key")) {
-            $this->key = $data->key;
-        }
-
-        if (property_exists($data, "failure")) {
-            $this->failure = new \Zamzar\Failure($data->failure);
-        }
-
-        if (property_exists($data, "file")) {
-            $this->file = new \Zamzar\File($this->getConfig(), $data->file);
-        }
-
-        if (property_exists($data, "created_at")) {
-            $this->created_at = $data->created_at;
-        }
-
-        if (property_exists($data, "finished_at")) {
-            $this->finished_at = $data->finished_at;
-        }
-    }
-
-    /**
-     * Get the value of id
+     * @deprecated Access property directly instead
      */
     public function getId()
     {
@@ -76,7 +37,7 @@ class Import extends ApiResource
     }
 
     /**
-     * Get the value of key
+     * @deprecated Access property directly instead
      */
     public function getKey()
     {
@@ -84,7 +45,7 @@ class Import extends ApiResource
     }
 
     /**
-     * Get the value of url
+     * @deprecated Access property directly instead
      */
     public function getUrl()
     {
@@ -92,7 +53,7 @@ class Import extends ApiResource
     }
 
     /**
-     * Get the value of status
+     * @deprecated Access property directly instead
      */
     public function getStatus()
     {
@@ -100,7 +61,7 @@ class Import extends ApiResource
     }
 
     /**
-     * Get the value of failure
+     * @deprecated Access property directly instead
      */
     public function getFailure()
     {
@@ -108,7 +69,7 @@ class Import extends ApiResource
     }
 
     /**
-     * Get the value of file
+     * @deprecated Access property directly instead
      */
     public function getFile()
     {
@@ -116,7 +77,7 @@ class Import extends ApiResource
     }
 
     /**
-     * Get the value of created_at
+     * @deprecated Access property directly instead
      */
     public function getCreatedAt()
     {
@@ -124,56 +85,38 @@ class Import extends ApiResource
     }
 
     /**
-     * Get the value of finished_at
+     * @deprecated Access property directly instead
      */
     public function getFinishedAt()
     {
         return $this->finished_at;
     }
 
-    /**
-     * Does this import have a file
-     */
     public function hasFile()
     {
         return !is_null($this->file);
     }
 
-    /**
-     * Does this import have a failure
-     */
     public function hasFailure()
     {
         return !is_null($this->failure);
     }
 
-    /**
-     * Is the Status = Initialising
-     */
     public function isStatusInitialising()
     {
         return $this->status == self::STATUS_INITIALISING;
     }
 
-    /**
-     * Is the Status = Downloading
-     */
     public function isStatusDownloading()
     {
         return $this->status == self::STATUS_DOWNLOADING;
     }
 
-    /**
-     * Is the Status = Successful
-     */
     public function isStatusSuccessful()
     {
         return $this->status == self::STATUS_SUCCESSFUL;
     }
 
-    /**
-     * Is the Status = Failed
-     */
     public function isStatusFailed()
     {
         return $this->status == self::STATUS_FAILED;

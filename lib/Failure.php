@@ -3,25 +3,11 @@
 namespace Zamzar;
 
 /**
- * Failure Object
- *
- * Stores responses from the api
+ * @property int $code
+ * @property string $message
  */
-class Failure
+class Failure extends ZamzarObject
 {
-    /** Properties */
-    private $code;
-    private $message;
-
-    /**
-     * Initialise a new instance of the Failure object
-     * Accepts code and message
-     */
-    public function __construct($data)
-    {
-        $this->setValues($data);
-    }
-
     /**
      * Cast to string
      */
@@ -31,16 +17,7 @@ class Failure
     }
 
     /**
-     * Initialise or Update properties
-     */
-    private function setValues($data)
-    {
-        $this->code = $data->code;
-        $this->message = $data->message;
-    }
-
-    /**
-     * Get the value of code
+     * @deprecated Access property directly instead
      */
     public function getCode()
     {
@@ -48,7 +25,7 @@ class Failure
     }
 
     /**
-     * Get the value of message
+     * @deprecated Access property directly instead
      */
     public function getMessage()
     {

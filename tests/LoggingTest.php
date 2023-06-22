@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use Exception;
 use PHPUnit\Framework\TestCase;
 use Zamzar\Util\LoggerInterface;
 use Zamzar\Zamzar;
@@ -12,17 +11,15 @@ use Zamzar\ZamzarClient;
 
 final class LoggingTest extends TestCase
 {
-    use TestConfig;
+    use WithClient;
 
     public function testDebugDefaultsToFalse(): void
     {
-        $client = new ZamzarClient($this->apiKey);
-
         $logger = $this->createLogger();
 
         Zamzar::setLogger($logger);
 
-        $client->account->get();
+        $this->client->account->get();
 
         $this->assertEmpty($logger->log);
     }
@@ -30,7 +27,7 @@ final class LoggingTest extends TestCase
     public function testRequestsAreLogged(): void
     {
         $client = new ZamzarClient([
-            'api_key' => $this->apiKey,
+            'api_key' => $this->apiKey(),
             'debug' => true,
         ]);
 
@@ -46,7 +43,7 @@ final class LoggingTest extends TestCase
     public function testLoggerCanBeChanged(): void
     {
         $client = new ZamzarClient([
-            'api_key' => $this->apiKey,
+            'api_key' => $this->apiKey(),
             'debug' => true,
         ]);
 

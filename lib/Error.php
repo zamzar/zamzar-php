@@ -23,13 +23,12 @@ class Error
 
     private function setValues($data)
     {
-        // Should always be supplied
-        $this->code = $data->code;
-        $this->message = $data->message;
+        $this->code = $data['code'];
+        $this->message = $data['message'];
 
         // Optionally supplied
-        if (property_exists($data, "context")) {
-            foreach ($data->context as $context) {
+        if (isset($data["context"])) {
+            foreach ($data['context'] as $context) {
                 $this->context[] = $context;
             }
         }

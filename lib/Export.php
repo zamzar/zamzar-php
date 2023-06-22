@@ -3,52 +3,24 @@
 namespace Zamzar;
 
 /**
- * Export Class
- *
- * Exports are requested when submitting jobs, i.e. submit the job and export the converted file(s) to a remote server
- * Export Objects are therefore only created when retrieving Jobs data, they are not part of an exports collection
- * Exports Objects do not interact with the api, hence no inheritance of the ApiResource class
+ * @property int $id
+ * @property string $url
+ * @property string $status
+ * @property null|\Zamzar\Failure $failure
  */
-class Export
+class Export extends ZamzarObject
 {
-    /** Constants */
     public const STATUS_INITIALISING = 'initialising';
     public const STATUS_UPLOADING = 'uploading';
     public const STATUS_SUCCESSFUL = 'successful';
     public const STATUS_FAILED = 'failed';
 
-    /** Properties */
-    private $id;
-    private $url;
-    private $status;
-    private $failure;
+    protected array $propertyMap = [
+        'failure' => Failure::class,
+    ];
 
     /**
-     * Initialise a new instance of the Export object
-     */
-    public function __construct($data)
-    {
-        $this->setValues($data);
-    }
-
-    /**
-     * Initialise or Update properties
-     */
-    private function setValues($data)
-    {
-        // Should always be supplied
-        $this->id = $data->id;
-        $this->url = $data->url;
-        $this->status = $data->status;
-
-        // Optionally supplied
-        if (property_exists($data, "failure")) {
-            $this->failure = new \Zamzar\Failure($data->failure);
-        }
-    }
-
-    /**
-     * Get the value of id
+     * @deprecated Access property directly instead
      */
     public function getId()
     {
@@ -56,7 +28,7 @@ class Export
     }
 
     /**
-     * Get the value of url
+     * @deprecated Access property directly instead
      */
     public function getUrl()
     {
@@ -64,7 +36,7 @@ class Export
     }
 
     /**
-     * Get the value of status
+     * @deprecated Access property directly instead
      */
     public function getStatus()
     {

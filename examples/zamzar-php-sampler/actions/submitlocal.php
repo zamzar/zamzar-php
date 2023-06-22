@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
 
                 // submit the job
-                $newJob = $zamzar->jobs->submit($params);
+                $newJob = $zamzar->jobs->create($params);
 
                 // should we wait for completion? (this could also be done on the client side)
                 if ($waitForJob == 'true') {

@@ -8,57 +8,36 @@ use PHPUnit\Framework\TestCase;
 
 final class ImportsTest extends TestCase
 {
-    use TestConfig;
+    use WithClient;
 
     public function testImportsAreListable(): void
     {
-        $zamzar = new \Zamzar\ZamzarClient($this->apiKey);
-        $imports = $zamzar->imports->all(['limit' => 1]);
+        $imports = $this->client->imports->all(['limit' => 1]);
         $this->assertEquals(count($imports->data), 1);
-    }
-
-    public function testImportsContainsPagingElements(): void
-    {
-        $zamzar = new \Zamzar\ZamzarClient($this->apiKey);
-        $imports = $zamzar->imports->all(['limit' => 1]);
-        $paging = $imports->paging;
-        $this->assertGreaterThan(0, $paging->limit);
-        $this->assertGreaterThan(0, $paging->first);
-        $this->assertGreaterThan(0, $paging->last);
-        $this->assertGreaterThan(0, $paging->total_count);
     }
 
     public function testImportIsRetrievable(): void
     {
-        $zamzar = new \Zamzar\ZamzarClient($this->apiKey);
-
-        // get any import
-        $imports = $zamzar->imports->all(['limit' => 1]);
-        $importid = $imports->data[0]->getId();
-        //retrieve the import via the 'get' method
-        $import = $zamzar->imports->get($importid);
-        $this->assertGreaterThan(0, $import->getId());
+        $import = $this->client->imports->create([
+            'url' => 'https://www.zamzar.com/images/zamzar-logo.png'
+        ]);
+        $import = $this->client->imports->get($import->id);
+        $this->assertGreaterThan(0, $import->id);
     }
 
     public function testImportCanBeStarted(): void
     {
-        $zamzar = new \Zamzar\ZamzarClient($this->apiKey);
-        $import = $zamzar->imports->create([
+        $import = $this->client->imports->create([
             'url' => 'https://www.zamzar.com/images/zamzar-logo.png'
         ]);
-        $this->assertGreaterThan(0, $import->getId());
+        $this->assertGreaterThan(0, $import->id);
     }
 
-    public function testImportCanBeRefreshed(): void
+    public function testCanWaitUntilComplete(): void
     {
-        $zamzar = new \Zamzar\ZamzarClient($this->apiKey);
-        $import = $zamzar->imports->create([
+        $import = $this->client->imports->create([
             'url' => 'https://www.zamzar.com/images/zamzar-logo.png'
-        ]);
-        $statusBefore = $import->getStatus();
-        sleep(10);
-        $import->refresh();
-        $statusAfter = $import->getStatus();
-        $this->assertNotEquals($statusBefore, $statusAfter);
+        ])->waitForCompletion();
+        $this->assertTrue($import->hasCompleted());
     }
 }

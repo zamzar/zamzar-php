@@ -15,7 +15,7 @@ The SDK Sampler App was built using the PHP-SDK to demonstrate all the key areas
 3. Install the Zamzar Library and associated dependencies using composer:
 
     ```
-    composer require zamzar/zamzar-php
+    composer install
     ```
 
 4. Update the <code>config.php</code> in the root of the app:

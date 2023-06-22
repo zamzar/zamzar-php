@@ -2,100 +2,48 @@
 
 namespace Zamzar;
 
+use Zamzar\ApiOperations\WaitForCompletion;
+
 /**
- * Job Object
+ * @property int $id
+ * @property string $key
+ * @property string $status
+ * @property null|\Zamzar\Failure $failure
+ * @property bool $sandbox
+ * @property string $created_at
+ * @property string $finished_at
+ * @property null|\Zamzar\Import $import
+ * @property null|\Zamzar\File $source_file
+ * @property \Zamzar\File[] $target_files
+ * @property string $target_format
+ * @property int $credit_cost
+ * @property string $export_url
+ * @property null|\Zamzar\Export $exports
  */
 class Job extends ApiResource
 {
-    /** Valid API Operations for this Class */
-    use \Zamzar\ApiOperations\Cancel;
-    use \Zamzar\ApiOperations\Refresh;
+    use WaitForCompletion;
 
-    /** Constants */
     public const STATUS_INITIALISING = 'initialising';
     public const STATUS_CONVERTING = 'converting';
     public const STATUS_SUCCESSFUL = 'successful';
     public const STATUS_FAILED = 'failed';
     public const STATUS_CANCELLED = 'cancelled';
 
-    /** Properties */
-    private $id;
-    private $key;
-    private $status;
-    private $failure;
-    private $sandbox;
-    private $created_at;
-    private $finished_at;
-    private $import;
-    private $source_file;
-    private $target_files;
-    private $target_format;
-    private $credit_cost;
-    private $export_url;
-    private $exports;
-
-    /**
-     * Initialise a new instance of the Job object
-     */
-    public function __construct($config, $data)
-    {
-        parent::__construct($config, $data->id);
-        $this->setValues($data);
-    }
-
-    /**
-     * Initialise or Update properties
-     */
-    private function setValues($data)
-    {
-        // Should always be supplied
-        $this->id = $data->id;
-        $this->key = $data->key;
-        $this->status = $data->status;
-        $this->sandbox = $data->sandbox;
-        $this->finished_at = $data->finished_at;
-        $this->created_at = $data->created_at;
-        $this->target_files = array();
-        $this->target_format = $data->target_format;
-        $this->credit_cost = $data->credit_cost;
-
-        // Target Files will be empty when a job is submitted
-        foreach ($data->target_files as $target_file) {
-            $this->target_files[] = new \Zamzar\File($this->getConfig(), $target_file);
-        }
-
-        // Optionally supplied
-        if (property_exists($data, "source_file")) {
-            $this->source_file = new \Zamzar\File($this->getConfig(), $data->source_file);
-        }
-
-        if (property_exists($data, "failure")) {
-            $this->failure = new \Zamzar\Failure($data->failure);
-        }
-
-        if (property_exists($data, "import")) {
-            $this->import = new \Zamzar\Import($this->getConfig(), $data->import);
-        }
-
-        if (property_exists($data, "export_url")) {
-            $this->export_url = $data->export_url;
-        } else {
-            $this->export_url = '';
-        }
-
-        if (property_exists($data, "exports")) {
-            foreach ($data->exports as $export) {
-                $this->exports[] = new \Zamzar\Export($export);
-            }
-        }
-    }
+    protected array $propertyMap = [
+        'export' => Export::class,
+        'failure' => Failure::class,
+        'import' => Import::class,
+        'source_file' => File::class,
+        'target_files' => [File::class],
+    ];
 
     /**
      * Delete source file
      */
     public function deleteSourceFile()
     {
-        $this->getSourceFile()->delete();
+        $this->source_file->delete();
         return $this;
     }
 
@@ -104,7 +52,7 @@ class Job extends ApiResource
      */
     public function deleteTargetFiles()
     {
-        foreach ($this->getTargetFiles() as $target_file) {
+        foreach ($this->target_files as $target_file) {
             $target_file->delete();
         }
         return $this;
@@ -115,7 +63,7 @@ class Job extends ApiResource
      */
     public function downloadTargetFiles($path)
     {
-        foreach ($this->getTargetFiles() as $target_file) {
+        foreach ($this->target_files as $target_file) {
             $target_file->download($path);
         }
         return $this;
@@ -142,50 +90,14 @@ class Job extends ApiResource
         return $this;
     }
 
-    /**
-     * Wait for the job to complete
-     */
-    public function waitForCompletion($timeout = 60)
+    public function cancel()
     {
-        $totalSleep = 0;
-        $sleepInterval = 1;
-
-        do {
-            // goto sleep
-            sleep($sleepInterval);
-
-            // how long have we been sleeping for
-            $totalSleep += $sleepInterval;
-
-            // gradually decrease the number of api calls based on the time spent waiting, upto a max of 30 second intervals
-            if ($totalSleep >= 10) {
-                $sleepInterval = 5;
-            } elseif ($totalSleep >= 20) {
-                $sleepInterval = 10;
-            } elseif ($totalSleep >= 40) {
-                $sleepInterval = 20;
-            } elseif ($totalSleep >= 60) {
-                $sleepInterval = 30;
-            }
-
-            // throw an exception if we exceed the timeout
-            if ($totalSleep > $timeout) {
-                throw new \Zamzar\Exception\TimeOutException('Timed out waiting for Job Id ' . $this->getId() . ' to complete. Increase the timeout period.');
-            }
-
-            // refresh this job's values
-            $this->refresh();
-        } while (
-            // check the latest status
-            $this->status !== self::STATUS_SUCCESSFUL && $this->status !== self::STATUS_FAILED && $this->status !== self::STATUS_CANCELLED
-        );
-
-        // return this job
-        return $this;
+        $this->request('DELETE', $this->instanceUrl());
+        return $this->refresh();
     }
 
     /**
-     * Get the value of id
+     * @deprecated Access property directly instead
      */
     public function getId()
     {
@@ -193,7 +105,7 @@ class Job extends ApiResource
     }
 
     /**
-     * Get the value of key
+     * @deprecated Access property directly instead
      */
     public function getKey()
     {
@@ -201,7 +113,7 @@ class Job extends ApiResource
     }
 
     /**
-     * Get the value of status
+     * @deprecated Access property directly instead
      */
     public function getStatus()
     {
@@ -209,7 +121,7 @@ class Job extends ApiResource
     }
 
     /**
-     * Get the value of failure
+     * @deprecated Access property directly instead
      */
     public function getFailure()
     {
@@ -217,7 +129,7 @@ class Job extends ApiResource
     }
 
     /**
-     * Get the value of sandbox
+     * @deprecated Access property directly instead
      */
     public function getSandbox()
     {
@@ -225,7 +137,7 @@ class Job extends ApiResource
     }
 
     /**
-     * Get the value of created_at
+     * @deprecated Access property directly instead
      */
     public function getCreatedAt()
     {
@@ -233,7 +145,7 @@ class Job extends ApiResource
     }
 
     /**
-     * Get the value of finished_at
+     * @deprecated Access property directly instead
      */
     public function getFinishedAt()
     {
@@ -241,7 +153,7 @@ class Job extends ApiResource
     }
 
     /**
-     * Get the value of import
+     * @deprecated Access property directly instead
      */
     public function getImport()
     {
@@ -249,7 +161,7 @@ class Job extends ApiResource
     }
 
     /**
-     * Get the value of source_file
+     * @deprecated Access property directly instead
      */
     public function getSourceFile()
     {
@@ -257,7 +169,7 @@ class Job extends ApiResource
     }
 
     /**
-     * Get the value of target_files
+     * @deprecated Access property directly instead
      */
     public function getTargetFiles()
     {
@@ -265,7 +177,7 @@ class Job extends ApiResource
     }
 
     /**
-     * Get the value of target_format
+     * @deprecated Access property directly instead
      */
     public function getTargetFormat()
     {
@@ -273,7 +185,7 @@ class Job extends ApiResource
     }
 
     /**
-     * Get the value of credit_cost
+     * @deprecated Access property directly instead
      */
     public function getCreditCost()
     {
@@ -281,7 +193,7 @@ class Job extends ApiResource
     }
 
     /**
-     * Get the value of export_url
+     * @deprecated Access property directly instead
      */
     public function getExportUrl()
     {
@@ -289,98 +201,65 @@ class Job extends ApiResource
     }
 
     /**
-     * Get the value of exports
+     * @deprecated Access property directly instead
      */
     public function getExports()
     {
         return $this->exports;
     }
 
-    /**
-     * Does this job have a source file
-     */
     public function hasSourceFile()
     {
         return !is_null($this->source_file);
     }
 
-    /**
-     * Does this job have target files
-     */
     public function hasTargetFiles()
     {
         return !is_null($this->target_files);
     }
 
-    /**
-     * Does this job have a failure
-     */
     public function hasFailure()
     {
         return !is_null($this->failure);
     }
 
-    /**
-     * Does this job have an import
-     */
     public function hasImport()
     {
         return !is_null($this->import);
     }
 
-    /**
-     * Does this job have exports
-     */
     public function hasExports()
     {
         return !is_null($this->exports);
     }
 
-    /**
-     * Is the Status = Initialising
-     */
     public function isStatusInitialising()
     {
         return $this->status == self::STATUS_INITIALISING;
     }
 
-    /**
-     * Is the Status = Converting
-     */
     public function isStatusConverting()
     {
         return $this->status == self::STATUS_CONVERTING;
     }
 
-    /**
-     * Is the Status = Successful
-     */
     public function isStatusSuccessful()
     {
         return $this->status == self::STATUS_SUCCESSFUL;
     }
 
-    /**
-     * Is the Status = Failed
-     */
     public function isStatusFailed()
     {
         return $this->status == self::STATUS_FAILED;
     }
 
-    /**
-     * Is the Status = Cancelled
-     */
     public function isStatusCancelled()
     {
         return $this->status == self::STATUS_CANCELLED;
     }
 
-    /**
-     * Has the job completed (successfully or not)
-     */
     public function hasCompleted()
     {
-        return $this->isStatusSuccessful() || $this->isStatusFailed();
+        return $this->isStatusSuccessful() || $this->isStatusFailed() || $this->isStatusCancelled();
     }
 }

@@ -27,7 +27,7 @@ if (!is_null($url)) {
         $params['filename'] = $filename;
     }
     try {
-        $import = $zamzar->imports->start($params);
+        $import = $zamzar->imports->create($params);
         $data = ["id" => $import->getId()];
     } catch (\Zamzar\Exception\ApiErrorException $e) {
         $data = ["id" => -1];

@@ -78,7 +78,7 @@ Viewing the last response from the API can be useful for troubleshooting purpose
 
 ```php
 if($zamzar->hasLastResponse()) {
-    var_dump($zamzar->getLastResponse());
+    var_dump($zamzar->$lastResponse);
 }
 ```
 
@@ -87,8 +87,8 @@ if($zamzar->hasLastResponse()) {
 The credits remaining are returned in the headers of every call to the API. To retrieve the credits that were available at the time of the last request, either directly access the last response, or call the helper methods on the client:
 
 ```php
-$zamzar->getLastResponse()->getProductionCreditsRemaining();
-$zamzar->getLastResponse()->getTestCreditsRemaining();
+$zamzar->$lastResponse->getProductionCreditsRemaining();
+$zamzar->$lastResponse->getTestCreditsRemaining();
 
 $zamzar->getLastProductionCreditsRemaining();
 $zamzar->getLastTestCreditsRemaining();
@@ -110,15 +110,15 @@ The account object is read-only.
 $account = $zamzar->account->get();
 
 // view the direct properties of the account
-echo $account->getProductionCreditsRemaining();
-echo $account->getTestCreditsRemaining();
+echo $account->production_credits_remaining;
+echo $account->test_credits_remaining;
 
 // get the plan object which is a child of account and retrieved in account->get()
-$plan = $account->getPlan();
-echo $plan->getPlanName();
-echo $plan->getPricePerMonth();
-echo $plan->getConversionsPerMonth();
-echo $plan->getMaximumFileSize();
+$plan = $account->plan;
+echo $plan->name;
+echo $plan->price_per_month;
+echo $plan->conversions_per_month;
+echo $plan->maximum_file_size;
 ```
 
 ## Files
@@ -134,7 +134,7 @@ $file = $zamzar->files->create([
     'name' => 'path/to/local/filename.ext'
 ]);
 
-echo $file->getId();
+echo $file->id;
 ```
 
 ### Downloading a File
@@ -199,10 +199,12 @@ $files = $zamzar->files->all(
 
 ### Iterating through a list of files
 
-Iterate through the list using the <code>data</code> property (which is an array of file objects).
+Iterate through the list:
 
 ```php
-foreach($files->data as $file) {
+$files = $zamzar->files->all();
+
+foreach($files as $file) {
     //download and delete all files
     $file->download('path/to/download/folder');
     $file->delete();
@@ -244,9 +246,9 @@ $format = $zamzar->formats->get('jpg');
 echo $format->getTargetsToCsv();
 
 // inspect each target format
-foreach($format->getTargets() as $targetFormat) {
-    echo $targetFormat->getName();
-    echo $targetFormat->getCreditCost();
+foreach($format->targets as $targetFormat) {
+    echo $targetFormat->name;
+    echo $targetFormat->credit_cost;
 }
 ```
 
@@ -263,12 +265,12 @@ $formats = $zamzar->formats->all(
 
 ### Iterating through a list of formats
 
-Iterate through the list using the <code>data</code> property (which is an array of format objects).
+Iterate through the list:
 
 ```php
-foreach($formats->data as $format) {
+foreach($formats as $format) {
     // output the target formats for each format
-    echo $format->getName() . ' ---> ' . $format->getTargetsToCsv();
+    echo $format->name . ' ---> ' . $format->getTargetsToCsv();
 }
 ```
 
@@ -301,7 +303,7 @@ $import = $zamzar->imports->create([
     'url' => 'https://www.zamzar.com/images/zamzar-logo.png'
 ]);
 
-echo $import->getId();
+echo $import->id;
 ```
 
 ### Checking on the status of an Import
@@ -337,7 +339,7 @@ if ($import->isStatusFailed()) {
 }
 ```
 
-Instead of checking for each status value, the <code>hasCompleted()</code> method can be used to check if a job has completed successfully or not.
+Instead of checking for each status value, the <code>hasCompleted()</code> method can be used to check if an import has completed or not.
 
 ```php
 if ($import->hasCompleted()) {
@@ -349,27 +351,10 @@ if ($import->hasCompleted()) {
 }
 ```
 
-To periodically check the status of an import using a predefined interval and timeout, a loop could be used:
+To wait for an import to complete, the `waitForCompletion()` method can be used:
 
 ```php
-$retries = 0;
-do {
-    sleep(10);
-    $import = $import->refresh();
-    $retries += 1;
-} while (
-    !$import->hasCompleted() && $retries < 6
-)
-
-if ($import->hasCompleted()) {
-    if ($import->isStatusSuccessful()) {
-        echo 'successful';
-    } else {
-        echo 'failed';
-    }
-} else {
-    echo 'Timeout. Import has not completed. Current status = ' . $import->getStatus();
-}
+$import->waitForCompletion();
 ```
 
 ### Checking why an import failed
@@ -377,16 +362,14 @@ if ($import->hasCompleted()) {
 If an import has failed it will have a <code>status</code> of <code>failed</code> and include a <code>failure</code> object.
 
 ```php
-if($import->isStatusFailed()) {
-    if($import->hasFailure()) {
-        
+if ($import->isStatusFailed()) {
+    if ($import->hasFailure()) {
         // cast the failure object to a string (code and message)
-        echo (string) $import->getFailure();
-        
+        echo (string) $import->failure;
+
         // or capture and use each value
-        $code = $import->getFailure()->getCode();
-        $message = $import->getFailure()->getMessage();
-        
+        $code = $import->failure->code;
+        $message = $import->failure->message;
     }
 }
 ```
@@ -403,12 +386,12 @@ All successful imports produce a file object which can be used in the same way a
 
 ```php
 // start a conversion job for an imported file
-$job = $import->getFile()->convert([
+$job = $import->file->convert([
     'target_format' => 'pdf'
 ]);
 
 // delete an imported file
-$import->getFile()->delete();
+$import->file->delete();
 ```
 
 ### Retrieving a list of imports
@@ -424,11 +407,11 @@ $imports = $zamzar->imports->all(
 
 ### Iterating through a list of imports
 
-Iterate through the list using the <code>data</code> property (which is an array of import objects).
+Iterate through the list:
 
 ```php
-foreach($imports->data as $import) {
-    echo $import->getId();
+foreach($imports as $import) {
+    echo $import->id;
 }
 ```
 
@@ -457,7 +440,6 @@ Job related objects are used to retrieve information about jobs and to submit co
 The <code>create</code> operator is performed on the Jobs object, which creates and returns a Job object.
 
 ```php
-
 // start a job for a local file
 $job = $zamzar->jobs->create([
     'source_file' => 'path/to/local/file',
@@ -472,7 +454,7 @@ $job = $zamzar->jobs->create([
 
 // start a job for a file which already exists on Zamzar's servers
 $job = $zamzar->jobs->create([
-    'source_file' => '123456',
+    'source_file' => 123456,
     'target_format' => 'pdf'
 ]);
 
@@ -482,7 +464,7 @@ $job = $zamzar->jobs->create([
     'target_format' => 'pdf'
 ]);
 
-echo $job->getId();
+echo $job->id;
 ```
 
 ### Overriding the Source Format
@@ -582,14 +564,12 @@ If a job has failed it will have a <code>status</code> of <code>failed</code> an
 ```php
 if($job->isStatusFailed()) {
     if($job->hasFailure()) {
-        
         // cast the failure object to a string (code and message)
-        echo (string) $job->getFailure();
+        echo (string) $job->failure;
         
         // or capture and use each value
-        $code = $job->getFailure()->getCode();
-        $message = $job->getFailure()->getMessage();
-        
+        $code = $job->failure->code;
+        $message = $job->failure->message;
     }
 }
 ```
@@ -617,8 +597,8 @@ $job->deleteSourceFile();
 $job->deleteTargetFiles();
 
 // expanded form using the file objects directly
-$job->getSourceFile()->delete();
-foreach($job->getTargetFiles() as $file) {
+$job->source_file->delete();
+foreach($job->target_files as $file) {
     $file->delete();
 }
 ```
@@ -633,10 +613,10 @@ Method chaining is supported for the processes described above.
 $job = $zamzar->jobs->create([
         'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
         'target_format' => 'pdf',
-        ])
-  ->waitForCompletion(120)
-  ->downloadTargetFiles('path/to/folder')
-  ->deleteAllFiles();
+    ])
+    ->waitForCompletion(120)
+    ->downloadTargetFiles('path/to/folder')
+    ->deleteAllFiles();
 ```
 
 ### Retrieving a specific job
@@ -660,10 +640,10 @@ $jobs = $zamzar->jobs->all(
 
 ### Iterate through a list of jobs
 
-Iterate through the list using the <code>data</code> property (which is an array of jobs objects).
+Iterate through the list:
 
 ```php
-foreach($jobs->data as $job) {
+foreach($jobs as $job) {
     echo $job->getId();
 }
 ```
@@ -739,7 +719,6 @@ try {
  * Proceed to next step?
  */
 if($proceed) {
-
     // Wait for completion
     try {
         $job = $job->waitForCompletion(60);
@@ -759,74 +738,49 @@ if($proceed) {
         
         // Is the job succcessful?
         if($job->isStatusSuccessful()) {
-            
             // job is successful
             echo 'job is successful. downloading files' . "\n\n";
             
             // try downloading and deleting the files
             try {
-            
                 $job = $job->downloadTargetFiles('path/to/folder');
 
                 echo 'deleting files' . "\n\n";
                 $job = $job->deleteAllFiles();
-
-                } catch (Exception $e) {
-                    echo $e->getMessage();
-                }
-
+            } catch (Exception $e) {
+                echo $e->getMessage();
+            }
         } else {
             echo 'job has failed' . "\n\n";
         }
     } else {
-        echo 'job has not completed. status is' . $job->getStatus() . "\n\n";
+        echo 'job has not completed. status is' . $job->status . "\n\n";
     }
 }
 ```
 
-## Per-Object Instantiation
-
-Objects representing the high-level endpoints(Files, Formats, Imports, Jobs) can be instantiated without utiilising the ZamzarClient if required.
-
-```php
-$jobs = (new \Zamzar\Jobs('apikey'))->all(['limit' => 10]);
-
-foreach($jobs->data as $job) {
-    $job->downloadTargetFiles();
-    // etc.
-}
-```
-
-Using this approach loses some benefits of using the ZamzarClient, but might be appropriate depending on the nature of your workflow. For example, when using the ZamzarClient, production and test credits can be determined readily. The same can be achieved when instantiating per-object, but in a more verbose way:
-
-```php
-// using the above example
-echo $jobs->getLastResponse()->getProductionCreditsRemaining() . "\n\n";
-echo $jobs->getLastResponse()->getTestCreditsRemaining() . "\n\n";
-```
-
 ## Object Endpoints
 
-Each object stores its own endpoint, which is not essential part of using the library, but might be useful for troubleshooting.
+Each object stores its own endpoint, which is not an essential part of using the library, but might be useful for troubleshooting.
 
 ```php
-foreach($jobs->data as $job) {
-	echo $job->getEndpoint() . "\n\n";
+foreach($jobs as $job) {
+	echo $job->instanceUrl() . "\n\n";
 }
 ```
 
 Outputs something like:
 
 ```php
-https://api.zamzar.com/v1/jobs/18906377
+/v1/jobs/18906377
 
-https://api.zamzar.com/v1/jobs/18906341
+/v1/jobs/18906341
 
-https://api.zamzar.com/v1/jobs/18906322
+/v1/jobs/18906322
 
-https://api.zamzar.com/v1/jobs/18906188
+/v1/jobs/18906188
 
-https://api.zamzar.com/v1/jobs/18906127
+/v1/jobs/18906127
 ```
 
 ## Additional Information

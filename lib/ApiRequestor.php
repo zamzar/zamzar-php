@@ -36,6 +36,8 @@ class ApiRequestor
      */
     public function request($endpoint, $method = 'GET', $params = [], $getFileContent = false)
     {
+        $endpoint = Zamzar::API_BASE[$this->config['environment']] . $endpoint;
+
         if ($this->config['debug']) {
             Zamzar::getLogger()->info("($method) $endpoint params=" . json_encode($params));
         }
@@ -218,10 +220,8 @@ class ApiRequestor
         $errors = [];
         if (!is_null($this->apiResponse)) {
             if (!is_null($this->apiResponse->getBody())) {
-                if (!is_null($this->apiResponse->getBody()->errors)) {
-                    if (property_exists($this->apiResponse->getBody(), "errors")) {
-                        $errors = $this->apiResponse->getBody()->errors;
-                    }
+                if (isset($this->apiResponse->getBody()['errors'])) {
+                    $errors = $this->apiResponse->getBody()['errors'];
                 }
             }
         }

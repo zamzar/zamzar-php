@@ -125,15 +125,13 @@ The above use case might be applied when other things are happening in between e
 
 ```php
 // Do the whole thing together
-$job = $zamzar
-        ->jobs
-        ->create([
-                'source_file' => 'path/to/localfile', 
-                'target_format' => 'pdf'
-                ])
-        ->waitForCompletion(120)
-        ->downloadTargetFiles('path/to/folder')
-        ->deleteAllFiles();
+$job = $zamzar->jobs->create([
+        'source_file' => 'path/to/localfile', 
+        'target_format' => 'pdf'
+    ])
+    ->waitForCompletion(120)
+    ->downloadTargetFiles('path/to/folder')
+    ->deleteAllFiles();
 ```
 
 ## Configure a Logger
@@ -163,9 +161,7 @@ To run tests:
 
 - Ensure dependencies are installed using <code>composer install</code>
 
-- Rename the <code>testconfigtemplate.php</code> file in the <code>tests</code> folder to <code>testconfig.php</code>
-
-- Specify your API Key within the <code>testconfig.php</code> file
+- Specify your API Key within an environment variable <code>ZAMZAR_API_KEY</code>
 
 - Run <code>./vendor/bin/phpunit tests</code>
 
