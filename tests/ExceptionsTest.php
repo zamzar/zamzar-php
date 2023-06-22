@@ -65,13 +65,13 @@ final class ExceptionsTest extends TestCase
 
     // public function testRateLimitException(): void
     // {
-    //      Ran the following script multi threaded and then used the SDK Sampler to catch ratelimit exceptions on the formats page.
+    //      // Run the following script multi threaded
     //      $zamzar = new \Zamzar\ZamzarClient($this->apiKey);
     //      $x = 1;
     //      $max = 1000;
     //      do {
     //          try {
-    //                  $formats = $zamzar->formats->all(['limit' => 1]);
+    //                $formats = $zamzar->formats->all(['limit' => 1]);
     //              } catch (\Zamzar\Exception\RateLimitException $e) {
     //                  echo $e->getMessage();
     //              } catch (\Zamzar\Exception\ApiErrorException $e) {
