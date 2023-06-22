@@ -1,5 +1,0 @@
-# Ignore the /vendor/ directory
-/vendor/
-
-# Ignore the composer.lock file as the vendor directory isn't being submitted
-composer.lock

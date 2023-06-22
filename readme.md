@@ -19,7 +19,6 @@ Jump to:
 - [Configure a Logger](#configure-a-logger)
 - [Contributing](#contributing)
 - [Resources](#resources)
-- [SDK Sampler](#sdk-sampler)
 
 ## Requirements
 
@@ -54,12 +53,6 @@ The bindings require the following extensions in order to work properly:
 -   [`JSON Extension`](https://secure.php.net/manual/en/book.json.php)
 
 If you use Composer, these dependencies should be handled automatically. If you install manually, you'll want to make sure that these extensions are available.
-
-
-## Documentation
-
-See the [SDK Guide](/docs/guide.md) for all of the features offered by the PHP SDK. The basics are covered below.
-
 
 ## Initialise the Zamzar Client
 
@@ -172,9 +165,3 @@ To run tests:
 [Exceptions Handling](exceptions.md) - Learn more about API Error Codes.
 
 [Developer Docs](https://developers.zamzar.com/docs) - For more information about API operations, parameters, and responses. Use this if you need additional context on all areas of functionality.
-
-## SDK Sampler
-
-We've provided a simple app which demonstrates all features of the SDK, including code snippets to help you get started. [View the SDK Sampler](examples/zamzar-php-sampler/readme.md).
-
-<img width="1379" alt="sampler-screenshot" src="https://user-images.githubusercontent.com/79094268/111761890-4f31c380-8898-11eb-99cc-55c381759020.png">
