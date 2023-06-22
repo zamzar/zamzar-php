@@ -19,7 +19,6 @@ Jump to:
 - [Configure a Logger](#configure-a-logger)
 - [Contributing](#contributing)
 - [Resources](#resources)
-- [SDK Sampler](#sdk-sampler)
 
 ## Requirements
 
@@ -54,12 +53,6 @@ The bindings require the following extensions in order to work properly:
 -   [`JSON Extension`](https://secure.php.net/manual/en/book.json.php)
 
 If you use Composer, these dependencies should be handled automatically. If you install manually, you'll want to make sure that these extensions are available.
-
-
-## Documentation
-
-See the [SDK Guide](/docs/guide.md) for all of the features offered by the PHP SDK. The basics are covered below.
-
 
 ## Initialise the Zamzar Client
 
