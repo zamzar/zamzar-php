@@ -172,9 +172,3 @@ To run tests:
 [Exceptions Handling](exceptions.md) - Learn more about API Error Codes.
 
 [Developer Docs](https://developers.zamzar.com/docs) - For more information about API operations, parameters, and responses. Use this if you need additional context on all areas of functionality.
-
-## SDK Sampler
-
-We've provided a simple app which demonstrates all features of the SDK, including code snippets to help you get started. [View the SDK Sampler](examples/zamzar-php-sampler/readme.md).
-
-<img width="1379" alt="sampler-screenshot" src="https://user-images.githubusercontent.com/79094268/111761890-4f31c380-8898-11eb-99cc-55c381759020.png">
