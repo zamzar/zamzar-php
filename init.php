@@ -32,8 +32,8 @@ require __DIR__ . '/lib/Service/ImportService.php';
 require __DIR__ . '/lib/Service/JobService.php';
 
 // Plumbing
-require __DIR__ . '/lib/ApiResource.php';
 require __DIR__ . '/lib/ZamzarObject.php';
+require __DIR__ . '/lib/ApiResource.php';
 require __DIR__ . '/lib/Collection.php';
 require __DIR__ . '/lib/ApiRequestor.php';
 require __DIR__ . '/lib/ApiResponse.php';
