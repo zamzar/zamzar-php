@@ -1,3 +1,9 @@
+## 2.0.1 - 2023-07-20
+
+* [#11](https://github.com/zamzar/zamzar-php/pull/11) Fix for manual installation / usage when using init.php
+
+    - Depedencies within `init.php` are now loaded in the correct order
+
 ## 2.0.0 - 2023-06-22
 
 Internal optimisations and improved developer experience. Contains some breaking changes and deprecated methods.
