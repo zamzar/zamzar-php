@@ -1,3 +1,7 @@
+## 2.0.2 - 2023-07-21
+
+* [#12](https://github.com/zamzar/zamzar-php/pull/12) Retain support for PHP 7.2
+
 ## 2.0.1 - 2023-07-20
 
 * [#11](https://github.com/zamzar/zamzar-php/pull/11) Fix for manual installation / usage when using init.php
