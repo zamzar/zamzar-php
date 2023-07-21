@@ -30,7 +30,7 @@ class Job extends ApiResource
     public const STATUS_FAILED = 'failed';
     public const STATUS_CANCELLED = 'cancelled';
 
-    protected array $propertyMap = [
+    protected $propertyMap = [
         'export' => Export::class,
         'failure' => Failure::class,
         'import' => Import::class,

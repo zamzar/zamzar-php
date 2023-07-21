@@ -27,7 +27,7 @@ class GuzzleClient
             return new \Zamzar\ApiResponse(
                 $response->getBody(),
                 $response->getStatusCode(),
-                $response->getHeaders(),
+                $response->getHeaders()
             );
         } else {
             // If we are here, then it's a strange place to be

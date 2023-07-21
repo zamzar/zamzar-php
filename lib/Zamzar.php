@@ -12,7 +12,7 @@ class Zamzar
     ];
 
     public const API_VERSION = 'v1';
-    public const USER_AGENT = 'zamzar-php-v1';
+    public const USER_AGENT = 'zamzar-php-v2';
 
     /** Endpoint constants */
     public const ACCOUNT_ENDPOINT = 'account';

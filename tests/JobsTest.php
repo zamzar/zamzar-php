@@ -78,7 +78,9 @@ final class JobsTest extends TestCase
 
         $jobs = $this->client->jobs->all(['status' => Job::STATUS_SUCCESSFUL]);
 
-        $this->assertEmpty(array_filter($jobs->data, fn ($job) => $job->status !== Job::STATUS_SUCCESSFUL));
+        $this->assertEmpty(array_filter($jobs->data, function ($job) {
+            return $job->status !== Job::STATUS_SUCCESSFUL;
+        }));
     }
 
     public function testCanPageOnlysuccessfulJobs()

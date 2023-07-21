@@ -9,7 +9,7 @@ namespace Zamzar;
  */
 class Account extends ApiResource
 {
-    protected array $propertyMap = [
+    protected $propertyMap = [
         'plan' => Plan::class,
     ];
 

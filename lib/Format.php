@@ -8,7 +8,7 @@ namespace Zamzar;
  */
 class Format extends ApiResource
 {
-    protected array $propertyMap = [
+    protected $propertyMap = [
         'targets' => [TargetFormat::class],
     ];
 

@@ -23,7 +23,7 @@ class Import extends ApiResource
     public const STATUS_SUCCESSFUL = 'successful';
     public const STATUS_FAILED = 'failed';
 
-    protected array $propertyMap = [
+    protected $propertyMap = [
         'failure' => Failure::class,
         'file' => File::class,
     ];
