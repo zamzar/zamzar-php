@@ -4,9 +4,9 @@ namespace Zamzar;
 
 class ZamzarObject
 {
-    protected array $values = [];
-    protected array $config = [];
-    protected array $propertyMap = [];
+    protected $values = [];
+    protected $config = [];
+    protected $propertyMap = [];
 
     public function __construct($id = null, array $config = [])
     {
