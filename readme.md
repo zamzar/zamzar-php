@@ -23,7 +23,7 @@ Jump to:
 ## Requirements
 
 - Before you begin, signup for a Zamzar API Account or retrieve your existing API Key from the [Zamzar Developers Homepage](https://developers.zamzar.com/user)
-- PHP 7.2.5 and later.
+- PHP 7.2.34 and later.
 
 ## Installation
 
