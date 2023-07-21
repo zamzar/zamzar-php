@@ -98,7 +98,7 @@ class Collection extends ZamzarObject implements \Countable, \ArrayAccess, \Iter
         $params = array_merge(
             ['limit' => $this->paging['limit']],
             ['after' => $this->paging['last']],
-            $params,
+            $params
         );
 
         return $this->all($params);
@@ -116,7 +116,7 @@ class Collection extends ZamzarObject implements \Countable, \ArrayAccess, \Iter
         $params = array_merge(
             ['limit' => $this->paging['limit']],
             ['before' => $this->paging['first']],
-            $params,
+            $params
         );
 
         return $this->all($params);
