@@ -14,5 +14,9 @@ composer.lock
 /tests/tinker/
 /tests/TestConfig.php
 
-# vscode
+# IDEs
 /.vscode/
+/.idea
+
+# TODO list
+TODO.md
