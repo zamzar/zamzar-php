@@ -18,7 +18,6 @@ Jump to:
 - [Test the Connection](#test-the-connection)
 - [Typical Usage](#typical-usage)
 - [Configure a Logger](#configure-a-logger)
-- [Contributing](#contributing)
 - [Resources](#resources)
 
 ## Requirements
@@ -146,18 +145,6 @@ $logger = new Logger('Zamzar');
 $logger->pushHandler(new StreamHandler(__DIR__.'/app.log', Logger::DEBUG));
 \Zamzar\Zamzar::setLogger($logger);
 ```
-
-## Contributing
-
-We would greatly value feedback and contributions from our community. 
-
-To run tests:
-
-- Ensure dependencies are installed using <code>composer install</code>
-
-- Specify your API Key within an environment variable <code>ZAMZAR_API_KEY</code>
-
-- Run <code>./vendor/bin/phpunit tests</code>
 
 ## Resources
 
