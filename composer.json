@@ -9,7 +9,7 @@
         "api"
     ],
     "homepage": "https://www.zamzar.com/",
-    "license": "Apache-2.0",
+    "license": "MIT",
     "authors": [
         {
           "name": "Zamzar",
