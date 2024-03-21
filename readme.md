@@ -4,8 +4,9 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/zamzar/zamzar-php.svg?style=flat)](https://packagist.org/packages/zamzar/zamzar-php)
 [![Apache 2 License](https://img.shields.io/packagist/l/zamzar/zamzar-php.svg?style=flat)](https://github.com/zamzar/zamzar-php/blob/main/LICENSE)
 
-The Zamzar PHP library provides convenient access to the Zamzar API from
-applications written in the PHP language. It includes a pre-defined set of classes which make it easy to submit files for conversion, retrieve converted files and utilise all of the features that the API offers.
+The official PHP SDK for the [Zamzar API](https://developers.zamzar.com).
+
+`zamzar-php` makes it easy to convert files between different formats as part of your PHP applications.
 
 Jump to:
 
