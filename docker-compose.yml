@@ -1,0 +1,17 @@
+version: '3'
+services:
+  php:
+    build: .
+    depends_on:
+      - mock
+    entrypoint: [ "/bin/sh", "-c", "sleep infinity" ]
+    environment:
+      - ZAMZAR_API_KEY=GiVUYsF4A8ssq93FR48H
+      - ZAMZAR_API_URL=http://mock:8080
+    volumes:
+      - '.:/usr/src/zamzar-php'
+    working_dir: '/usr/src/zamzar-php'
+  mock:
+    image: zamzar/zamzar-mock:latest
+    ports:
+      - "8080:8080"

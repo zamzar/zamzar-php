@@ -11,6 +11,7 @@ build/*
 composer.lock
 
 # Ignore test files
+.phpunit.result.cache
 /tests/tinker/
 /tests/TestConfig.php
 
@@ -18,5 +19,8 @@ composer.lock
 /.vscode/
 /.idea
 
-# TODO list
+# scratch files
 TODO.md
+
+# docker compose overrides
+docker-compose.override.yml
