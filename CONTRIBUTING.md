@@ -20,5 +20,4 @@ PRs to this repository should be made against the `main` branch and labelled wit
 * `bump:major` for breaking changes
 
 When a PR is merged, the CI will automatically tag a new version. 
-[Packagist](https://packagist.org/packages/zamzar/zamzar-php) will periodically check for new versions and update the
-metadata on the package page.
+[Packagist](https://packagist.org/packages/zamzar/zamzar-php) is informed via a GitHub webhook (configured on this repo) and will update the package accordingly.
