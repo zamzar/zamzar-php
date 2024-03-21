@@ -12,22 +12,22 @@ final class FilesTest extends TestCase
 
     public function testFilesAreListable(): void
     {
-        $files = $this->client->files->all(['limit' => 1]);
+        $files = $this->client()->files->all(['limit' => 1]);
         $this->assertEquals(count($files->data), 1);
     }
 
     public function testFileIsRetrievable(): void
     {
-        $files = $this->client->files->all(['limit' => 1]);
+        $files = $this->client()->files->all(['limit' => 1]);
         $fileid = $files->data[0]->getId();
-        $file = $this->client->files->get($fileid);
+        $file = $this->client()->files->get($fileid);
 
         $this->assertGreaterThan(0, $file->size);
     }
 
     public function testFileCanBeUploaded(): void
     {
-        $file = $this->client->files->create([
+        $file = $this->client()->files->create([
             'name' => __DIR__ . '/files/source/test.pdf'
         ]);
         $this->assertGreaterThan(0, $file->id);
@@ -35,7 +35,7 @@ final class FilesTest extends TestCase
 
     public function testFileCanBeDownloaded(): void
     {
-        $file = $this->client->files->create([
+        $file = $this->client()->files->create([
             'name' => __DIR__ . '/files/source/test.pdf'
         ]);
         $file->download(__DIR__ . '/files/target/');
@@ -44,7 +44,7 @@ final class FilesTest extends TestCase
 
     public function testFileCanBeDownloadedWithCustomFilename(): void
     {
-        $file = $this->client->files->create([
+        $file = $this->client()->files->create([
             'name' => __DIR__ . '/files/source/test.pdf'
         ]);
         $file->download(__DIR__ . '/files/target/output.pdf');
@@ -53,7 +53,7 @@ final class FilesTest extends TestCase
 
     public function testFileCanBeDeleted(): void
     {
-        $file = $this->client->files->create([
+        $file = $this->client()->files->create([
             'name' => __DIR__ . '/files/source/test.pdf'
         ]);
         $file->delete();
@@ -63,7 +63,7 @@ final class FilesTest extends TestCase
 
     public function testFileCanBeConverted(): void
     {
-        $file = $this->client->files->create([
+        $file = $this->client()->files->create([
             'name' => __DIR__ . '/files/source/test.pdf'
         ]);
 

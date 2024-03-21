@@ -12,13 +12,13 @@ final class FormatsTest extends TestCase
 
     public function testFormatsAreListable(): void
     {
-        $formats = $this->client->formats->all(['limit' => 1]);
+        $formats = $this->client()->formats->all(['limit' => 1]);
         $this->assertEquals(count($formats->data), 1);
     }
 
     public function testFormatIsRetrievable(): void
     {
-        $format = $this->client->formats->get('png');
+        $format = $this->client()->formats->get('png');
         $this->assertGreaterThan(0, count($format->targets));
     }
 }
