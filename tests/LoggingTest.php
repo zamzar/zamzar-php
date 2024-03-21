@@ -19,33 +19,25 @@ final class LoggingTest extends TestCase
 
         Zamzar::setLogger($logger);
 
-        $this->client->account->get();
+        $this->client()->account->get();
 
         $this->assertEmpty($logger->log);
     }
 
     public function testRequestsAreLogged(): void
     {
-        $client = new ZamzarClient([
-            'api_key' => $this->apiKey(),
-            'debug' => true,
-        ]);
-
         $logger = $this->createLogger();
 
         Zamzar::setLogger($logger);
 
-        $client->account->get();
+        $this->client(['debug' => true])->account->get();
 
         $this->assertCount(1, $logger->log);
     }
 
     public function testLoggerCanBeChanged(): void
     {
-        $client = new ZamzarClient([
-            'api_key' => $this->apiKey(),
-            'debug' => true,
-        ]);
+        $client = $this->client(['debug' => true]);
 
         $logger1 = $this->createLogger();
         $logger2 = $this->createLogger();

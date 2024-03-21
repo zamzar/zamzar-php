@@ -18,7 +18,9 @@ class GuzzleClient
     public static function request($config, $endpoint, $method = 'GET', $params = [], $hasLocalFile = false, $getFileContent = false)
     {
         $client = new Client([
-            'auth' => [$config['api_key'], ''],
+            'headers' => [
+                'Authorization' => 'Bearer ' . $config['api_key'],
+            ],
         ]);
 
         $response = $client->request($method, $endpoint, self::prepareRequest($config, $method, $params, $hasLocalFile));

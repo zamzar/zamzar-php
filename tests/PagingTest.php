@@ -13,7 +13,7 @@ final class PagingTest extends TestCase
 
     public function testCanChangePageSize()
     {
-        $formats = $this->client->formats->all(['limit' => 2]);
+        $formats = $this->client()->formats->all(['limit' => 2]);
 
         $this->assertInstanceOf(Collection::class, $formats);
         $this->assertCount(2, $formats);
@@ -21,7 +21,7 @@ final class PagingTest extends TestCase
 
     public function testCanRequestNextPage()
     {
-        $formats = $this->client->formats->all(['limit' => 2]);
+        $formats = $this->client()->formats->all(['limit' => 2]);
 
         $this->assertInstanceOf(Collection::class, $formats);
         $this->assertCount(2, $formats);
@@ -38,7 +38,7 @@ final class PagingTest extends TestCase
 
     public function testCanRequestPreviousPage()
     {
-        $formats = $this->client->formats->all(['limit' => 2]);
+        $formats = $this->client()->formats->all(['limit' => 2]);
 
         $this->assertInstanceOf(Collection::class, $formats);
         $this->assertCount(2, $formats);
@@ -51,7 +51,7 @@ final class PagingTest extends TestCase
 
     public function testCanRequestNextPageAndChangeLimit()
     {
-        $formats = $this->client->formats->all(['limit' => 2]);
+        $formats = $this->client()->formats->all(['limit' => 2]);
 
         $this->assertInstanceOf(Collection::class, $formats);
         $this->assertCount(2, $formats);
@@ -64,7 +64,7 @@ final class PagingTest extends TestCase
 
     public function testCanRequestPreviousPageAndChangeLimit()
     {
-        $formats = $this->client->formats->all();
+        $formats = $this->client()->formats->all();
         $formats = $formats->nextPage();
         $formats = $formats->previousPage(['limit' => '5']);
 

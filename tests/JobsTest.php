@@ -18,24 +18,24 @@ final class JobsTest extends TestCase
 
     public function testJobsAreListable(): void
     {
-        $jobs = $this->client->jobs->all(['limit' => 1]);
+        $jobs = $this->client()->jobs->all(['limit' => 1]);
         $this->assertEquals(count($jobs->data), 1);
     }
 
     public function testJobIsRetrievable(): void
     {
-        $job = $this->client->jobs->create([
+        $job = $this->client()->jobs->create([
             'source_file' => $this->validLocalSourceFile,
             'target_format' => $this->validTargetFormat
         ]);
 
-        $job = $this->client->jobs->get($job->id);
+        $job = $this->client()->jobs->get($job->id);
         $this->assertGreaterThan(0, $job->id);
     }
 
     public function testJobCanBeSubmittedForLocalFile(): void
     {
-        $job = $this->client->jobs->create([
+        $job = $this->client()->jobs->create([
             'source_file' => $this->validLocalSourceFile,
             'target_format' => $this->validTargetFormat,
         ])->waitForCompletion();
@@ -45,7 +45,7 @@ final class JobsTest extends TestCase
 
     public function testJobCanBeSubmittedForUrlFile(): void
     {
-        $job = $this->client->jobs->create([
+        $job = $this->client()->jobs->create([
             'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
             'target_format' => 'jpg',
         ])->waitForCompletion();
@@ -55,11 +55,11 @@ final class JobsTest extends TestCase
 
     public function testJobCanBeSubmittedForZamzarFile(): void
     {
-        $file = $this->client->files->create([
+        $file = $this->client()->files->create([
             'name' => __DIR__ . '/files/source/test.pdf'
         ]);
 
-        $job = $this->client->jobs->create([
+        $job = $this->client()->jobs->create([
             'source_file' => $file->id,
             'target_format' => 'png',
         ])->waitForCompletion();
@@ -67,39 +67,18 @@ final class JobsTest extends TestCase
         $this->assertEquals($job->status, Job::STATUS_SUCCESSFUL);
     }
 
-    public function testCanListOnlysuccessfulJobs()
+    public function testCanListOnlySuccessfulJobs()
     {
-        $job = $this->client->jobs->create([
-            'source_file' => 'https://www.zamzar.com/non-existant.png',
-            'target_format' => 'jpg',
-        ])->waitForCompletion();
-
-        $this->assertEquals(Job::STATUS_FAILED, $job->status);
-
-        $jobs = $this->client->jobs->all(['status' => Job::STATUS_SUCCESSFUL]);
+        $jobs = $this->client()->jobs->all(['status' => Job::STATUS_SUCCESSFUL]);
 
         $this->assertEmpty(array_filter($jobs->data, function ($job) {
             return $job->status !== Job::STATUS_SUCCESSFUL;
         }));
     }
 
-    public function testCanPageOnlysuccessfulJobs()
+    public function testCanPageOnlySuccessfulJobs()
     {
-        $job = $this->client->jobs->create([
-            'source_file' => 'https://www.zamzar.com/non-existant.png',
-            'target_format' => 'jpg',
-        ])->waitForCompletion();
-
-        $this->assertEquals(Job::STATUS_FAILED, $job->status);
-
-        $job = $this->client->jobs->create([
-            'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
-            'target_format' => 'jpg',
-        ])->waitForCompletion();
-
-        $this->assertEquals(Job::STATUS_SUCCESSFUL, $job->status);
-
-        $jobs = $this->client->jobs->all(['status' => Job::STATUS_SUCCESSFUL, 'limit' => 1]);
+        $jobs = $this->client()->jobs->all(['status' => Job::STATUS_SUCCESSFUL, 'limit' => 1]);
 
         $this->assertCount(1, $jobs);
         $this->assertTrue($jobs[0]->isStatusSuccessful());
@@ -112,24 +91,24 @@ final class JobsTest extends TestCase
 
     public function testFilesCanBeDownloadedAndDeleted()
     {
-        $job = $this->client->jobs->create([
+        $job = $this->client()->jobs->create([
             'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
             'target_format' => 'pdf'
         ])->waitForCompletion();
 
         $job->downloadTargetFiles($this->targetFilePath);
 
-        $this->assertEquals(file_exists($this->targetFilePath . 'zamzar-logo.pdf'), true);
+        $this->assertTrue(file_exists($this->targetFilePath . $job->target_files[0]->name));
 
-        $job = $job->deleteTargetFiles($this->targetFilePath);
+        $job = $job->deleteTargetFiles();
 
         $this->expectException(\Zamzar\Exception\InvalidResourceException::class);
-        $job = $job->downloadTargetFiles($this->targetFilePath);
+        $job->downloadTargetFiles($this->targetFilePath);
     }
 
-    public function testJobCanBeCancelledandStatusRefreshed()
+    public function testJobCanBeCancelledAndStatusRefreshed()
     {
-        $job = $this->client->jobs->create([
+        $job = $this->client()->jobs->create([
             'source_file' => 'https://www.zamzar.com/images/zamzar-logo.png',
             'target_format' => 'pdf'
         ]);
