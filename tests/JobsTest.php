@@ -4,7 +4,12 @@ declare(strict_types=1);
 
 namespace Tests;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Handler\CurlHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Middleware;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\RequestInterface;
 use Zamzar\Job;
 
 final class JobsTest extends TestCase
@@ -65,6 +70,32 @@ final class JobsTest extends TestCase
         ])->waitForCompletion();
 
         $this->assertEquals($job->status, Job::STATUS_SUCCESSFUL);
+    }
+
+    public function testJobCanBeSubmittedWithOptions(): void
+    {
+        $history = [];
+        $stack = HandlerStack::create();
+        $stack->push(Middleware::history($history));
+        $transport = new Client(['handler' => $stack]);
+
+        $client = $this->client(['transport' => $transport]);
+        $job = $client->jobs->create([
+            'source_file' => $this->validLocalSourceFile,
+            'target_format' => $this->validTargetFormat,
+            'options' => [
+                'quality' => 50,
+                'ocr' => true,
+            ]
+        ])->waitForCompletion();
+
+        $this->assertEquals($job->status, Job::STATUS_SUCCESSFUL);
+
+        // Ensure that the request body contains the options
+        $actualBody = (string)$history[0]['request']->getBody();
+        $this->assertStringContainsString('options', $actualBody);
+        $this->assertStringContainsString('"quality":50', $actualBody);
+        $this->assertStringContainsString('"ocr":true', $actualBody);
     }
 
     public function testCanListOnlySuccessfulJobs()
