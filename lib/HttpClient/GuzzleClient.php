@@ -17,12 +17,7 @@ class GuzzleClient
      */
     public static function request($config, $endpoint, $method = 'GET', $params = [], $hasLocalFile = false, $getFileContent = false)
     {
-        $client = new Client([
-            'headers' => [
-                'Authorization' => 'Bearer ' . $config['api_key'],
-            ],
-        ]);
-
+        $client = $config['transport'] ?? new Client();
         $response = $client->request($method, $endpoint, self::prepareRequest($config, $method, $params, $hasLocalFile));
 
         if (!is_null($response)) {
@@ -42,6 +37,7 @@ class GuzzleClient
         $options = [
             'debug' => $config['http_debug'],
             'headers' => [
+                'Authorization' => 'Bearer ' . $config['api_key'],
                 'User-Agent' => $config['user_agent'],
             ],
             'http_errors' => false,

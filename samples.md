@@ -64,6 +64,24 @@ $logger->pushHandler(new StreamHandler(__DIR__.'/app.log', Logger::DEBUG));
 \Zamzar\Zamzar::setLogger($logger);
 ```
 
+### Customising the Guzzle HTTP Client
+
+This library uses Guzzle as the HTTP client. The default client can be customised by passing in a custom Guzzle client instance.
+
+```php
+// create a custom Guzzle client
+$guzzle = new \GuzzleHttp\Client([
+    'timeout' => 10,
+    'connect_timeout' => 5,
+]);
+
+// pass the custom Guzzle client to the ZamzarClient
+$zamzar = new \Zamzar\ZamzarClient([
+    'api_key' => '****',
+    'transport' => $guzzle
+]);
+```
+
 ### Viewing the Config Array
 
 When the ZamzarClient is created, a config array is created which is used during subsequent API calls.
