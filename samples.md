@@ -51,7 +51,7 @@ The library does minimal logging, if the `debug` config option is used. Use eith
 
 ```php
 $client = new Zamzar\ZamzarClient([
-    'api_key' = '****',
+    'api_key' => '****',
     'debug' => true,
 ]);
 
