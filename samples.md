@@ -510,6 +510,20 @@ $job = $zamzar->jobs->create([
 ]);
 ```
 
+### Specifying conversion options
+
+Conversion options can be specified for certain target formats. For example, to specify a different voice for a text-to-speech conversion:
+
+```php
+$job = $zamzar->jobs->create([
+    'source_file' => 'path/to/local/file.txt',
+    'target_format' => 'mp3',
+    'options' => [
+        'voice' => 'en.female'
+    ]
+]);
+```
+
 ### Waiting for a job to complete
 
 The <code>waitForCompletion()</code> method is used to wait for a job to complete, which will poll the job at exponentially larger intervals upto a maximum timeout.

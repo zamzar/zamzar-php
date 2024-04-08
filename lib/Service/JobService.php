@@ -9,6 +9,11 @@ class JobService extends AbstractService
 {
     public function create($params)
     {
+        // if params['options'] is an array, JSON encode it
+        if (array_key_exists('options', $params) && is_array($params['options'])) {
+            $params['options'] = json_encode($params['options']);
+        }
+
         $response = $this->client->request('POST', Job::classUrl(), $params);
 
         return Job::constructFrom($response->getBody(), $this->client->getConfig());
