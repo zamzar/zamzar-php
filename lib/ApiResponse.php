@@ -14,22 +14,36 @@ class ApiResponse
     private $body;
     private $code;
     private $headers;
+    private $parsedBody;
 
     public function __construct($body, $code, $headers)
     {
-        $this->body = json_decode($body, true);
+        $this->body = $body;
         $this->code = $code;
         $this->headers = $headers;
     }
 
+    /**
+     * Get the body of the response. Returns an array if the body is valid JSON.
+     *
+     * Note that this method will attempt to convert the entire request body to a string in memory. Callers must
+     * ensure that the content length of the response is not so large that it would cause memory exhaustion. Use
+     * getBodyRaw() to get the raw body without loading its entire contents into memory.
+     *
+     * @return array|null
+     */
     public function getBody()
     {
-        return $this->body;
+        if (is_null($this->parsedBody)) {
+            $this->parsedBody = json_decode($this->body, true);
+        }
+
+        return $this->parsedBody;
     }
 
     public function getBodyRaw()
     {
-        return json_encode($this->body);
+        return $this->body;
     }
 
     public function getCode()
