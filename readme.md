@@ -1,19 +1,24 @@
-# Zamzar PHP
+# PHP file converter library for Zamzar
 
 [![@zamzar on Twitter](https://img.shields.io/badge/twitter-zamzar-blue)](https://twitter.com/zamzar)
 [![Total Downloads](https://img.shields.io/packagist/dt/zamzar/zamzar-php.svg?style=flat)](https://packagist.org/packages/zamzar/zamzar-php)
 [![Apache 2 License](https://img.shields.io/packagist/l/zamzar/zamzar-php.svg?style=flat)](https://github.com/zamzar/zamzar-php/blob/main/LICENSE)
 
-The official PHP SDK for the [Zamzar API](https://developers.zamzar.com).
+Easy to use PHP file conversion API with support for 1,100+ file conversions - convert documents, audio, images, video, eBooks and more. Use `zamzar-php` to convert files between different formats as part of your PHP application with the [Zamzar file conversion API](https://developers.zamzar.com). Common use cases include:
 
-`zamzar-php` makes it easy to convert files between different formats as part of your PHP applications.
+* Convert Microsoft Word (DOCX, DOC) to PDF
+* Extract text from PDF files
+* Convert Powerpoint (PPT, PPTX) to JPG
+* Archive email (MSG files) to PDF
+
+This is the official PHP SDK for the [Zamzar file conversion API](https://developers.zamzar.com).
+
 
 Jump to:
 
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Dependencies](#dependencies)
-- [Documentation](#documentation)
 - [Initialise the Zamzar Client](#initialise-the-zamzar-client)
 - [Test the Connection](#test-the-connection)
 - [Typical Usage](#typical-usage)
