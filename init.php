@@ -1,5 +1,11 @@
 <?php
 
+// If you're not using Composer, require_once this file to load the Zamzar PHP SDK
+// You'll need to ensure that you've also:
+//   - Loaded Guzzle and its dependencies (https://docs.guzzlephp.org/en/stable/overview.html)
+//   - Loaded the PHP JSON extension (https://secure.php.net/manual/en/book.json.php)
+// See ./composer.json for the required versions of these dependencies
+
 // Utilities
 require __DIR__ . '/lib/Util/LoggerInterface.php';
 require __DIR__ . '/lib/Util/DefaultLogger.php';

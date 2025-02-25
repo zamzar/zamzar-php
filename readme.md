@@ -18,7 +18,6 @@ Jump to:
 
 - [Requirements](#requirements)
 - [Installation](#installation)
-- [Dependencies](#dependencies)
 - [Initialise the Zamzar Client](#initialise-the-zamzar-client)
 - [Test the Connection](#test-the-connection)
 - [Typical Usage](#typical-usage)
@@ -43,21 +42,6 @@ To use the bindings, use Composer's [autoload](https://getcomposer.org/doc/01-ba
 ```php
 require_once('vendor/autoload.php');
 ```
-
-If you do not wish to use Composer, you can download the [latest release](https://github.com/zamzar/zamzar-php/releases). Then, to use the bindings, include the `init.php` file.
-
-```php
-require_once('/path/to/zamzar-php/init.php');
-```
-
-## Dependencies
-
-The bindings require the following extensions in order to work properly:
-
--   [`Guzzle HTTP Client`](https://docs.guzzlephp.org/en/stable/overview.html)
--   [`JSON Extension`](https://secure.php.net/manual/en/book.json.php)
-
-If you use Composer, these dependencies should be handled automatically. If you install manually, you'll want to make sure that these extensions are available.
 
 ## Initialise the Zamzar Client
 
