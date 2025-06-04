@@ -2,8 +2,8 @@
 
 namespace Zamzar\HttpClient;
 
+use Exception;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware as GuzzleMiddleware;
 use GuzzleHttp\Psr7\Request;
@@ -42,7 +42,7 @@ class GuzzleClient
             $retries,
             Request $request,
             Response $response = null,
-            RequestException $exception = null
+            Exception $exception = null
         ) use ($maxRetries) {
             // Limit the number of retries
             if ($retries >= $maxRetries) {
