@@ -4,7 +4,9 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/zamzar/zamzar-php.svg?style=flat)](https://packagist.org/packages/zamzar/zamzar-php)
 [![Apache 2 License](https://img.shields.io/packagist/l/zamzar/zamzar-php.svg?style=flat)](https://github.com/zamzar/zamzar-php/blob/main/LICENSE)
 
-Easy to use PHP file conversion API with support for 1,100+ file conversions - convert documents, audio, images, video, eBooks and more. Use `zamzar-php` to convert files between different formats as part of your PHP application with the [Zamzar file conversion API](https://developers.zamzar.com). Common use cases include:
+Easy to use PHP file conversion API with support for 1,100+ file conversions - convert documents, audio, images, video,
+eBooks and more. Use `zamzar-php` to convert files between different formats as part of your PHP application with
+the [Zamzar file conversion API](https://developers.zamzar.com). Common use cases include:
 
 * Convert Microsoft Word (DOCX, DOC) to PDF
 * Extract text from PDF files
@@ -12,7 +14,6 @@ Easy to use PHP file conversion API with support for 1,100+ file conversions - c
 * Archive email (MSG files) to PDF
 
 This is the official PHP SDK for the [Zamzar file conversion API](https://developers.zamzar.com).
-
 
 Jump to:
 
@@ -26,7 +27,8 @@ Jump to:
 
 ## Requirements
 
-- Before you begin, signup for a Zamzar API Account or retrieve your existing API Key from the [Zamzar Developers Homepage](https://developers.zamzar.com/user)
+- Before you begin, signup for a Zamzar API Account or retrieve your existing API Key from
+  the [Zamzar Developers Homepage](https://developers.zamzar.com/user)
 - PHP 7.2.34 and later.
 
 ## Installation
@@ -45,12 +47,15 @@ require_once('vendor/autoload.php');
 
 ## Initialise the Zamzar Client
 
-To initialise the client, declare a new ZamzarClient which accepts a string or config array:
+To initialise the client, declare a new ZamzarClient:
 
 ```php
 
 // Connect to the Production API using an API Key
-$zamzar = new \Zamzar\ZamzarClient('apikey');
+$zamzar = new \Zamzar\ZamzarClient([
+    'api_key' => 'apiKey',
+    'transport' => \Zamzar\ZamzarClient::recommendedTransport()
+]);
 ```
 
 To specify whether the client using the Production or Test API, use a Config array:
@@ -60,21 +65,24 @@ To specify whether the client using the Production or Test API, use a Config arr
 // Use the Production API
 $zamzar = new \Zamzar\ZamzarClient([
     'api_key' => 'apiKey',
-    'environment' => 'production'
+    'environment' => 'production',
+    'transport' => \Zamzar\ZamzarClient::recommendedTransport()
 ]);
 
 
 // Use the Sandbox API
 $zamzar = new \Zamzar\ZamzarClient([
     'api_key' => 'apiKey',
-    'environment' => 'sandbox'
+    'environment' => 'sandbox',
+    'transport' => \Zamzar\ZamzarClient::recommendedTransport()
 ]);
 
 ```
 
 ## Test the Connection
 
-To confirm your credentials are correct, test the connection to the API which will return a welcome message and confirm which API you are using (Production or Test).
+To confirm your credentials are correct, test the connection to the API which will return a welcome message and confirm
+which API you are using (Production or Test).
 
 ```php
 
@@ -84,7 +92,8 @@ echo $zamzar->testConnection();
 
 ## Typical Usage
 
-The most common requirement is to submit a job to convert a file, wait for the job to complete, download the converted files and delete the files on  Zamzar servers.
+The most common requirement is to submit a job to convert a file, wait for the job to complete, download the converted
+files and delete the files on Zamzar servers.
 
 ```php
 // Submit the file
@@ -103,7 +112,8 @@ $job->downloadTargetFiles('path/to/folder/');
 $job->deleteAllFiles();
 ```
 
-The above use case might be applied when other things are happening in between each step, but if not, and you want to chain the whole thing together:
+The above use case might be applied when other things are happening in between each step, but if not, and you want to
+chain the whole thing together:
 
 ```php
 // Do the whole thing together
@@ -118,7 +128,8 @@ $job = $zamzar->jobs->create([
 
 ## Configure a Logger
 
-The library does minimal logging, if the `debug` config option is used. Use either the supplied default logger or a psr-3 compatible logger.
+The library does minimal logging, if the `debug` config option is used. Use either the supplied default logger or a
+psr-3 compatible logger.
 
 ```php
 $client = new Zamzar\ZamzarClient([
@@ -141,4 +152,5 @@ $logger->pushHandler(new StreamHandler(__DIR__.'/app.log', Logger::DEBUG));
 
 [Exceptions Handling](exceptions.md) - Learn more about API Error Codes.
 
-[Developer Docs](https://developers.zamzar.com/docs) - For more information about API operations, parameters, and responses. Use this if you need additional context on all areas of functionality.
+[Developer Docs](https://developers.zamzar.com/docs) - For more information about API operations, parameters, and
+responses. Use this if you need additional context on all areas of functionality.

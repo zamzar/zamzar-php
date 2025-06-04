@@ -8,7 +8,8 @@ use Zamzar\ZamzarClient;
 trait WithClient
 {
     /** @before */
-    protected function resetMock() {
+    protected function resetMock()
+    {
         // Construct the URL for to reset the mock
         // See: https://github.com/zamzar/zamzar-mock/blob/main/README.md
         $parts = parse_url($this->baseUrl());
@@ -23,6 +24,7 @@ trait WithClient
         $configDefaults = [
             'api_key' => $this->apiKey(),
             'base_url' => $this->baseUrl(),
+            'transport' => ZamzarClient::recommendedTransport(),
         ];
 
         $config = array_merge($configDefaults, $configOverrides);

@@ -1,6 +1,8 @@
 # Code Samples
 
-The following code samples demonstrate the features of the library. Most samples can be copy/pasted into your own environment and should work 'out of the box' as long as you have a valid API key. Some samples which may not work will relate to local folder and file locations, and connected services such as Amazon S3 storage.
+The following code samples demonstrate the features of the library. Most samples can be copy/pasted into your own
+environment and should work 'out of the box' as long as you have a valid API key. Some samples which may not work will
+relate to local folder and file locations, and connected services such as Amazon S3 storage.
 
 Jump to:
 
@@ -32,7 +34,10 @@ Initialising a ZamzarClient is the starting point for any calls to be made to th
 
 ```php
 // supply an api key
-$zamzar = new \Zamzar\ZamzarClient('apikey');
+$zamzar = new \Zamzar\ZamzarClient([
+    'api_key' => 'apikey',
+    'transport' => \Zamzar\ZamzarClient::recommendedTransport()
+]);
 ```
 
 ### Use the Sandbox Environment
@@ -42,17 +47,20 @@ $zamzar = new \Zamzar\ZamzarClient('apikey');
 $zamzar = new \Zamzar\ZamzarClient([
     'api_key' => 'apikey',
     'environment' => 'sandbox'
+    'transport' => \Zamzar\ZamzarClient::recommendedTransport()
 ]);
 ```
 
 ### Configuring a Logger
 
-The library does minimal logging, if the `debug` config option is used. Use either the supplied default logger or a psr-3 compatible logger.
+The library does minimal logging, if the `debug` config option is used. Use either the supplied default logger or a
+psr-3 compatible logger.
 
 ```php
 $client = new Zamzar\ZamzarClient([
     'api_key' => '****',
     'debug' => true,
+    'transport' => \Zamzar\ZamzarClient::recommendedTransport()
 ]);
 
 // PSR-3 Compatible Logger
@@ -66,7 +74,8 @@ $logger->pushHandler(new StreamHandler(__DIR__.'/app.log', Logger::DEBUG));
 
 ### Customising the Guzzle HTTP Client
 
-This library uses Guzzle as the HTTP client. The default client can be customised by passing in a custom Guzzle client instance.
+This library uses Guzzle as the HTTP client. The default client can be customised by passing in a custom Guzzle client
+instance.
 
 ```php
 // create a custom Guzzle client
@@ -82,6 +91,21 @@ $zamzar = new \Zamzar\ZamzarClient([
 ]);
 ```
 
+Unless you need to customise the Guzzle client, it is recommended to use the `recommendedTransport()` method which
+provides a Guzzle client with sensible defaults for the Zamzar API.
+
+```php
+$zamzar = new \Zamzar\ZamzarClient([
+    'api_key' => '****',
+    'transport' => \Zamzar\ZamzarClient::recommendedTransport()
+]);
+```
+
+By default, the recommended transport will automatically:
+
+* time out long-running requests
+* retry requests that fail or time out
+
 ### Viewing the Config Array
 
 When the ZamzarClient is created, a config array is created which is used during subsequent API calls.
@@ -92,7 +116,8 @@ var_dump($zamzar->getConfig());
 
 ### Viewing the Last Response from the API
 
-Viewing the last response from the API can be useful for troubleshooting purposes if the raw responses from the API need to be viewed.
+Viewing the last response from the API can be useful for troubleshooting purposes if the raw responses from the API need
+to be viewed.
 
 ```php
 if($zamzar->hasLastResponse()) {
@@ -102,7 +127,8 @@ if($zamzar->hasLastResponse()) {
 
 ### Viewing the Production and Test Credits Remaining
 
-The credits remaining are returned in the headers of every call to the API. To retrieve the credits that were available at the time of the last request, either directly access the last response, or call the helper methods on the client:
+The credits remaining are returned in the headers of every call to the API. To retrieve the credits that were available
+at the time of the last request, either directly access the last response, or call the helper methods on the client:
 
 ```php
 $zamzar->$lastResponse->getProductionCreditsRemaining();
@@ -141,7 +167,7 @@ echo $plan->maximum_file_size;
 
 ## Files
 
-File related objects are used to retrieve a list of files, upload, download and delete files. 
+File related objects are used to retrieve a list of files, upload, download and delete files.
 
 ### Uploading a File
 
@@ -194,7 +220,6 @@ $job = $file->convert([
     'target_format' => 'xxx'
 ]);
 ```
-
 
 ### Retrieving a file
 
@@ -311,7 +336,6 @@ $formats = $formats->previousPage();
 
 Import related objects are used to retrieve information about imports and to start import operations.
 
-
 ### Starting an Import
 
 The <code>create</code> operator is performed on the Imports object, which creates and returns an Import object.
@@ -326,7 +350,8 @@ echo $import->id;
 
 ### Checking on the status of an Import
 
-After an import has started, the status can be checked to determine one of four status values: <code>initialising</code>, <code>downloading</code>, <code>successful</code> or <code>failed</code>. 
+After an import has started, the status can be checked to determine one of four status values: <code>
+initialising</code>, <code>downloading</code>, <code>successful</code> or <code>failed</code>.
 
 ```php
 // start an import
@@ -357,7 +382,8 @@ if ($import->isStatusFailed()) {
 }
 ```
 
-Instead of checking for each status value, the <code>hasCompleted()</code> method can be used to check if an import has completed or not.
+Instead of checking for each status value, the <code>hasCompleted()</code> method can be used to check if an import has
+completed or not.
 
 ```php
 if ($import->hasCompleted()) {
@@ -377,7 +403,8 @@ $import->waitForCompletion();
 
 ### Checking why an import failed
 
-If an import has failed it will have a <code>status</code> of <code>failed</code> and include a <code>failure</code> object.
+If an import has failed it will have a <code>status</code> of <code>failed</code> and include a <code>failure</code>
+object.
 
 ```php
 if ($import->isStatusFailed()) {
@@ -450,8 +477,8 @@ $imports = $imports->previousPage();
 
 ## Jobs
 
-Job related objects are used to retrieve information about jobs and to submit conversion jobs followed by downloading and deleting converted files.
-
+Job related objects are used to retrieve information about jobs and to submit conversion jobs followed by downloading
+and deleting converted files.
 
 ### Starting a Job
 
@@ -487,7 +514,8 @@ echo $job->id;
 
 ### Overriding the Source Format
 
-The source format can be overridden if the <code>source_file</code> does not have a format within the filename for example:
+The source format can be overridden if the <code>source_file</code> does not have a format within the filename for
+example:
 
 ```php
 $job = $zamzar->jobs->create([
@@ -499,7 +527,8 @@ $job = $zamzar->jobs->create([
 
 ### Exporting converted files to a remote server
 
-An <code>export_url</code> can be provided to instruct the conversion process to export files to a remote server once the job has completed:
+An <code>export_url</code> can be provided to instruct the conversion process to export files to a remote server once
+the job has completed:
 
 ```php
 $job = $zamzar->jobs->create([
@@ -512,7 +541,8 @@ $job = $zamzar->jobs->create([
 
 ### Specifying conversion options
 
-Conversion options can be specified for certain target formats. For example, to specify a different voice for a text-to-speech conversion:
+Conversion options can be specified for certain target formats. For example, to specify a different voice for a
+text-to-speech conversion:
 
 ```php
 $job = $zamzar->jobs->create([
@@ -526,7 +556,8 @@ $job = $zamzar->jobs->create([
 
 ### Waiting for a job to complete
 
-The <code>waitForCompletion()</code> method is used to wait for a job to complete, which will poll the job at exponentially larger intervals upto a maximum timeout.
+The <code>waitForCompletion()</code> method is used to wait for a job to complete, which will poll the job at
+exponentially larger intervals upto a maximum timeout.
 
 ```php
 // default timeout of 60 seconds
@@ -538,7 +569,8 @@ $job = $job->waitForCompletion(120);
 
 ### Check on the status of a Job
 
-After an job has started, the status can be checked to determine one of five status values: <code>initialising</code>, <code>converting</code>, <code>cancelled</code>, <code>successful</code> or <code>failed</code>. 
+After an job has started, the status can be checked to determine one of five status values: <code>
+initialising</code>, <code>converting</code>, <code>cancelled</code>, <code>successful</code> or <code>failed</code>.
 
 ```php
 // start a job
@@ -577,7 +609,8 @@ if ($job->isStatusFailed()) {
 }
 ```
 
-Instead of checking for each status value, the <code>hasCompleted()</code> method can be used to check if a job has completed successfully or not.
+Instead of checking for each status value, the <code>hasCompleted()</code> method can be used to check if a job has
+completed successfully or not.
 
 ```php
 if ($job->hasCompleted()) {
@@ -697,7 +730,9 @@ $jobs = $jobs->previousPage();
 
 ## Exceptions
 
-All of the above examples do not use exceptions handling for brevity. In real-world scenarious where the SDK is being used to support production processes, the failure of any part of the following request might cause an issue with tracking, reporting or wasting conversion credits if jobs have to be resubmitted. 
+All of the above examples do not use exceptions handling for brevity. In real-world scenarious where the SDK is being
+used to support production processes, the failure of any part of the following request might cause an issue with
+tracking, reporting or wasting conversion credits if jobs have to be resubmitted.
 
 ```php
 //start, wait, download, delete - but don't give the job any time to complete
@@ -707,7 +742,8 @@ $job = $zamzar->jobs->create([
 ])->waitForCompletion(0);
 ```
 
-The above example fails immediately, an uncaught error is reported and the process aborted. Using exception handling provides an opportunity to handle the error.
+The above example fails immediately, an uncaught error is reported and the process aborted. Using exception handling
+provides an opportunity to handle the error.
 
 ```php
 try {
@@ -722,10 +758,12 @@ try {
 
 [Read more about exceptions](exceptions.md) to find out the custom exceptions which can be caught.
 
-
 ## End-to-End Job Conversion With Exceptions Handling
 
-In a production batch processing scenario, it might be preferable to break the above job submission examples into their component parts, so that context and continuity is not lost if an exception is thrown in between what is four discrete operations - submit, wait, download, delete - whilst giving the opportunity to retry operations and audit events at a more granular level.
+In a production batch processing scenario, it might be preferable to break the above job submission examples into their
+component parts, so that context and continuity is not lost if an exception is thrown in between what is four discrete
+operations - submit, wait, download, delete - whilst giving the opportunity to retry operations and audit events at a
+more granular level.
 
 ```php
 /**
@@ -793,7 +831,8 @@ if($proceed) {
 
 ## Object Endpoints
 
-Each object stores its own endpoint, which is not an essential part of using the library, but might be useful for troubleshooting.
+Each object stores its own endpoint, which is not an essential part of using the library, but might be useful for
+troubleshooting.
 
 ```php
 foreach($jobs as $job) {
