@@ -2,6 +2,8 @@
 
 namespace Zamzar;
 
+use GuzzleHttp\Client;
+use Zamzar\HttpClient\GuzzleClient;
 use Zamzar\Service\AccountService;
 use Zamzar\Service\FileService;
 use Zamzar\Service\FormatService;
@@ -28,9 +30,23 @@ class ZamzarClient extends BaseZamzarClient
     private $services = [];
 
     /**
-     * @deprecated Use \Zamzar\Zamzar::setLogger() instead.
+     * Returns a new instance of a Guzzle client that can be used as transport. This client will automatically:
+     *  - time out long-running requests
+     *  - retry requests that fail or time out
+     *
+     * This will become the default transport in a future version of the library.
+     *
+     * @return Client
+     */
+    public static function recommendedTransport(): Client
+    {
+        return GuzzleClient::recommendedTransport();
+    }
+
+    /**
      * @param Util\LoggerInterface $logger the logger to which the library
      *   will produce messages
+     * @deprecated Use \Zamzar\Zamzar::setLogger() instead.
      */
     public function setLogger($logger)
     {
@@ -38,9 +54,9 @@ class ZamzarClient extends BaseZamzarClient
     }
 
     /**
-     * @deprecated Use \Zamzar\Zamzar::getLogger() instead.
      * @return Util\LoggerInterface the logger to which the library will
      *   produce messages
+     * @deprecated Use \Zamzar\Zamzar::getLogger() instead.
      */
     public function getLogger()
     {
