@@ -39,6 +39,35 @@ class Job extends ApiResource
     ];
 
     /**
+     * Returns the primary target file for this job.
+     * - If there are no target files (e.g., the job is not yet complete), returns null.
+     * - If there is only one target file, returns that file.
+     * - If there are multiple target files, returns the ZIP file containing all other target files.
+     *
+     * @return \Zamzar\File|null
+     */
+    public function getPrimaryTargetFile()
+    {
+        $files = $this->target_files;
+
+        if (!is_array($files) || count($files) === 0) {
+            return null;
+        }
+
+        if (count($files) === 1) {
+            return $files[0];
+        }
+
+        foreach ($files as $file) {
+            if ($file->name !== null && substr($file->name, -4) === '.zip') {
+                return $file;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Delete source file
      */
     public function deleteSourceFile()

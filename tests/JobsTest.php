@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace Tests;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Handler\CurlHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\RequestInterface;
 use Zamzar\Job;
 
 final class JobsTest extends TestCase
@@ -145,5 +143,25 @@ final class JobsTest extends TestCase
         ]);
         $job = $job->cancel();
         $this->assertEquals('cancelled', $job->status);
+    }
+
+    public function testJobCanReturnPrimaryTargetFile()
+    {
+        // IDs below correspond to those defined in zamzar-mock
+        // See: https://github.com/zamzar/zamzar-mock/blob/main/README.md
+        $succeedingJobId = 1;
+        $succeedingMultiOutputJobId = 2;
+
+        // An initialising job has no target files => the primary target file is null
+        $jobWithNoTargetFiles = $this->client()->jobs->get($succeedingJobId);
+        $this->assertNull($jobWithNoTargetFiles->getPrimaryTargetFile());
+
+        // A successful job with a single target => the primary target file is the only file
+        $jobWithOneTargetFile = $this->client()->jobs->get($succeedingJobId)->waitForCompletion();
+        $this->assertEquals($jobWithOneTargetFile->target_files[0], $jobWithOneTargetFile->getPrimaryTargetFile());
+
+        // A successful job with multiple targets => the primary target file is the ZIP file
+        $jobWithMultipleTargetFiles = $this->client()->jobs->get($succeedingMultiOutputJobId)->waitForCompletion();
+        $this->assertStringEndsWith("zip", $jobWithMultipleTargetFiles->getPrimaryTargetFile()->name);
     }
 }
