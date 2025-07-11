@@ -647,6 +647,20 @@ To download converted files:
 $job->downloadTargetFiles('path/to/download/folder');
 ```
 
+### Retrieving the primary target file
+
+Some conversions may produce multiple output files, such as when converting a multipage PDF to an image format, like
+PNG. In this case, the conversion job includes an additional ZIP file that contains all other target files. You can use
+`$job->getPrimaryTargetFile()` to obtain a reference to this ZIP file:
+
+```php
+$zipFile = $jobWithManyOutputFiles->getPrimaryTargetFile();
+if ($zipFile !== null) {
+    $zipFile->download('path/to/download/folder');
+    echo "Downloaded ZIP file: " . $primaryFile->name;
+}
+```
+
 ### Deleting converted files
 
 Various options exist for deleting files depending on the use case:
