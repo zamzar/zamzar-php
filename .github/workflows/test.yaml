@@ -5,9 +5,20 @@ on:
 
 jobs:
   test:
-    name: Run tests
+    name: Run tests for PHP ${{ matrix.php-version }}
     runs-on: ubuntu-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version:
+          #          - "7.2" # Oldest supported <-- no longer builds due to Buster's EOL
+          - "7.3" # Closest to oldest supported
+          - "8.5" # Latest release
+
+    env:
+      PHP_VERSION: ${{ matrix.php-version }}
+    
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4

@@ -1,7 +1,10 @@
 version: '3'
 services:
   php:
-    build: .
+    build:
+      context: .
+      args:
+        PHP_VERSION: ${PHP_VERSION:-7.3}
     depends_on:
       - mock
     entrypoint: [ "/bin/sh", "-c", "sleep infinity" ]
