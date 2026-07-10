@@ -1,4 +1,5 @@
-FROM php:7.2-cli
+ARG PHP_VERSION=7.3
+FROM php:${PHP_VERSION}-cli
 
 # Install PHP extensions and composer
 RUN apt-get update && \
